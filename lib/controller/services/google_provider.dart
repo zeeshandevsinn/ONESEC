@@ -31,11 +31,11 @@ class GoogleProvider extends ChangeNotifier {
           MyToast("Successfully Sign In");
           print(result['auth_token']);
 
-          await AuthTokenStorage.saveAuthToken(result['auth_token']);
           if (profileType == 'individual') {
             isLoading = false;
             notifyListeners();
             Navigator.pop(context);
+            await AuthTokenStorage.saveAuthToken(result['auth_token']);
             Navigator.push(
                 context,
                 CupertinoDialogRoute(
@@ -60,6 +60,7 @@ class GoogleProvider extends ChangeNotifier {
             print(result);
             // debugger();
 
+            await AuthTokenStorage.saveAuthToken(result['auth_token']);
             notifyListeners();
             Navigator.push(
                 context,

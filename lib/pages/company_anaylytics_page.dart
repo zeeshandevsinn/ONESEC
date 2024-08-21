@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
 
 class CompanyAnalyticsPage extends StatefulWidget {
-  const CompanyAnalyticsPage({super.key});
+  final auth_token;
+  const CompanyAnalyticsPage({super.key, required this.auth_token});
 
   @override
   State<CompanyAnalyticsPage> createState() => _CompanyAnalyticsPageState();
@@ -148,7 +149,9 @@ class _CompanyAnalyticsPageState extends State<CompanyAnalyticsPage> {
                   ),
                 ),
                 SizedBox(height: 24),
-                SFMAPScreen(),
+                SFMAPScreen(
+                  auth_token: widget.auth_token,
+                ),
                 // Container(
                 //   height: 300,
                 //   decoration: BoxDecoration(

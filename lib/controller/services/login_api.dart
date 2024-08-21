@@ -32,11 +32,11 @@ class LoginUserProvider extends ChangeNotifier {
         notifyListeners();
         Auth_Token = data['auth_token'] ?? "";
 
+        await AuthTokenStorage.saveAuthToken(Auth_Token);
         notifyListeners();
         MyToast("Login Successfully");
 
         notifyListeners();
-        await AuthTokenStorage.saveAuthToken(Auth_Token);
         futureUser = await UserService().fetchUser(Auth_Token);
         notifyListeners();
         Navigator.pop(context);
@@ -148,7 +148,7 @@ class LoginUserProvider extends ChangeNotifier {
     try {
       final data = await APIsManager.LogoutUser(auth_token);
       if (data != null) {
-        await AuthTokenStorage.removeAuthToken(auth_token);
+        await AuthTokenStorage.removeAuthToken();
         isLoading = false;
         notifyListeners();
         // MyToast("Logout Successfully");

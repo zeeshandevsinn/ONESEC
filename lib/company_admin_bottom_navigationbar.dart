@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:client_nfc_mobile_app/controller/OnWillPop.dart';
 import 'package:client_nfc_mobile_app/controller/services/company_provider.dart';
 import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
-import 'package:client_nfc_mobile_app/pages/company_anaylytics_page.dart';
 import 'package:client_nfc_mobile_app/pages/individual_analytic_page.dart';
 import 'package:client_nfc_mobile_app/screens/card-details/company_card_profile.dart';
 import 'package:client_nfc_mobile_app/screens/company/company_user_create_profile.dart';
@@ -169,7 +166,9 @@ class _CompanyAdminBottomNavigationBarState
         companyProfile: data,
       ),
       // CompanyAnalyticsPage(),
-      IndividualAnalyticPage(),
+      IndividualAnalyticPage(
+        auth_token: widget.authToken,
+      ),
     ];
 
     return Scaffold(

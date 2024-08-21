@@ -134,7 +134,9 @@ class _IndividualBottomNavigationBarState
               DigitalCardProfile(
                   authToken: widget.user_auth_token,
                   profileDetails: profileDetails!),
-              IndividualAnalyticPage(),
+              IndividualAnalyticPage(
+                auth_token: widget.user_auth_token,
+              ),
             ];
 
             if (profileDetails == null) {

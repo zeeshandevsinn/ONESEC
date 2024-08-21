@@ -1,4 +1,6 @@
 import 'package:client_nfc_mobile_app/company_admin_bottom_navigationbar.dart';
+import 'package:client_nfc_mobile_app/controller/geo_view_data/geo_provider.dart';
+import 'package:client_nfc_mobile_app/controller/interaction/services/interaction_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/account%20update/account_update_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/appointment/appoinment_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/company_provider.dart';
@@ -47,6 +49,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ShareProfileProvider()),
         ChangeNotifierProvider(create: (_) => CompanyProvider()),
         ChangeNotifierProvider(create: (_) => AppointmentProvider()),
+        ChangeNotifierProvider(create: (_) => GeoProvider()),
+        ChangeNotifierProvider(create: (_) => InteractionProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

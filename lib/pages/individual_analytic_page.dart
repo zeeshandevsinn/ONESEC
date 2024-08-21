@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
 
 class IndividualAnalyticPage extends StatefulWidget {
-  const IndividualAnalyticPage({super.key});
+  final auth_token;
+  const IndividualAnalyticPage({super.key, required this.auth_token});
 
   @override
   State<IndividualAnalyticPage> createState() => _IndividualAnalyticPageState();
@@ -76,7 +77,7 @@ class _IndividualAnalyticPageState extends State<IndividualAnalyticPage> {
                   ),
                 ),
                 SizedBox(height: 24),
-                SFMAPScreen(),
+                SFMAPScreen(auth_token: widget.auth_token),
                 SizedBox(height: 24),
                 // Container(
                 //   height: 410,

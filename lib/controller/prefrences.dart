@@ -16,8 +16,8 @@ class AuthTokenStorage {
   }
 
   // Remove the authentication token
-  static Future<void> removeAuthToken(authToken) async {
+  static Future<void> removeAuthToken() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(authToken);
+    await prefs.remove(_authTokenKey);
   }
 }

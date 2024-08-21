@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:client_nfc_mobile_app/controller/endpoints.dart';
-import 'package:client_nfc_mobile_app/models/user_model.dart';
 import 'package:client_nfc_mobile_app/models/user_profile/user_profile_details.dart';
 import 'package:client_nfc_mobile_app/models/user_profile/user_profile_errors.dart';
 import 'package:http/http.dart' as http;

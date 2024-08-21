@@ -1,4 +1,5 @@
 import 'package:client_nfc_mobile_app/components/custom_text_field.dart';
+import 'package:client_nfc_mobile_app/controller/interaction/services/interaction_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/company_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/share_profile_provider/share_profile_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/user_profile_provider.dart';
@@ -37,7 +38,14 @@ class _AppoinmentShareProfileScreenState
   void initState() {
     super.initState();
     context.read<ShareProfileProvider>();
+    createInteraction(widget.userID_share_from);
     ProfileTypeFunc(widget.profile_type);
+  }
+
+  createInteraction(userID) async {
+    var pro = context.read<InteractionProvider>();
+    final data = await pro.createInteraction(userID);
+    return data;
   }
 
   ProfileTypeFunc(profile_type) {

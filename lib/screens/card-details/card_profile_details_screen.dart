@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:client_nfc_mobile_app/models/user_profile/user_profile_details.dart';
 import 'package:client_nfc_mobile_app/screens/share_profile_screen/share_profile_screen.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
@@ -79,7 +81,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
                     ),
                   ),
                   Text(
-                    widget.profileDetails.postion,
+                    widget.profileDetails.position,
                     style: TextStyle(
                       fontFamily: "GothamRegular",
                       fontSize: 14.0,
@@ -96,19 +98,30 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildSocialIcon(FontAwesomeIcons.facebookF,
-                      widget.profileDetails.facebook ?? ""),
-                  _buildSocialIcon(FontAwesomeIcons.instagram,
-                      widget.profileDetails.instagram ?? ""),
-                  _buildSocialIcon(FontAwesomeIcons.github,
-                      widget.profileDetails.github ?? ""),
-                  _buildSocialIcon(FontAwesomeIcons.globe,
-                      widget.profileDetails.website ?? ""),
-                  _buildSocialIcon(FontAwesomeIcons.linkedin,
-                      widget.profileDetails.linkedin ?? ""),
+                  if (widget.profileDetails.facebook != null &&
+                      widget.profileDetails.facebook!.isNotEmpty)
+                    _buildSocialIcon(FontAwesomeIcons.facebookF,
+                        widget.profileDetails.facebook!),
+                  if (widget.profileDetails.instagram != null &&
+                      widget.profileDetails.instagram!.isNotEmpty)
+                    _buildSocialIcon(FontAwesomeIcons.instagram,
+                        widget.profileDetails.instagram!),
+                  if (widget.profileDetails.github != null &&
+                      widget.profileDetails.github!.isNotEmpty)
+                    _buildSocialIcon(
+                        FontAwesomeIcons.github, widget.profileDetails.github!),
+                  if (widget.profileDetails.website != null &&
+                      widget.profileDetails.website!.isNotEmpty)
+                    _buildSocialIcon(
+                        FontAwesomeIcons.globe, widget.profileDetails.website!),
+                  if (widget.profileDetails.linkedin != null &&
+                      widget.profileDetails.linkedin!.isNotEmpty)
+                    _buildSocialIcon(FontAwesomeIcons.linkedin,
+                        widget.profileDetails.linkedin!),
                 ],
               ),
             ),
+
             SizedBox(height: 20),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
@@ -205,34 +218,42 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
       child: GestureDetector(
         onTap: () async {
           if (url.isEmpty) {
+            // Show a toast message if the URL is empty
             MyToast(
-                "Oops! The URL hasn’t been updated yet. Please update it before continuing.",
-                Type: false);
+              "Oops! The URL hasn’t been updated yet. Please update it before continuing.",
+              Type: false,
+            );
           } else {
-            final bool appCheck = url.contains('linkedin.com')
-                ? true
-                : url.contains('github.com')
-                    ? true
-                    : url.contains('facebook.com')
-                        ? true
-                        : url.contains('instagram.com')
-                            ? true
-                            : false;
+            try {
+              // Ensure the URL has a scheme (http or https)
+              final uri = Uri.parse(url);
 
-            // Define the URL launcher for LinkedIn and web
-            final Uri uri = Uri.parse(url);
+              // Check if URL parsing was successful
+              // if (uri == null) {
+              //   MyToast("Invalid URL format: $url", Type: false);
+              //   return;
+              // }
 
-            // Open URL based on type
-            if (await canLaunchUrl(uri)) {
-              if (appCheck) {
-                // Open LinkedIn in the LinkedIn app or default browser
-                await launchUrl(uri, mode: LaunchMode.externalApplication);
-              } else {
-                // Open website in the default browser (e.g., Chrome)
-                await launchUrl(uri, mode: LaunchMode.inAppWebView);
-              }
-            } else {
-              throw 'Could not launch $url';
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+              // if (await canLaunchUrl(uri)) {
+              //   // final bool isSocialMedia = url.contains('linkedin.com') ||
+              //   //     url.contains('github.com') ||
+              //   //     url.contains('facebook.com') ||
+              //   //     url.contains('instagram.com');
+              //   // if (isSocialMedia) {
+              //   //   // Open the URL in an external application (e.g., LinkedIn app)
+
+              //   // } else {
+              //   //   // Open the URL in an in-app web view
+              //   //   await launchUrl(uri, mode: LaunchMode.inAppWebView);
+              //   // }
+              // } else {
+              //   // Handle the case where the URL cannot be launched
+              //   MyToast("Cannot Launch $url", Type: false);
+              // }
+            } catch (e) {
+              // Handle any errors that occur during launching
+              MyToast("Error launching $url: $e", Type: false);
             }
           }
         },

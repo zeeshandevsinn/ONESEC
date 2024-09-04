@@ -1,4 +1,5 @@
 import 'package:client_nfc_mobile_app/screens/charts/bar_chart.dart';
+import 'package:client_nfc_mobile_app/screens/charts/interaction_chart.dart';
 import 'package:client_nfc_mobile_app/screens/charts/line_chart.dart';
 import 'package:client_nfc_mobile_app/screens/charts/sf_maps.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,7 @@ class _IndividualAnalyticPageState extends State<IndividualAnalyticPage> {
     // "Yearly",
   ];
 
-  String _selectedValue2 = "Daily";
+  String _selectedValue2 = "Weekly";
   final List<String> _options2 = [
     "Time of Days",
     "Time of Week",
@@ -62,20 +63,27 @@ class _IndividualAnalyticPageState extends State<IndividualAnalyticPage> {
                 //   chart: InteractionFrequencyChart(),
                 // ),
                 // SizedBox(height: 24),
-                _buildChartContainer(
-                  title: "Peak Interactions Time",
-                  hint: "Time of Days",
-                  selectedValue: _selectedValue2,
-                  options: _options,
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedValue2 = newValue!;
-                    });
-                  },
-                  chart: PeakInteractionChart(
-                    timeScale: _selectedValue2,
-                  ),
-                ),
+                InteractionChartWidget(auth_token: widget.auth_token),
+                // _buildChartContainer(
+                //   title: "Peak Interactions Time",
+                //   hint: "Time of Days",
+                //   selectedValue: _selectedValue2,
+                //   options: _options,
+                //   onChanged: (String? newValue) {
+                //     setState(() {
+                //       _selectedValue2 = newValue!;
+                //     });
+                //   },
+                //   chart: PeakInteractionChart(
+                //     timescale: _selectedValue2 == 'Daily'
+                //         ? 'daily'
+                //         : _selectedValue2 == 'Monthly'
+                //             ? 'monthly'
+                //             : 'weekly',
+                //     auth_token: widget.auth_token,
+                //   ),
+                // ),
+
                 SizedBox(height: 24),
                 SFMAPScreen(auth_token: widget.auth_token),
                 SizedBox(height: 24),

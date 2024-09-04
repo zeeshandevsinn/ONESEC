@@ -20,11 +20,12 @@ class CompanyAdmin extends StatefulWidget {
 class _CompanyAdminState extends State<CompanyAdmin> {
   bool isChecked = false;
   final companyController = TextEditingController();
+
+  final adminController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final userNameController = TextEditingController();
-  final adminController = TextEditingController();
 
   final form_key = GlobalKey<FormState>();
 
@@ -85,25 +86,25 @@ class _CompanyAdminState extends State<CompanyAdmin> {
                                   ),
                                 ),
                               ),
-                              Spacer(),
-                              Row(
-                                children: [
-                                  Text(
-                                    "English (United States)",
-                                    style: TextStyle(
-                                      fontFamily: "GothamRegular",
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textColor7,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                    size: 30,
-                                  ),
-                                ],
-                              ),
+                              // Spacer(),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       "English (United States)",
+                              //       style: TextStyle(
+                              //         fontFamily: "GothamRegular",
+                              //         fontSize: 14.0,
+                              //         fontWeight: FontWeight.w400,
+                              //         color: AppColors.textColor7,
+                              //       ),
+                              //     ),
+                              //     Icon(
+                              //       Icons.arrow_drop_down,
+                              //       color: Colors.black,
+                              //       size: 30,
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
@@ -197,7 +198,7 @@ class _CompanyAdminState extends State<CompanyAdmin> {
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  await gro.SignInGoogle(context, 'company');
+                                  await gro.RegisterGoogle(context, 'company');
                                 },
                                 child: SocialMediaButtons(
                                   image: "assets/images/googleicon.png",
@@ -380,7 +381,7 @@ class _CompanyAdminState extends State<CompanyAdmin> {
                                     ),
                                     RichText(
                                       text: TextSpan(
-                                        text: "I agree with Tipsiti ",
+                                        text: "I agree with",
                                         style: TextStyle(
                                           fontFamily: "GothamRegular",
                                           fontSize: 14.0,

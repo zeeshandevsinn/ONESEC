@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:client_nfc_mobile_app/controller/OnWillPop.dart';
 import 'package:client_nfc_mobile_app/screens/card-details/card_profile_details_screen.dart';
 import 'package:flutter/material.dart';
@@ -33,36 +32,18 @@ class _IndividualBottomNavigationBarState
     extends State<IndividualBottomNavigationBar> {
   int currentIndex = 0;
   late Future<UserProfileDetails?> _profileFuture;
+  UserProfileDetails? profileDetails;
 
   Future<UserProfileDetails?> _fetchProfile() async {
     var pro = context.read<UserProfileProvider>();
     final data =
         await pro.GetUserProfile(widget.futureUser?.id, widget.user_auth_token);
-    print(data);
-    // debugger();
-    if (data != null) {
-      setState(() {
-        fullName = data.firstName;
-        profilePic = data.profilePic;
-      });
-    }
-
     return data;
   }
 
-  UserProfileDetails? profileDetails;
-  String? fullName;
-  String? profilePic;
   @override
   void initState() {
     super.initState();
-    _profileFuture = _fetchProfile();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh the profile future whenever dependencies change
     _profileFuture = _fetchProfile();
   }
 
@@ -77,21 +58,19 @@ class _IndividualBottomNavigationBarState
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Scaffold(
-              backgroundColor: AppColors
-                  .backgroundColor1, // Set the background color to white
+              backgroundColor: AppColors.backgroundColor1,
               body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CircularProgressIndicator.adaptive(),
-                    SizedBox(
-                        height: 20), // Add space between the spinner and text
+                    SizedBox(height: 20),
                     Text(
                       'Fetching Your Profile...',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black, // Set text color
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -108,19 +87,25 @@ class _IndividualBottomNavigationBarState
                 ),
               ),
             );
-          } else {
+          } else if (snapshot.hasData) {
             profileDetails = snapshot.data;
 
+            // if (profileDetails!.isEmpty) {
+
+            // } else {
             List<Widget> pages = [
               IndividualProfilePage(
                 userDetails: widget.futureUser,
                 auth_type: widget.futureUser?.auth_type,
                 auth_token: widget.user_auth_token,
-                name: fullName,
-                profile_pic: profilePic,
+                name: profileDetails?.firstName,
+                profile_pic: profileDetails?.profilePic,
                 userId: widget.futureUser?.id,
               ),
-              IndividualNFCPage(),
+              IndividualNFCPage(
+                authToken: widget.user_auth_token,
+                profileDetails: profileDetails!.toJson(),
+              ),
               CreatAndUpdateProfileScreen(
                 create: false,
                 profileDetails: profileDetails,
@@ -132,114 +117,124 @@ class _IndividualBottomNavigationBarState
                 userDetails: widget.futureUser,
               ),
               DigitalCardProfile(
-                  authToken: widget.user_auth_token,
-                  profileDetails: profileDetails!),
+                authToken: widget.user_auth_token,
+                profileDetails: profileDetails!,
+              ),
               IndividualAnalyticPage(
                 auth_token: widget.user_auth_token,
               ),
             ];
-
-            if (profileDetails == null) {
-              return CreatAndUpdateProfileScreen(
-                  token: widget.user_auth_token,
-                  create: true,
-                  userDetails: widget.futureUser);
-            } else {
-              return Scaffold(
-                backgroundColor: AppColors.backgroundColor1,
-                body: SafeArea(
-                  child: pages[currentIndex],
-                ),
-                bottomNavigationBar: BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  unselectedItemColor: AppColors.textColor16,
-                  currentIndex: currentIndex,
-                  onTap: (index) => setState(() => currentIndex = index),
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: GradientIcon(
-                        icon: Icons.menu,
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryColor,
-                            AppColors.secondaryColor
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
+            return Scaffold(
+              backgroundColor: AppColors.backgroundColor1,
+              body: SafeArea(
+                child: pages[currentIndex],
+              ),
+              bottomNavigationBar: BottomNavigationBar(
+                type: BottomNavigationBarType.fixed,
+                unselectedItemColor: AppColors.textColor16,
+                currentIndex: currentIndex,
+                onTap: (index) => setState(() => currentIndex = index),
+                items: [
+                  BottomNavigationBarItem(
+                    icon: GradientIcon(
+                      icon: Icons.menu,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor,
+                          AppColors.secondaryColor
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      label: "Home",
                     ),
-                    BottomNavigationBarItem(
-                      icon: GradientIcon(
-                        icon: Icons.wifi,
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryColor,
-                            AppColors.secondaryColor
-                          ],
-                        ),
+                    label: "Home",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: GradientIcon(
+                      icon: Icons.wifi,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor,
+                          AppColors.secondaryColor
+                        ],
                       ),
-                      label: "NFC",
                     ),
-                    BottomNavigationBarItem(
-                      icon: GradientIcon(
-                        icon: Icons.person,
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryColor,
-                            AppColors.secondaryColor
-                          ],
-                        ),
+                    label: "NFC",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: GradientIcon(
+                      icon: Icons.person,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor,
+                          AppColors.secondaryColor
+                        ],
                       ),
-                      label: "Profile",
                     ),
-                    BottomNavigationBarItem(
-                      icon: GradientIcon(
-                        icon: Icons.calendar_month,
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryColor,
-                            AppColors.secondaryColor
-                          ],
-                        ),
+                    label: "Profile",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: GradientIcon(
+                      icon: Icons.calendar_month,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor,
+                          AppColors.secondaryColor
+                        ],
                       ),
-                      label: "Appointment",
                     ),
-                    BottomNavigationBarItem(
-                      icon: GradientIcon(
-                        icon: Icons.card_membership,
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryColor,
-                            AppColors.secondaryColor
-                          ],
-                        ),
+                    label: "Appointment",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: GradientIcon(
+                      icon: Icons.card_membership,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor,
+                          AppColors.secondaryColor
+                        ],
                       ),
-                      label: "Digital Card",
                     ),
-                    BottomNavigationBarItem(
-                      icon: GradientIcon(
-                        icon: Icons.analytics_outlined,
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryColor,
-                            AppColors.secondaryColor
-                          ],
-                        ),
+                    label: "Digital Card",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: GradientIcon(
+                      icon: Icons.analytics_outlined,
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor,
+                          AppColors.secondaryColor
+                        ],
                       ),
-                      label: "Analytics",
                     ),
-                  ],
-                ),
-              );
-            }
+                    label: "Analytics",
+                  ),
+                ],
+              ),
+            );
+            // }
+          } else {
+            return CreatAndUpdateProfileScreen(
+              token: widget.user_auth_token,
+              create: true,
+              userDetails: widget.futureUser,
+            );
+            // return Scaffold(
+            //   backgroundColor: AppColors.backgroundColor1,
+            //   body: Center(
+            //     child: Text(
+            //       'No profile data available',
+            //       style: TextStyle(fontSize: 16, color: Colors.black),
+            //     ),
+            //   ),
+            // );
           }
         },
       ),
     );
   }
 }
+
 
 // import 'package:client_nfc_mobile_app/screens/update_profile/update_profile_screen.dart';
 // import 'package:flutter/material.dart';

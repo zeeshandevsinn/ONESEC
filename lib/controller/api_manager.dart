@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:client_nfc_mobile_app/controller/endpoints.dart';
+import 'package:client_nfc_mobile_app/controller/prefrences.dart';
 import 'package:client_nfc_mobile_app/models/user_profile/user_profile_details.dart';
 import 'package:client_nfc_mobile_app/models/user_profile/user_profile_errors.dart';
 import 'package:http/http.dart' as http;
@@ -43,8 +44,16 @@ class APIsManager {
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
       } else if (response.statusCode == 400) {
-        MyToast("Username Already exists", Type: false);
-        MyToast("Email Already exists", Type: false);
+        final errorResponse = jsonDecode(response.body);
+
+        if (errorResponse['email'] != null) {
+          MyToast("Email: ${errorResponse['email'][0]}", Type: false);
+        }
+
+        if (errorResponse['username'] != null) {
+          MyToast("Username: ${errorResponse['username'][0]}", Type: false);
+        }
+
         return null;
       } else {
         // debugger();
@@ -108,7 +117,11 @@ class APIsManager {
       final response = await http.post(url, headers: headers, body: body);
       // debugger();
       if (response.statusCode == 200) {
-        return jsonDecode(response.body) as Map<String, dynamic>;
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final token = data['auth_token'] ?? "";
+
+        await AuthTokenStorage.saveAuthToken(token);
+        return data;
       } else if (response.statusCode == 400) {
         MyToast("Please Try Again Network Issue", Type: false);
         return null;
@@ -247,6 +260,7 @@ class APIsManager {
 
       if (response.statusCode == 204) {
         MyToast("Successfully Logout User");
+        await AuthTokenStorage.removeAuthToken();
         // Account deleted successfully
         return true;
       } else {
@@ -255,7 +269,7 @@ class APIsManager {
         return false;
       }
     } catch (e) {
-      MyToast(e.toString());
+      // MyToast(e.toString());
       return null;
     }
   }
@@ -276,15 +290,21 @@ class APIsManager {
         },
       );
 
+      // debugger();
       if (response.statusCode == 200) {
         // Account deleted successfully
         final jsonData = jsonDecode(response.body);
         return UserProfileDetails.fromJson(jsonData);
+      } else if (response.statusCode == 404) {
+        MyToast('Profile does not exist.', Type: false);
+        MyToast('Please Create Profile First', Type: false);
+        return null;
       } else {
         // Failed to delete account
         return null;
       }
     } catch (e) {
+      // debugger();
       MyToast('Error $e');
       print(e);
       return null;
@@ -352,6 +372,7 @@ class APIsManager {
       'github': (github != null && github.isNotEmpty) ? github : null,
       'whatsapp': (whatsapp != 0) ? whatsapp : null,
       'profile_pic': profilePic,
+      'receive_marketing_emails': false,
       'user': user,
     };
     print(payload);
@@ -465,6 +486,7 @@ class APIsManager {
     required int user,
   }) async {
     final String url = 'https://api.onesec.shop/api/profiles/$user/';
+    // debugger();
     final payload = {
       'id': id,
       'first_name': firstName,
@@ -482,6 +504,7 @@ class APIsManager {
       'github': (github != null && github.isNotEmpty) ? github : null,
       'whatsapp': (whatsapp != 0) ? whatsapp : null,
       'profile_pic': profilePic,
+      'receive_marketing_emails': false,
       'user': user,
     };
     final request = await http.put(

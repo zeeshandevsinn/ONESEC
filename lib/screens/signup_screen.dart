@@ -110,6 +110,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _dismissLoadingDialog(BuildContext context) {}
 
+  bool tab = true;
+  final companyController = TextEditingController();
+
+  final adminController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,9 +124,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (pro.isLoading || gro.isLoading) {
           Future.microtask(() => _showLoadingDialog(context));
         }
-        return SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SafeArea(
+        return SafeArea(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -167,25 +172,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ),
                               ),
-                              Spacer(),
-                              Row(
-                                children: [
-                                  Text(
-                                    "English (United States)",
-                                    style: TextStyle(
-                                      fontFamily: "GothamRegular",
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textColor7,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                    size: 30,
-                                  ),
-                                ],
-                              ),
+                              // Spacer(),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       "English (United States)",
+                              //       style: TextStyle(
+                              //         fontFamily: "GothamRegular",
+                              //         fontSize: 14.0,
+                              //         fontWeight: FontWeight.w400,
+                              //         color: AppColors.textColor7,
+                              //       ),
+                              //     ),
+                              //     Icon(
+                              //       Icons.arrow_drop_down,
+                              //       color: Colors.black,
+                              //       size: 30,
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
@@ -230,71 +235,122 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Container(
-                                  height: 40,
-                                  width: 130,
-                                  decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        AppColors.primaryColor,
-                                        AppColors.secondaryColor,
-                                      ],
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      "Individual",
-                                      style: TextStyle(
-                                        fontFamily: "GothamRegular",
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w400,
-                                        color: AppColors.textColor24,
+                                tab
+                                    ? GestureDetector(
+                                        onTap: () {
+                                          // setState(() {
+                                          //   tab = true;
+                                          // });
+                                        },
+                                        child: Container(
+                                          height: 40,
+                                          width: 130,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                AppColors.primaryColor,
+                                                AppColors.secondaryColor,
+                                              ],
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              "Individual",
+                                              style: TextStyle(
+                                                fontFamily: "GothamRegular",
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.w400,
+                                                color: AppColors.textColor24,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            tab = true;
+                                          });
+                                        },
+                                        child: Text(
+                                          "Individual",
+                                          style: TextStyle(
+                                            fontFamily: "GothamRegular",
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.textColor27,
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CompanyAdmin(),
+                                !tab
+                                    ? Container(
+                                        height: 40,
+                                        width: 175,
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              AppColors.primaryColor,
+                                              AppColors.secondaryColor,
+                                            ],
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Center(
+                                          child: Text(
+                                            "Company Admin",
+                                            style: TextStyle(
+                                              fontFamily: "GothamRegular",
+                                              fontSize: 16.0,
+                                              fontWeight: FontWeight.w400,
+                                              color: AppColors.textColor24,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            tab = false;
+                                          });
+                                        },
+                                        child: Text(
+                                          "Company Admin",
+                                          style: TextStyle(
+                                            fontFamily: "GothamRegular",
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w400,
+                                            color: AppColors.textColor27,
+                                          ),
+                                        ),
                                       ),
-                                    );
-                                  },
-                                  child: Text(
-                                    "Company Admin",
-                                    style: TextStyle(
-                                      fontFamily: "GothamRegular",
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textColor27,
-                                    ),
-                                  ),
-                                ),
                               ],
                             ),
                           ),
                         ),
-                        SizedBox(height: 22),
+                        SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 24.0),
                           child: Column(
                             children: [
                               GestureDetector(
                                 onTap: () async {
-                                  await gro.SignInGoogle(context, 'individual');
+                                  await gro.SignInGoogle(
+                                      context, tab ? "individual" : "company");
                                 },
                                 child: SocialMediaButtons(
                                   image: "assets/images/googleicon.png",
-                                  text: "Register with Google",
+                                  text: tab
+                                      ? "Register with Individual"
+                                      : "Register with Company",
                                 ),
                               ),
                               SizedBox(height: 16),
                               // GestureDetector(
                               //   onTap: () {
-                              //     print("login with Facebook");
+                              //     print("login with facebook");
                               //   },
                               //   child: SocialMediaButtons(
                               //     image: "assets/images/facebookicon.png",
@@ -346,27 +402,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             key: form_key,
                             child: Column(
                               children: [
-                                CustomTextField(
-                                  keyboardType: TextInputType.name,
-                                  controller: firstNamController,
-                                  hintText: "First Name",
-                                  prefixIcon: Icon(
-                                    Icons.person_outlined,
-                                    size: 24,
-                                    color: AppColors.textColor10,
+                                if (tab) ...[
+                                  CustomTextField(
+                                    keyboardType: TextInputType.name,
+                                    controller: firstNamController,
+                                    hintText: "First Name",
+                                    prefixIcon: Icon(
+                                      Icons.person_outlined,
+                                      size: 24,
+                                      color: AppColors.textColor10,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(height: 16),
-                                CustomTextField(
-                                  keyboardType: TextInputType.name,
-                                  controller: lastNamController,
-                                  hintText: "Last Name",
-                                  prefixIcon: Icon(
-                                    Icons.person_outlined,
-                                    size: 24,
-                                    color: AppColors.textColor10,
+                                  SizedBox(height: 16),
+                                  CustomTextField(
+                                    keyboardType: TextInputType.name,
+                                    controller: lastNamController,
+                                    hintText: "Last Name",
+                                    prefixIcon: Icon(
+                                      Icons.person_outlined,
+                                      size: 24,
+                                      color: AppColors.textColor10,
+                                    ),
                                   ),
-                                ),
+                                ] else ...[
+                                  CustomTextField(
+                                    keyboardType: TextInputType.name,
+                                    controller: companyController,
+                                    hintText: "Company Name",
+                                    prefixIcon: Icon(
+                                      Icons.groups,
+                                      size: 24,
+                                      color: AppColors.textColor10,
+                                    ),
+                                  ),
+                                  SizedBox(height: 16),
+                                  CustomTextField(
+                                    keyboardType: TextInputType.name,
+                                    controller: adminController,
+                                    hintText: "Admin Name",
+                                    prefixIcon: Icon(
+                                      Icons.supervisor_account,
+                                      size: 24,
+                                      color: AppColors.textColor10,
+                                    ),
+                                  ),
+                                ],
                                 SizedBox(height: 16),
                                 CustomTextField(
                                   keyboardType: TextInputType.emailAddress,
@@ -466,7 +546,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                     RichText(
                                       text: TextSpan(
-                                        text: "I agree with Tipsiti ",
+                                        text: "I agree with ",
                                         style: TextStyle(
                                           fontFamily: "GothamRegular",
                                           fontSize: 14.0,
@@ -514,71 +594,152 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 24),
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      print("signup to employee screen");
-                                      if (form_key.currentState!.validate()) {
-                                        if (!emailController.text
-                                                .contains('@') &&
-                                            !emailController.text
-                                                .contains('.com')) {
-                                          MyToast("Email is not Correct",
-                                              Type: false);
-                                        } else if (!isChecked) {
-                                          print("Checkbox is not checked");
-                                          MyToast(
-                                              "Please check the Privacy and Terms",
-                                              Type: false);
-                                        } else {
-                                          print(
-                                              "Checkbox is checked: $isChecked");
+                                  child: tab
+                                      ? GestureDetector(
+                                          onTap: () async {
+                                            print("signup to employee screen");
+                                            if (form_key.currentState!
+                                                .validate()) {
+                                              if (!emailController.text
+                                                      .contains('@') &&
+                                                  !emailController.text
+                                                      .contains('.com')) {
+                                                MyToast("Email is not Correct",
+                                                    Type: false);
+                                              } else if (!isChecked) {
+                                                print(
+                                                    "Checkbox is not checked");
+                                                MyToast(
+                                                    "Please check the Privacy and Terms",
+                                                    Type: false);
+                                              } else {
+                                                print(
+                                                    "Checkbox is checked: $isChecked");
 
-                                          print("Doing Process");
-                                          // _startLoading();
+                                                print("Doing Process");
+                                                // _startLoading();
 
-                                          // Uncomment and modify this section as needed
-                                          await pro.registerUsers(
-                                              context,
-                                              firstNamController.text.trim(),
-                                              lastNamController.text.trim(),
-                                              emailController.text.trim(),
-                                              userNameController.text.trim(),
-                                              passwordController.text.trim(),
-                                              "One Sec",
-                                              "Zeeshan Flutter",
-                                              "individual",
-                                              "manual");
+                                                // Uncomment and modify this section as needed
+                                                await pro.registerUsers(
+                                                    context,
+                                                    firstNamController.text
+                                                        .trim(),
+                                                    lastNamController.text
+                                                        .trim(),
+                                                    emailController.text.trim(),
+                                                    userNameController.text
+                                                        .trim(),
+                                                    passwordController.text
+                                                        .trim(),
+                                                    ".",
+                                                    ".",
+                                                    "individual",
+                                                    "manual");
 
-                                          // Uncomment and modify this section as needed
-                                        }
-                                      }
-                                    },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 42,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            AppColors.primaryColor,
-                                            AppColors.secondaryColor,
-                                          ],
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Sign up",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: "GothamRegular",
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.textColor24,
+                                                // Uncomment and modify this section as needed
+                                              }
+                                            }
+                                          },
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 42,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  AppColors.primaryColor,
+                                                  AppColors.secondaryColor,
+                                                ],
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "Sign up",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: "GothamRegular",
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: AppColors.textColor24,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : GestureDetector(
+                                          onTap: () async {
+                                            // print("signup to employee screen");
+                                            if (form_key.currentState!
+                                                .validate()) {
+                                              if (!emailController.text
+                                                      .contains('@') &&
+                                                  !emailController.text
+                                                      .contains('.com')) {
+                                                MyToast("Email is not Correct",
+                                                    Type: false);
+                                              } else if (!isChecked) {
+                                                print(
+                                                    "Checkbox is not checked");
+                                                MyToast(
+                                                    "Please check the Privacy and Terms",
+                                                    Type: false);
+                                              } else {
+                                                print(
+                                                    "Checkbox is checked: $isChecked");
+
+                                                print("Doing Process");
+                                                // _startLoading();
+
+                                                // Uncomment and modify this section as needed
+                                                await pro.registerUsers(
+                                                    context,
+                                                    "",
+                                                    "",
+                                                    emailController.text.trim(),
+                                                    userNameController.text
+                                                        .trim(),
+                                                    passwordController.text
+                                                        .trim(),
+                                                    companyController.text
+                                                        .trim(),
+                                                    adminController.text.trim(),
+                                                    "company",
+                                                    "manual");
+                                              }
+                                            }
+                                          },
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            height: 42,
+                                            decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  AppColors.primaryColor,
+                                                  AppColors.secondaryColor,
+                                                ],
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                "Sign up",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  fontFamily: "GothamRegular",
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: AppColors.textColor24,
+                                                ),
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
                                 ),
                               ],
                             ),

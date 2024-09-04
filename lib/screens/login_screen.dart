@@ -122,25 +122,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                               ),
-                              Spacer(),
-                              Row(
-                                children: [
-                                  Text(
-                                    "English (United States)",
-                                    style: TextStyle(
-                                      fontFamily: "GothamRegular",
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textColor7,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                    size: 30,
-                                  ),
-                                ],
-                              ),
+                              // Spacer(),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       "English (United States)",
+                              //       style: TextStyle(
+                              //         fontFamily: "GothamRegular",
+                              //         fontSize: 14.0,
+                              //         fontWeight: FontWeight.w400,
+                              //         color: AppColors.textColor7,
+                              //       ),
+                              //     ),
+                              //     Icon(
+                              //       Icons.arrow_drop_down,
+                              //       color: Colors.black,
+                              //       size: 30,
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),
@@ -252,6 +252,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         child: Center(
                                           child: Text(
                                             "Company Admin",
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
                                             style: TextStyle(
                                               fontFamily: "GothamRegular",
                                               fontSize: 16.0,
@@ -281,6 +283,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 24.0),
                           child: Column(
@@ -292,7 +295,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                                 child: SocialMediaButtons(
                                   image: "assets/images/googleicon.png",
-                                  text: "Login with Google",
+                                  text: tab
+                                      ? "Login with Individual"
+                                      : "Login with Company",
                                 ),
                               ),
                               SizedBox(height: 16),

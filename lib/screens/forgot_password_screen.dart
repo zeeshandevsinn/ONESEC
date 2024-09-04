@@ -165,25 +165,25 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   ),
                                 ),
                               ),
-                              Spacer(),
-                              Row(
-                                children: [
-                                  Text(
-                                    "English (United States)",
-                                    style: TextStyle(
-                                      fontFamily: "GothamRegular",
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.textColor7,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.arrow_drop_down,
-                                    color: Colors.black,
-                                    size: 30,
-                                  ),
-                                ],
-                              ),
+                              // Spacer(),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       "English (United States)",
+                              //       style: TextStyle(
+                              //         fontFamily: "GothamRegular",
+                              //         fontSize: 14.0,
+                              //         fontWeight: FontWeight.w400,
+                              //         color: AppColors.textColor7,
+                              //       ),
+                              //     ),
+                              //     Icon(
+                              //       Icons.arrow_drop_down,
+                              //       color: Colors.black,
+                              //       size: 30,
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),

@@ -77,5 +77,6 @@ class CountryColors {
     'TL': Colors.orange,
     'TR': Colors.red,
     'TM': Colors.green,
+    'HK': Color(0xfaC8102E)
   };
 }

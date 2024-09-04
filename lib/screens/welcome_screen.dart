@@ -110,17 +110,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 42),
-                        Text(
-                          "I’ll do this later",
-                          style: TextStyle(
-                            fontFamily: "GothamRegular",
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.textColor4,
-                          ),
-                        ),
-                        SizedBox(height: 20),
+                        // Text(
+                        //   "I’ll do this later",
+                        //   style: TextStyle(
+                        //     fontFamily: "GothamRegular",
+                        //     fontSize: 16.0,
+                        //     fontWeight: FontWeight.w400,
+                        //     color: AppColors.textColor4,
+                        //   ),
+                        // ),
+
+                        SizedBox(height: 40),
                         RichText(
                           textAlign: TextAlign.center,
                           text: TextSpan(
@@ -166,6 +166,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             ],
                           ),
                         ),
+                        SizedBox(height: 20),
                       ],
                     ),
                   ),

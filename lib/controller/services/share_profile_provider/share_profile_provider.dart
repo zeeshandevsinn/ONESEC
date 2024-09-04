@@ -26,11 +26,11 @@ class ShareProfileProvider extends ChangeNotifier {
     }
   }
 
-  ShareProfileThroughEmail(auth_token, email) {
+  ShareProfileThroughEmail(auth_token, email) async {
     isLoading = true;
     notifyListeners();
     try {
-      final data = ShareProfileManager.shareProfile(auth_token, email);
+      final data = await ShareProfileManager.shareProfile(auth_token, email);
       if (data != null) {
         isLoading = false;
         notifyListeners();

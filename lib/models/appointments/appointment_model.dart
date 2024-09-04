@@ -17,9 +17,9 @@ class Appointments {
 
   factory Appointments.fromJson(Map<String, dynamic> json) {
     return Appointments(
-      title: json['title'],
-      description: json['description'],
-      attendeeEmail: json['attendee_email'], // Updated field
+      title: json['title'] ?? '',
+      description: json['description'] ?? '',
+      attendeeEmail: json['attendee_email'] ?? '', // Updated field
       datetime: DateTime.parse(json['datetime']),
       meetingStatus: json['meeting_status'],
       type: json['type'], // New field

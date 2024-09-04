@@ -74,7 +74,9 @@ class _ActivationScreenState extends State<ActivationScreen> {
                                 ),
                               ),
                             ),
-                            Spacer(),
+                            /*
+
+       Spacer(),
                             Row(
                               children: [
                                 Text(
@@ -93,6 +95,7 @@ class _ActivationScreenState extends State<ActivationScreen> {
                                 ),
                               ],
                             ),
+                                               */
                           ],
                         ),
                       ),

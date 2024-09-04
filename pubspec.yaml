@@ -62,9 +62,16 @@ dependencies:
   latlong2: ^0.9.1
   flutter_map_geojson: ^1.0.8
   syncfusion_flutter_maps: ^26.2.9
-  syncfusion_flutter_core:
+  syncfusion_flutter_core: ^26.1.0
   shared_preferences: ^2.2.3
   qr_flutter: 
+  connectivity_plus: ^5.0.2
+  share_plus:   # for sharing the QR code
+  image: ^3.0.0
+  permission_handler: ^11.0.1
+  flutter_nfc_kit: ^3.4.2
+  ndef: ^0.3.3
+  nfc_manager: ^3.5.0
   # google_maps_flutter: ^2.5.3
 
 dev_dependencies:

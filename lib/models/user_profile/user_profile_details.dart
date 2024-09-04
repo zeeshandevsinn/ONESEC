@@ -5,7 +5,7 @@ class UserProfileDetails {
   final String firstName;
   final String lastName;
   final String email;
-  final String postion;
+  final String position; // Corrected from 'postion'
   final String phone;
   final String address;
   final String bio;
@@ -15,7 +15,7 @@ class UserProfileDetails {
   final String? linkedin;
   final String? github;
   final int? whatsapp;
-  final profilePic; // This should not be included in JSON conversion
+  final String profilePic; // Changed to String?
   final int user;
 
   UserProfileDetails({
@@ -23,7 +23,7 @@ class UserProfileDetails {
     required this.firstName,
     required this.lastName,
     required this.email,
-    required this.postion,
+    required this.position, // Corrected
     required this.phone,
     required this.address,
     required this.bio,
@@ -33,27 +33,28 @@ class UserProfileDetails {
     this.linkedin,
     this.github,
     this.whatsapp,
-    this.profilePic,
+    required this.profilePic,
     required this.user,
   });
 
   factory UserProfileDetails.fromJson(Map<String, dynamic> json) {
     return UserProfileDetails(
       id: json['id'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      email: json['email'],
-      phone: json['phone'],
-      address: json['address'],
-      bio: json['bio'],
-      facebook: json['facebook'],
-      instagram: json['instagram'],
-      website: json['website'],
-      linkedin: json['linkedin'],
-      github: json['github'],
-      whatsapp: json['whatsapp'],
-      profilePic: json['profile_pic'], // handle it separately for file uploads
-      user: json['user'], postion: json['position'],
+      firstName: json['first_name'] ?? '', // Handle null with default value
+      lastName: json['last_name'] ?? '', // Handle null with default value
+      email: json['email'] ?? '', // Handle null with default value
+      position: json['position'] ?? '', // Handle null with default value
+      phone: json['phone'] ?? '', // Handle null with default value
+      address: json['address'] ?? '', // Handle null with default value
+      bio: json['bio'] ?? '', // Handle null with default value
+      facebook: json['facebook'], // Handle null
+      instagram: json['instagram'], // Handle null
+      website: json['website'], // Handle null
+      linkedin: json['linkedin'], // Handle null
+      github: json['github'], // Handle null
+      whatsapp: json['whatsapp'], // Handle null
+      profilePic: json['profile_pic'] ?? '', // Handle null
+      user: json['user'],
     );
   }
 
@@ -73,8 +74,7 @@ class UserProfileDetails {
       'github': github,
       'whatsapp': whatsapp,
       'profile_pic': profilePic,
-      'position': postion
-      // Do not include 'profile_pic' here as it's a file
+      'position': position, // Corrected from 'postion'
     };
   }
 }

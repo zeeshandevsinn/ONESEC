@@ -154,14 +154,16 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
           ),
         ),
       );
-    } else if (choices == PopUpMenuItems.monitorSetting) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MonitorSystemActivities(),
-        ),
-      );
-    } else if (choices == PopUpMenuItems.notification) {
+    }
+    // else if (choices == PopUpMenuItems.monitorSetting) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => MonitorSystemActivities(),
+    //     ),
+    //   );
+    // }
+    else if (choices == PopUpMenuItems.notification) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -409,89 +411,87 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                     ),
                     SizedBox(height: 32),
                     Builder(builder: (context) {
-                      return pro.isLoading
-                          ? Center(child: CircularProgressIndicator.adaptive())
-                          : Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 16, right: 16.0),
-                              child: Column(
-                                children: [
-                                  GestureDetector(
-                                    onTap: () async {
-                                      await pro.logoutAccount(
-                                          context, auth_token);
-                                    },
-                                    child: Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 42,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            AppColors.primaryColor,
-                                            AppColors.secondaryColor,
-                                          ],
-                                        ),
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "Yes, Sure",
-                                          style: TextStyle(
-                                            fontFamily: "GothamRegular",
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w400,
-                                            color: AppColors.textColor24,
-                                          ),
-                                        ),
-                                      ),
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 16, right: 16.0),
+                        child: Column(
+                          children: [
+                            // pro.isLoading
+                            //     ? Center(
+                            //         child: CircularProgressIndicator.adaptive())
+                            //     :
+                            GestureDetector(
+                              onTap: () async {
+                                await pro.logoutAccount(
+                                    context, auth_token, widget.auth_type);
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      AppColors.primaryColor,
+                                      AppColors.secondaryColor,
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Yes, Sure",
+                                    style: TextStyle(
+                                      fontFamily: "GothamRegular",
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.textColor24,
                                     ),
                                   ),
-                                  SizedBox(height: 16),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.only(bottom: 16.0),
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                      },
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        height: 42,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.containerColor8,
-                                          border: const GradientBoxBorder(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                AppColors.primaryColor,
-                                                AppColors.secondaryColor,
-                                              ],
-                                            ),
-                                            width: 1,
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: Center(
-                                          child: GradientText(
-                                            "No",
-                                            style: TextStyle(
-                                              fontFamily: "GothamRegular",
-                                              fontSize: 14.0,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            colors: [
-                                              AppColors.textColor9,
-                                              AppColors.textColor28,
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
-                            );
+                            ),
+                            SizedBox(height: 16),
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 16.0),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 42,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.containerColor8,
+                                    border: const GradientBoxBorder(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          AppColors.primaryColor,
+                                          AppColors.secondaryColor,
+                                        ],
+                                      ),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Center(
+                                    child: GradientText(
+                                      "No",
+                                      style: TextStyle(
+                                        fontFamily: "GothamRegular",
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      colors: [
+                                        AppColors.textColor9,
+                                        AppColors.textColor28,
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
                     }),
                   ],
                 ),
@@ -640,19 +640,25 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                             ),
                           ),
                         ),
-                        Container(
-                          height: 34,
-                          width: 34,
-                          padding: EdgeInsets.all(6),
-                          decoration: BoxDecoration(
-                            color: AppColors.containerColor10,
-                            borderRadius: BorderRadius.circular(34),
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.keyboard_arrow_down_rounded,
-                              color: AppColors.textColor10,
-                              size: 24,
+                        GestureDetector(
+                          onTap: () async {
+                            final token = await AuthTokenStorage.getAuthToken();
+                            print(token);
+                          },
+                          child: Container(
+                            height: 34,
+                            width: 34,
+                            padding: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: AppColors.containerColor10,
+                              borderRadius: BorderRadius.circular(34),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.keyboard_arrow_down_rounded,
+                                color: AppColors.textColor10,
+                                size: 24,
+                              ),
                             ),
                           ),
                         ),

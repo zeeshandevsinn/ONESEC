@@ -12,6 +12,7 @@ import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 
 import 'package:provider/provider.dart';
@@ -62,45 +63,48 @@ class _CreatAndUpdateProfileScreenState
   String networkUserImage = '';
   void profileDetailCheck() {
     if (widget.profileDetails != null) {
-      setState(() {
-        _firstNameController.text = widget.profileDetails!.firstName;
-        _lastNameController.text = widget.profileDetails!.lastName;
-        _emailController.text = widget.profileDetails!.email;
-        _isEmailLocked = _emailController.text.isNotEmpty;
-        _phoneController.text = widget.profileDetails!.phone;
-        _addressController.text = widget.profileDetails!.address;
-        _bioController.text = widget.profileDetails!.bio;
-        _postionController.text = widget.profileDetails!.postion;
-        _websiteController.text = widget.profileDetails!.website ?? '';
-        _facebookController.text = widget.profileDetails!.facebook ?? '';
-        _instagramController.text = widget.profileDetails!.instagram ?? '';
-        _linkedInController.text = widget.profileDetails!.linkedin ?? '';
-        _githubController.text = widget.profileDetails!.github ?? '';
-        _whatsappController.text =
-            widget.profileDetails!.whatsapp?.toString() ?? '';
-        _whatsappNumber = widget.profileDetails!.whatsapp;
-        networkUserImage = widget.profileDetails!.profilePic ?? '';
-        _downloadURL = networkUserImage;
-        // Ensure this is handled appropriately
-      });
+      if (mounted)
+        setState(() {
+          _firstNameController.text = widget.profileDetails!.firstName;
+          _lastNameController.text = widget.profileDetails!.lastName;
+          _emailController.text = widget.profileDetails!.email;
+          _isEmailLocked = _emailController.text.isNotEmpty;
+          // _isNameLocked = (_firstNameController.text.isNotEmpty) &&
+          //     (_lastNameController.text.isNotEmpty);
+          _phoneController.text = widget.profileDetails!.phone;
+          _addressController.text = widget.profileDetails!.address;
+          _bioController.text = widget.profileDetails!.bio;
+          _postionController.text = widget.profileDetails!.position;
+          _websiteController.text = widget.profileDetails!.website ?? '';
+          _facebookController.text = widget.profileDetails!.facebook ?? '';
+          _instagramController.text = widget.profileDetails!.instagram ?? '';
+          _linkedInController.text = widget.profileDetails!.linkedin ?? '';
+          _githubController.text = widget.profileDetails!.github ?? '';
+          _whatsappController.text =
+              widget.profileDetails!.whatsapp?.toString() ?? '';
+          _whatsappNumber = widget.profileDetails!.whatsapp;
+          networkUserImage = widget.profileDetails!.profilePic ?? '';
+          _downloadURL = networkUserImage;
+          // Ensure this is handled appropriately
+        });
     }
   }
 
   void userDetailCheck() {
     if (widget.userDetails != null) {
-      setState(() {
-        _firstNameController.text = widget.userDetails?.firstName ?? '';
-        _lastNameController.text = widget.userDetails?.lastName ?? '';
-        _emailController.text = widget.userDetails?.email ?? '';
+      if (mounted)
+        setState(() {
+          _firstNameController.text = widget.userDetails?.firstName ?? '';
+          _lastNameController.text = widget.userDetails?.lastName ?? '';
+          _emailController.text = widget.userDetails?.email ?? '';
 
-        _isEmailLocked = _emailController.text.isNotEmpty;
-        _isNameLocked = (_firstNameController.text.isNotEmpty) &&
-                (_lastNameController.text.isNotEmpty)
-            ? false
-            : true;
-        networkUserImage = widget.userDetails!.companyName;
-        _downloadURL = networkUserImage;
-      });
+          _isEmailLocked = _emailController.text.isNotEmpty;
+          // _isNameLocked = (_firstNameController.text.isNotEmpty) &&
+          //     (_lastNameController.text.isNotEmpty);
+
+          networkUserImage = widget.userDetails!.companyName;
+          _downloadURL = networkUserImage;
+        });
     }
   }
 
@@ -120,24 +124,75 @@ class _CreatAndUpdateProfileScreenState
     }
   }
 
-  Future getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> getImage(ImageSource source) async {
+    // Request camera permission if the source is camera
+    if (source == ImageSource.camera) {
+      PermissionStatus cameraPermission = await Permission.camera.request();
+      // if (!cameraPermission.isGranted) {
+      //   MyToast('Camera permission is not granted.', Type: false);
+      //   return;
+      // }
+    }
 
-    setState(() {
-      if (pickedFile != null) {
+    // Request storage permission
+    PermissionStatus storagePermission = await Permission.storage.request();
+    // if (!storagePermission.isGranted) {
+    //   MyToast('Storage permission is not granted.', Type: false);
+    //   return;
+    // }
+
+    // Pick an image from the selected source (camera or gallery)
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
         _image = File(pickedFile.path);
         networkUserImage = '';
-      } else {
-        print('No image selected.');
-      }
-    });
+      });
 
-    var downloadURL = await compressAndUploadImage(_image!);
-    setState(() {
-      _downloadURL = downloadURL;
-      networkUserImage = _downloadURL!;
-      _isUploading = false;
-    });
+      // Compress and upload the image, then get the download URL
+      var downloadURL = await compressAndUploadImage(_image!);
+
+      if (downloadURL != null) {
+        setState(() {
+          _downloadURL = downloadURL;
+          networkUserImage = _downloadURL!;
+          _isUploading = false;
+        });
+      }
+    } else {
+      MyToast('No image selected.', Type: false);
+    }
+  }
+
+  Future<void> _showImageSourceDialog() async {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  getImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Camera'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  getImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   final newKey = GlobalKey<FormState>();
@@ -209,7 +264,7 @@ class _CreatAndUpdateProfileScreenState
                                   child: Align(
                                     alignment: Alignment.bottomRight,
                                     child: GestureDetector(
-                                      onTap: getImage,
+                                      onTap: _showImageSourceDialog,
                                       child: CircleAvatar(
                                         backgroundColor: AppColors.textColor14,
                                         radius: 20,
@@ -253,11 +308,13 @@ class _CreatAndUpdateProfileScreenState
                                 ),
                                 SizedBox(height: 20),
                                 _buildTextField(
-                                    _firstNameController, 'First Name',
-                                    enabled: _isNameLocked),
+                                  _firstNameController,
+                                  'First Name',
+                                ),
                                 _buildTextField(
-                                    _lastNameController, 'Last Name',
-                                    enabled: _isNameLocked),
+                                  _lastNameController,
+                                  'Last Name',
+                                ),
                                 _buildTextField(_emailController, 'Email',
                                     enabled: !_isEmailLocked),
                                 _buildTextField(_postionController, 'Position'),
@@ -307,13 +364,17 @@ class _CreatAndUpdateProfileScreenState
                                   return null;
                                 }, keyboardType: TextInputType.url),
                                 _buildTextField(_whatsappController,
-                                    'Whatsapp(923xxxxxxxxx) (Optional)',
+                                    'Whatsapp(966xxxxxxxxx) (Optional)',
                                     OnChange: (val) {
-                                  final input = val;
+                                  if (val.isNotEmpty) {
+                                    // Check if the first character is '0'
+                                    if (val[0] == '0') {
+                                      // Remove the '0' from the beginning
+                                      val = val.substring(1);
+                                    }
 
-                                  // Check if the input is not empty and is numeric
-                                  if (input.isNotEmpty) {
-                                    final number = int.tryParse(input);
+                                    // Parse the remaining value as a number
+                                    final number = int.tryParse(val);
 
                                     if (number != null) {
                                       setState(() {
@@ -321,9 +382,7 @@ class _CreatAndUpdateProfileScreenState
                                       });
                                       // Optionally, show a success message or perform an action
                                       print(
-                                          "'WhatsApp Number Updated: $_whatsappNumber'");
-                                      print('$_whatsappNumber');
-                                      // return null;
+                                          "WhatsApp Number Updated: $_whatsappNumber");
                                     }
                                   }
                                 }, validator: (val) {
@@ -368,15 +427,14 @@ class _CreatAndUpdateProfileScreenState
                                                 networkUserImage.isEmpty) {
                                               MyToast("Please Put Image in it",
                                                   Type: false);
-                                            } else if (networkUserImage
-                                                    .isEmpty &&
-                                                _downloadURL!.isEmpty) {
+                                            } else if (_downloadURL!.isEmpty) {
                                               MyToast(
                                                   "Waiting Profile Uploading ...",
                                                   Type: false);
                                             } else {
                                               if (_whatsappController
                                                   .text.isEmpty) {
+                                                // if (mounted)
                                                 setState(() {
                                                   _whatsappNumber = 0;
                                                 });
@@ -503,7 +561,8 @@ class _CreatAndUpdateProfileScreenState
                                               //
 
                                               print(_downloadURL);
-
+                                              print(widget.token);
+                                              // debugger();
                                               final response =
                                                   await pro.UpdateUserProfile(
                                                 authToken: widget.token,
@@ -541,7 +600,7 @@ class _CreatAndUpdateProfileScreenState
                                                     .text
                                                     .trim(),
                                               );
-
+                                              // debugger();
                                               if (response != null) {
                                                 Navigator.pushAndRemoveUntil(
                                                     context,

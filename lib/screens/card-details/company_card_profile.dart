@@ -1,6 +1,7 @@
 import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
 import 'package:client_nfc_mobile_app/screens/share_profile_screen/share_profile_screen.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
+import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -143,19 +144,23 @@ class _CompandCardProfileState extends State<CompandCardProfile> {
                   ),
                 ),
               ),
-            if (widget.companyProfile.website != null ||
-                widget.companyProfile.linkedin != null)
+            if ((widget.companyProfile.website != null &&
+                    widget.companyProfile.website!.isNotEmpty) ||
+                (widget.companyProfile.linkedin != null &&
+                    widget.companyProfile.linkedin!.isNotEmpty))
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    if (widget.companyProfile.website != null)
+                    if (widget.companyProfile.website != null &&
+                        widget.companyProfile.website!.isNotEmpty)
                       _buildSocialIcon(
                         FontAwesomeIcons.globe,
                         widget.companyProfile.website!,
                       ),
-                    if (widget.companyProfile.linkedin != null)
+                    if (widget.companyProfile.linkedin != null &&
+                        widget.companyProfile.linkedin!.isNotEmpty)
                       _buildSocialIcon(
                         FontAwesomeIcons.linkedin,
                         widget.companyProfile.linkedin!,
@@ -163,6 +168,7 @@ class _CompandCardProfileState extends State<CompandCardProfile> {
                   ],
                 ),
               ),
+
             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
@@ -235,22 +241,44 @@ class _CompandCardProfileState extends State<CompandCardProfile> {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: GestureDetector(
         onTap: () async {
-          final bool isLinkedIn = url.contains('linkedin.com');
-
-          // Define the URL launcher for LinkedIn and web
-          final Uri uri = Uri.parse(url);
-
-          // Open URL based on type
-          if (await canLaunchUrl(uri)) {
-            if (isLinkedIn) {
-              // Open LinkedIn in the LinkedIn app or default browser
-              await launchUrl(uri, mode: LaunchMode.externalApplication);
-            } else {
-              // Open website in the default browser (e.g., Chrome)
-              await launchUrl(uri, mode: LaunchMode.inAppWebView);
-            }
+          if (url.isEmpty) {
+            // Show a toast message if the URL is empty
+            MyToast(
+              "Oops! The URL hasn’t been updated yet. Please update it before continuing.",
+              Type: false,
+            );
           } else {
-            throw 'Could not launch $url';
+            try {
+              // Ensure the URL has a scheme (http or https)
+              final uri = Uri.parse(url);
+
+              // Check if URL parsing was successful
+              // if (uri == null) {
+              //   MyToast("Invalid URL format: $url", Type: false);
+              //   return;
+              // }
+
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+              // if (await canLaunchUrl(uri)) {
+              //   // final bool isSocialMedia = url.contains('linkedin.com') ||
+              //   //     url.contains('github.com') ||
+              //   //     url.contains('facebook.com') ||
+              //   //     url.contains('instagram.com');
+              //   // if (isSocialMedia) {
+              //   //   // Open the URL in an external application (e.g., LinkedIn app)
+
+              //   // } else {
+              //   //   // Open the URL in an in-app web view
+              //   //   await launchUrl(uri, mode: LaunchMode.inAppWebView);
+              //   // }
+              // } else {
+              //   // Handle the case where the URL cannot be launched
+              //   MyToast("Cannot Launch $url", Type: false);
+              // }
+            } catch (e) {
+              // Handle any errors that occur during launching
+              MyToast("Error launching $url: $e", Type: false);
+            }
           }
           // Implement URL launch here
         },

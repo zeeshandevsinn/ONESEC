@@ -1,25 +1,42 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:client_nfc_mobile_app/controller/endpoints.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:http/http.dart' as http;
 
 class InteractionManager {
-  static createInteraction(userID) async {
-    try {
-      final complete_url = '${EndPointsURLs.BASE_URL}api/create_interaction/';
-      final url = Uri.parse(complete_url);
+  static createInteraction(int userId) async {
+    final String url = 'https://api.onesec.shop/api/create_interaction/';
 
-      final response = await http.post(url,
-          body: {"interaction_type": "view_profile", "user": userID});
+    final Map<String, dynamic> body = {
+      'interaction_type': "view_profile",
+      'user': userId,
+    };
+
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any required headers here
+        },
+        body: jsonEncode(body),
+      );
+
       if (response.statusCode == 201) {
-        MyToast("Interaction Create Successfully");
+        // MyToast("Interaction Created Successfully");
+        // Assuming the API returns 201 Created on success
         return jsonDecode(response.body);
       } else {
+        MyToast(
+            'Failed to create interaction. Status code: ${response.statusCode}',
+            Type: false);
+        MyToast('Response body: ${response.body}', Type: false);
         return null;
       }
     } catch (e) {
-      MyToast("Something Wrong", Type: false);
+      print('Error creating interaction: $e');
       return null;
     }
   }

@@ -78,26 +78,31 @@ class CustomDialogBox extends StatelessWidget {
               padding: const EdgeInsets.only(left: 16, right: 16.0),
               child: Column(
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 42,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primaryColor,
-                          AppColors.secondaryColor,
-                        ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context, true);
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 42,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.secondaryColor,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Yes, Sure",
-                        style: TextStyle(
-                          fontFamily: "GothamRegular",
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textColor24,
+                      child: Center(
+                        child: Text(
+                          "Yes, Sure",
+                          style: TextStyle(
+                            fontFamily: "GothamRegular",
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor24,
+                          ),
                         ),
                       ),
                     ),
@@ -107,7 +112,7 @@ class CustomDialogBox extends StatelessWidget {
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.pop(context, false);
                       },
                       child: Container(
                         width: MediaQuery.of(context).size.width,

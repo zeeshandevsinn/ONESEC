@@ -419,8 +419,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                 children: [
                                   GestureDetector(
                                     onTap: () async {
-                                      await pro.logoutAccount(
-                                          context, auth_token);
+                                      await pro.logoutAccount(context,
+                                          auth_token, widget.auth_type);
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width,
@@ -1019,49 +1019,50 @@ Map (18 items)
                     ),
                   ),
                   SizedBox(height: 24),
-                  Container(
-                    height: 400,
-                    decoration: BoxDecoration(
-                      color: AppColors.containerColor8,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 12.0, top: 24, right: 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Engagement Metrics",
-                                style: TextStyle(
-                                  fontFamily: "GothamBold",
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.textColor14,
-                                ),
-                              ),
-                              Text(
-                                "2023-2024",
-                                style: TextStyle(
-                                  fontFamily: "GothamRegular",
-                                  fontSize: 13.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color(0XFF696974),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 24),
-                        PeakInteractionChart(
-                          timeScale: "Monthly",
-                        )
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   height: 400,
+                  //   decoration: BoxDecoration(
+                  //     color: AppColors.containerColor8,
+                  //     borderRadius: BorderRadius.circular(16),
+                  //   ),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       Padding(
+                  //         padding: const EdgeInsets.only(
+                  //             left: 12.0, top: 24, right: 12),
+                  //         child: Row(
+                  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //           children: [
+                  //             Text(
+                  //               "Engagement Metrics",
+                  //               style: TextStyle(
+                  //                 fontFamily: "GothamBold",
+                  //                 fontSize: 18.0,
+                  //                 fontWeight: FontWeight.w700,
+                  //                 color: AppColors.textColor14,
+                  //               ),
+                  //             ),
+                  //             Text(
+                  //               "2023-2024",
+                  //               style: TextStyle(
+                  //                 fontFamily: "GothamRegular",
+                  //                 fontSize: 13.0,
+                  //                 fontWeight: FontWeight.w400,
+                  //                 color: Color(0XFF696974),
+                  //               ),
+                  //             ),
+                  //           ],
+                  //         ),
+                  //       ),
+                  //       SizedBox(height: 24),
+                  //       PeakInteractionChart(
+                  //         timescale: 'monthly',
+                  //         auth_token: widget.token,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ),

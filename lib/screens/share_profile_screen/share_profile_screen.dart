@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:ui';
+
 import 'package:client_nfc_mobile_app/components/custom_text_field.dart';
 import 'package:client_nfc_mobile_app/controller/services/share_profile_provider/share_profile_manager.dart';
 import 'package:client_nfc_mobile_app/controller/services/share_profile_provider/share_profile_provider.dart';
@@ -7,7 +10,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:qr_flutter/qr_flutter.dart'; // Import the qr_flutter package
 
@@ -95,7 +100,9 @@ class _ShareProfileScreenState extends State<ShareProfileScreen> {
                                 ),
                               ),
                             ),
-                            Spacer(),
+                            /*
+
+       Spacer(),
                             Row(
                               children: [
                                 Text(
@@ -114,6 +121,7 @@ class _ShareProfileScreenState extends State<ShareProfileScreen> {
                                 ),
                               ],
                             ),
+                                               */
                           ],
                         ),
                       ),
@@ -196,13 +204,18 @@ class _ShareProfileScreenState extends State<ShareProfileScreen> {
                             SizedBox(height: 22),
                             // QR Code Section
                             if (profileUrl != null)
-                              Container(
-                                  padding: EdgeInsets.all(16),
-                                  child: QrImageView(
-                                    data: profileUrl!,
-                                    version: QrVersions.auto,
-                                    size: 100.0,
-                                  )),
+                              GestureDetector(
+                                onTap: () {
+                                  _shareQrCode(profileUrl!);
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.all(16),
+                                    child: QrImageView(
+                                      data: profileUrl!,
+                                      version: QrVersions.auto,
+                                      size: 100.0,
+                                    )),
+                              ),
                             Row(
                               children: [
                                 Expanded(
@@ -306,5 +319,37 @@ class _ShareProfileScreenState extends State<ShareProfileScreen> {
         );
       }),
     );
+  }
+
+  void _shareQrCode(String url) async {
+    try {
+      // Generate the QR code
+      final qrCode = QrPainter(
+        data: url,
+        version: QrVersions.auto,
+        gapless: false,
+        color: Colors.black,
+        emptyColor: Colors.white,
+      );
+
+      // Convert the QR code to image
+      final qrImage = await qrCode.toImage(300);
+      final qrByteData = await qrImage.toByteData(format: ImageByteFormat.png);
+      final Uint8List qrPngBytes = qrByteData!.buffer.asUint8List();
+
+      // Get the temporary directory to save the image
+      final directory = await getTemporaryDirectory();
+      final imagePath = '${directory.path}/qr_code.png';
+
+      // Save the image as a file
+      final qrFile = File(imagePath);
+      await qrFile.writeAsBytes(qrPngBytes);
+
+      // Share the image file
+      await Share.shareFiles([imagePath],
+          text: 'Scan this QR code to visit the URL\n $url.');
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 }

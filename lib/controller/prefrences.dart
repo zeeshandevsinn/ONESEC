@@ -1,23 +1,23 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthTokenStorage {
-  static const _authTokenKey = 'authToken';
+  static const String _authTokenKey = 'auth_token';
 
-  // Save the authentication token
-  static Future<void> saveAuthToken(String token) async {
+  // Save the auth token
+  static Future<bool> saveAuthToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_authTokenKey, token);
+    return await prefs.setString(_authTokenKey, token);
   }
 
-  // Retrieve the authentication token
+  // Retrieve the auth token
   static Future<String?> getAuthToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(_authTokenKey);
   }
 
-  // Remove the authentication token
-  static Future<void> removeAuthToken() async {
+  // Remove the auth token
+  static Future<bool> removeAuthToken() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_authTokenKey);
+    return await prefs.remove(_authTokenKey);
   }
 }

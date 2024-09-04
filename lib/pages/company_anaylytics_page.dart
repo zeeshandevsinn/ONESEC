@@ -142,7 +142,8 @@ class _CompanyAnalyticsPageState extends State<CompanyAnalyticsPage> {
                         ),
                         SizedBox(height: 24),
                         PeakInteractionChart(
-                          timeScale: "Weekly",
+                          timescale: "weekly",
+                          auth_token: widget.auth_token,
                         )
                       ],
                     ),

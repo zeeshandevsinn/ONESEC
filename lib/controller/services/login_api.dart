@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:client_nfc_mobile_app/company_admin_bottom_navigationbar.dart';
+import 'package:client_nfc_mobile_app/controller/google_signIn.dart';
 import 'package:client_nfc_mobile_app/controller/prefrences.dart';
 import 'package:client_nfc_mobile_app/individual_bottom_navigationbar.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
@@ -144,8 +145,13 @@ class LoginUserProvider extends ChangeNotifier {
     }
   }
 
-  logoutAccount(context, auth_token) async {
+  logoutAccount(context, auth_token, authtype) async {
+    isLoading = true;
+    notifyListeners();
     try {
+      if (authtype == "google") {
+        await GoogleSignInHelper.signOut();
+      }
       final data = await APIsManager.LogoutUser(auth_token);
       if (data != null) {
         await AuthTokenStorage.removeAuthToken();

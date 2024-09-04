@@ -1,24 +1,17 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:client_nfc_mobile_app/company_admin_bottom_navigationbar.dart';
-import 'package:client_nfc_mobile_app/components/custom_text_field.dart';
-import 'package:client_nfc_mobile_app/controller/services/company%20profile/company_profile_details.dart';
 import 'package:client_nfc_mobile_app/controller/services/company_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/firebase%20storeage/storeage_image.dart';
 import 'package:client_nfc_mobile_app/controller/services/user_profile_provider.dart';
-import 'package:client_nfc_mobile_app/individual_bottom_navigationbar.dart';
 import 'package:client_nfc_mobile_app/models/company/company_user.dart';
 import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
-import 'package:client_nfc_mobile_app/models/user_profile/user_profile_details.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
-
 import 'package:provider/provider.dart';
 
 class CompanyUserCreateDetails extends StatefulWidget {
@@ -59,26 +52,29 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
 
   void profileDetailCheck() {
     if (widget.profileDetails != null) {
-      setState(() {
-        _companyNameController.text = widget.profileDetails!.companyName;
-        _adminNameController.text = widget.profileDetails!.adminName;
-        _emailController.text = widget.profileDetails!.email;
-        _isEmailLocked = _emailController.text.isNotEmpty;
-        _phoneController.text = widget.profileDetails!.phone;
-        _addressController.text = widget.profileDetails!.address;
-        _companyDescriptionController.text =
-            widget.profileDetails!.companyDescription ?? '';
-        _websiteController.text = widget.profileDetails!.website ?? '';
-        _linkedinController.text = widget.profileDetails!.linkedin ?? '';
-        networkUserImage = widget.profileDetails!.companyLogo ?? '';
-      });
+      if (mounted)
+        setState(() {
+          _companyNameController.text = widget.profileDetails!.companyName;
+          _adminNameController.text = widget.profileDetails!.adminName;
+          _emailController.text = widget.profileDetails!.email;
+          _isEmailLocked = _emailController.text.isNotEmpty;
+          _phoneController.text = widget.profileDetails!.phone;
+          _addressController.text = widget.profileDetails!.address;
+          _companyDescriptionController.text =
+              widget.profileDetails!.companyDescription ?? '';
+          _websiteController.text = widget.profileDetails!.website ?? '';
+          _linkedinController.text = widget.profileDetails!.linkedin ?? '';
+          networkUserImage = widget.profileDetails!.companyLogo ?? '';
+          _downloadURL = networkUserImage;
+        });
     } else {
-      setState(() {
-        _companyNameController.text = widget.userDetails!.companyName;
-        _adminNameController.text = widget.userDetails!.adminName;
-        _emailController.text = widget.userDetails!.email;
-        _isEmailLocked = _emailController.text.isNotEmpty;
-      });
+      if (mounted)
+        setState(() {
+          _companyNameController.text = widget.userDetails!.companyName;
+          _adminNameController.text = widget.userDetails!.adminName;
+          _emailController.text = widget.userDetails!.email;
+          _isEmailLocked = _emailController.text.isNotEmpty;
+        });
     }
   }
 
@@ -93,26 +89,75 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
   String? _downloadURL;
   bool? _isUploading;
 
-  Future getImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  Future<void> getImage(ImageSource source) async {
+    // Request camera permission if the source is camera
+    if (source == ImageSource.camera) {
+      PermissionStatus cameraPermission = await Permission.camera.request();
+      // if (!cameraPermission.isGranted) {
+      //   print('Camera permission is not granted.');
+      //   return;
+      // }
+    }
 
-    setState(() {
-      if (pickedFile != null) {
+    // Request storage permission
+    PermissionStatus storagePermission = await Permission.storage.request();
+    // if (!storagePermission.isGranted) {
+    //   print('Storage permission is not granted.');
+    //   return;
+    // }
+
+    // Pick an image from the selected source (camera or gallery)
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
         _image = File(pickedFile.path);
         networkUserImage = '';
-      } else {
-        print('No image selected.');
-      }
-    });
-
-    var downloadURL = await compressAndUploadImage(_image!);
-    // debugger();
-    if (downloadURL != null) {
-      setState(() {
-        _downloadURL = downloadURL;
-        _isUploading = false;
       });
+
+      // Compress and upload the image, then get the download URL
+      var downloadURL = await compressAndUploadImage(_image!);
+
+      if (downloadURL != null) {
+        setState(() {
+          _downloadURL = downloadURL;
+          networkUserImage = _downloadURL!;
+          _isUploading = false;
+        });
+      }
+    } else {
+      print('No image selected.');
     }
+  }
+
+  Future<void> _showImageSourceDialog() async {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Gallery'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  getImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Camera'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  getImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   final newKey = GlobalKey<FormState>();
@@ -176,14 +221,14 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                             key: newKey,
                             child: Column(
                               children: [
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                 ),
                                 CircleAvatar(
                                   child: Align(
                                     alignment: Alignment.bottomRight,
                                     child: GestureDetector(
-                                      onTap: getImage,
+                                      onTap: _showImageSourceDialog,
                                       child: CircleAvatar(
                                         backgroundColor: AppColors.textColor14,
                                         radius: 20,

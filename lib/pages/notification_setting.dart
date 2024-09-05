@@ -10,7 +10,7 @@ class NotificationSetting extends StatefulWidget {
 }
 
 class _NotificationSettingState extends State<NotificationSetting> {
-  bool value = true;
+  bool value = false;
   onChangeFunction(bool newValue) {
     setState(() {
       value = newValue;

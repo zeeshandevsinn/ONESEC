@@ -1,18 +1,11 @@
-import 'dart:developer';
-
 import 'package:client_nfc_mobile_app/company_admin_bottom_navigationbar.dart';
 import 'package:client_nfc_mobile_app/controller/api_manager.dart';
 import 'package:client_nfc_mobile_app/controller/google_signIn.dart';
-import 'package:client_nfc_mobile_app/controller/prefrences.dart';
-import 'package:client_nfc_mobile_app/controller/services/login_api.dart';
 import 'package:client_nfc_mobile_app/individual_bottom_navigationbar.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
 import 'package:client_nfc_mobile_app/screens/welcome_screen.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class GoogleProvider extends ChangeNotifier {
   bool isLoading = false;
@@ -27,8 +20,6 @@ class GoogleProvider extends ChangeNotifier {
             await APIsManager.sendAccessToken(accessToken, profileType);
 
         if (result != null) {
-          MyToast("Successfully Sign In");
-
           final token = result['auth_token'];
           if (token != null) {
             // Save the token in local storage
@@ -40,50 +31,67 @@ class GoogleProvider extends ChangeNotifier {
             // debugger();
             if (result['profile_type'] == 'individual' ||
                 result['profile_type'] == 'employee') {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                CupertinoDialogRoute(
-                  builder: (_) => IndividualBottomNavigationBar(
-                    user_auth_token: token,
-                    futureUser: User(
-                      id: result['user_id'],
-                      email: result['email'],
-                      username: result['username'],
-                      firstName: result['first_name'],
-                      lastName: result['last_name'],
-                      companyName: result['profile_pic'],
-                      adminName: '',
-                      profileType: result['profile_type'],
-                      auth_type: "google",
+              if (result['profile_type'] == profileType) {
+                MyToast("Successfully Sign In");
+                notifyListeners();
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  CupertinoDialogRoute(
+                    builder: (_) => IndividualBottomNavigationBar(
+                      user_auth_token: token,
+                      futureUser: User(
+                        id: result['user_id'],
+                        email: result['email'],
+                        username: result['username'],
+                        firstName: result['first_name'],
+                        lastName: result['last_name'],
+                        companyName: result['profile_pic'],
+                        adminName: '',
+                        profileType: result['profile_type'],
+                        auth_type: "google",
+                      ),
                     ),
+                    context: context,
                   ),
-                  context: context,
-                ),
-              );
+                );
+              } else {
+                notifyListeners();
+                MyToast("Your Account did not found in $profileType");
+                Navigator.pop(context);
+              }
             } else if (result['profile_type'] == 'company') {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                CupertinoDialogRoute(
-                  builder: (_) => CompanyAdminBottomNavigationBar(
-                    profileData: null,
-                    authToken: token,
-                    userDetails: User(
-                      id: result['user_id'],
-                      email: result['email'],
-                      username: result['username'] ?? '',
-                      firstName: result['profile_pic'] ?? '',
-                      lastName: result['last_name'] ?? '',
-                      companyName: result['company'] ?? '',
-                      adminName: result['first_name'] ?? '',
-                      profileType: result['profile_type'],
-                      auth_type: "google",
+              if (result['profile_type'] == profileType) {
+                MyToast("Successfully Sign In");
+                notifyListeners();
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  CupertinoDialogRoute(
+                    builder: (_) => CompanyAdminBottomNavigationBar(
+                      profileData: null,
+                      authToken: token,
+                      userDetails: User(
+                        id: result['user_id'],
+                        email: result['email'],
+                        username: result['username'] ?? '',
+                        firstName: result['profile_pic'] ?? '',
+                        lastName: result['last_name'] ?? '',
+                        companyName: result['company'] ?? '',
+                        adminName: result['first_name'] ?? '',
+                        profileType: result['profile_type'],
+                        auth_type: "google",
+                      ),
                     ),
+                    context: context,
                   ),
-                  context: context,
-                ),
-              );
+                );
+              } else {
+                notifyListeners();
+
+                MyToast("Your Account did not found in $profileType");
+                Navigator.pop(context);
+              }
             }
           }
         }

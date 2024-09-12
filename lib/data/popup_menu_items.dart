@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class PopUpMenuItems {
   static const String accountSetting = "Account Setting";
   // static const String monitorSetting = "Monitor Setting";
-  static const String notification = "Notifications";
+  // static const String notification = "Notifications";
   static const String deleteAccount = "Account Delete";
   static const String shareprofile = "Share Profile";
   static const String receivedProfiles = "Received Profile";
@@ -13,7 +13,7 @@ class PopUpMenuItems {
   static const List<String> choices = <String>[
     accountSetting,
     // monitorSetting,
-    notification,
+    // notification,
     deleteAccount,
     shareprofile,
     receivedProfiles,
@@ -24,7 +24,7 @@ class PopUpMenuItems {
   static const Map<String, IconData> choiceIcons = <String, IconData>{
     accountSetting: Icons.settings_rounded,
     // monitorSetting: Icons.monitor_rounded,
-    notification: Icons.notifications_on_rounded,
+    // notification: Icons.notifications_on_rounded,
     deleteAccount: Icons.person_remove_alt_1_rounded,
     shareprofile: Icons.share,
     receivedProfiles: Icons.recent_actors,
@@ -35,7 +35,7 @@ class PopUpMenuItems {
 class CompanyPopUpMenuItems {
   static const String accountSetting = "Account Setting";
   static const String updateProfile = "Update Profile";
-  static const String notification = "Notifications";
+  // static const String notification = "Notifications";
   static const String deleteAccount = "Account Delete";
   static const String manageUser = "Manage Users";
   static const String shareprofile = "Share Profile";
@@ -45,7 +45,7 @@ class CompanyPopUpMenuItems {
   static const List<String> choices = <String>[
     accountSetting,
     updateProfile,
-    notification,
+    // notification,
     deleteAccount,
     manageUser,
     shareprofile,
@@ -57,7 +57,7 @@ class CompanyPopUpMenuItems {
   static const Map<String, IconData> choiceIcons = <String, IconData>{
     accountSetting: Icons.settings_rounded,
     updateProfile: Icons.edit_note_sharp,
-    notification: Icons.notifications_on_rounded,
+    // notification: Icons.notifications_on_rounded,
     deleteAccount: Icons.person_remove_alt_1_rounded,
     manageUser: Icons.manage_accounts,
     shareprofile: Icons.share,

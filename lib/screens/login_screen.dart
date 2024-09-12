@@ -433,7 +433,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                           await pro.LoginUsers(
                                               context,
                                               emailController.text.trim(),
-                                              passwordController.text.trim());
+                                              passwordController.text.trim(),
+                                              tab ? 'individual' : 'company');
                                         }
                                       }
                                     },

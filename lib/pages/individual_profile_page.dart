@@ -163,14 +163,16 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
     //     ),
     //   );
     // }
-    else if (choices == PopUpMenuItems.notification) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NotificationSetting(),
-        ),
-      );
-    } else if (choices == PopUpMenuItems.deleteAccount) {
+    // else if (choices == PopUpMenuItems.notification) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => NotificationSetting(),
+    //     ),
+    //   );
+    // }
+
+    else if (choices == PopUpMenuItems.deleteAccount) {
       showDialog(
           context: context,
           builder: (context) {

@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:developer';
 
-import 'package:client_nfc_mobile_app/components/custom_text_field.dart';
 import 'package:client_nfc_mobile_app/controller/services/firebase%20storeage/storeage_image.dart';
 import 'package:client_nfc_mobile_app/controller/services/user_profile_provider.dart';
 import 'package:client_nfc_mobile_app/individual_bottom_navigationbar.dart';
@@ -11,6 +9,7 @@ import 'package:client_nfc_mobile_app/utils/colors.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
@@ -125,43 +124,152 @@ class _CreatAndUpdateProfileScreenState
   }
 
   Future<void> getImage(ImageSource source) async {
-    // Request camera permission if the source is camera
-    if (source == ImageSource.camera) {
-      PermissionStatus cameraPermission = await Permission.camera.request();
-      // if (!cameraPermission.isGranted) {
-      //   MyToast('Camera permission is not granted.', Type: false);
-      //   return;
-      // }
-    }
-
-    // Request storage permission
-    PermissionStatus storagePermission = await Permission.storage.request();
-    // if (!storagePermission.isGranted) {
-    //   MyToast('Storage permission is not granted.', Type: false);
-    //   return;
-    // }
-
-    // Pick an image from the selected source (camera or gallery)
-    final pickedFile = await picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-        networkUserImage = '';
-      });
-
-      // Compress and upload the image, then get the download URL
-      var downloadURL = await compressAndUploadImage(_image!);
-
-      if (downloadURL != null) {
-        setState(() {
-          _downloadURL = downloadURL;
-          networkUserImage = _downloadURL!;
-          _isUploading = false;
-        });
+    try {
+      // Request camera or storage permission based on the source
+      if (source == ImageSource.camera) {
+        PermissionStatus cameraPermission = await Permission.camera.request();
+        // if (!cameraPermission.isGranted) {
+        //   MyToast('Camera permission is not granted.', Type: false);
+        //   return; // Exit if permission is not granted
+        // }
+      } else {
+        PermissionStatus storagePermission = await Permission.storage.request();
+        // if (!storagePermission.isGranted) {
+        //   MyToast('Storage permission is not granted.', Type: false);
+        //   return; // Exit if permission is not granted
+        // }
       }
-    } else {
-      MyToast('No image selected.', Type: false);
+
+      // Pick an image from the selected source (camera or gallery)
+      final pickedFile = await ImagePicker().pickImage(source: source);
+
+      // Check if an image was picked
+      if (pickedFile != null) {
+        // Crop the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false,
+            ),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+            ),
+          ],
+        );
+
+        // Check if the image was cropped successfully
+        if (croppedFile != null) {
+          setState(() {
+            _image = File(croppedFile.path);
+            networkUserImage = ''; // Reset network image
+          });
+
+          // Compress and upload the image, then get the download URL
+          var downloadURL = await compressAndUploadImage(_image!);
+
+          // Check if the image was uploaded successfully
+          if (downloadURL != null) {
+            setState(() {
+              _downloadURL = downloadURL;
+              networkUserImage = _downloadURL!;
+              _isUploading = false;
+            });
+          } else {
+            MyToast('Failed to upload image.', Type: false);
+          }
+        } else {
+          MyToast('Image cropping canceled.', Type: false);
+        }
+      } else {
+        MyToast('No image selected.', Type: false);
+      }
+    } catch (e) {
+      // Handle any exceptions that occur during the process
+      MyToast('An error occurred: $e', Type: false);
+    }
+  }
+
+  Future<void> _pickAndCropImage() async {
+    try {
+      // Pick an image from the gallery
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        // Crop the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false,
+            ),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+            ),
+          ],
+        );
+
+        // Check if the image was cropped successfully
+        if (croppedFile != null) {
+          setState(() {
+            _image =
+                File(croppedFile.path); // Update the UI with the cropped image
+            networkUserImage = ''; // Reset network image URL
+            _isUploading = true; // Indicate upload is in progress
+          });
+
+          // Compress and upload the image, then get the download URL
+          String? downloadURL = await compressAndUploadImage(_image!);
+
+          // Check if the image was uploaded successfully
+          if (downloadURL != null) {
+            setState(() {
+              _downloadURL = downloadURL;
+              networkUserImage = _downloadURL!;
+              _isUploading = false; // Upload is complete
+            });
+            MyToast('Image uploaded successfully.', Type: true);
+          } else {
+            setState(() {
+              _isUploading = false; // Upload failed
+            });
+            MyToast('Failed to upload image.', Type: false);
+          }
+        } else {
+          MyToast('Image cropping canceled.', Type: false);
+        }
+      } else {
+        MyToast('No image selected.', Type: false);
+      }
+    } catch (e) {
+      // Handle the error gracefully
+      MyToast("Error: $e", Type: false);
+      setState(() {
+        _isUploading = false; // Ensure upload state is reset
+      });
     }
   }
 
@@ -175,9 +283,10 @@ class _CreatAndUpdateProfileScreenState
               ListTile(
                 leading: Icon(Icons.photo_library),
                 title: Text('Gallery'),
-                onTap: () {
+                onTap: () async {
                   Navigator.of(context).pop();
-                  getImage(ImageSource.gallery);
+                  // await getImage(ImageSource.gallery);
+                  await _pickAndCropImage();
                 },
               ),
               ListTile(

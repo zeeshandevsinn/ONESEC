@@ -51,6 +51,7 @@ class PermissionService {
     // Navigate to the welcome screen if all permissions are granted
     if (allPermissionsGranted) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
+
       await prefs.setBool('allPermissions', true);
       return true;
     }

@@ -16,11 +16,7 @@ class LoginUserProvider extends ChangeNotifier {
   bool isLoading = false;
   String Auth_Token = "";
   User? futureUser;
-  LoginUsers(
-    context,
-    String email,
-    String password,
-  ) async {
+  LoginUsers(context, String email, String password, String type) async {
     try {
       isLoading = true;
       notifyListeners();
@@ -34,8 +30,6 @@ class LoginUserProvider extends ChangeNotifier {
         Auth_Token = data['auth_token'] ?? "";
 
         await AuthTokenStorage.saveAuthToken(Auth_Token);
-        notifyListeners();
-        MyToast("Login Successfully");
 
         notifyListeners();
         futureUser = await UserService().fetchUser(Auth_Token);
@@ -43,16 +37,26 @@ class LoginUserProvider extends ChangeNotifier {
         Navigator.pop(context);
         if (futureUser!.profileType == 'individual' ||
             futureUser!.profileType == 'employee') {
-          Navigator.push(
-              context,
-              CupertinoDialogRoute(
-                  builder: (_) => IndividualBottomNavigationBar(
-                        user_auth_token: Auth_Token,
-                        futureUser: futureUser!,
-                      ),
-                  context: context));
+          if (futureUser!.profileType == type) {
+            notifyListeners();
+            MyToast("Login Successfully");
+            Navigator.push(
+                context,
+                CupertinoDialogRoute(
+                    builder: (_) => IndividualBottomNavigationBar(
+                          user_auth_token: Auth_Token,
+                          futureUser: futureUser!,
+                        ),
+                    context: context));
+          } else {
+            notifyListeners();
+            MyToast("Your Account did not found in $type");
+          }
         } else if (futureUser!.profileType == 'company') {
-          Navigator.push(
+          if(futureUser!.profileType == type){
+            notifyListeners();
+            MyToast("Login Successfully");
+ Navigator.push(
               context,
               CupertinoDialogRoute(
                   builder: (_) => CompanyAdminBottomNavigationBar(
@@ -62,6 +66,11 @@ class LoginUserProvider extends ChangeNotifier {
                         // user_auth_token: Auth_Token,
                       ),
                   context: context));
+          }else{
+            notifyListeners();
+            MyToast("Your Account did not found in $type");
+          }
+         
         }
       } else {
         // debugger();

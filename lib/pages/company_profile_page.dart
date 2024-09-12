@@ -151,14 +151,16 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
           context: context,
         ),
       );
-    } else if (choices == CompanyPopUpMenuItems.notification) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => NotificationSetting(),
-        ),
-      );
-    } else if (choices == CompanyPopUpMenuItems.deleteAccount) {
+    }
+    // else if (choices == CompanyPopUpMenuItems.notification) {
+    //   Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //       builder: (context) => NotificationSetting(),
+    //     ),
+    //   );
+    // }
+    else if (choices == CompanyPopUpMenuItems.deleteAccount) {
       showDialog(
           context: context,
           builder: (context) {

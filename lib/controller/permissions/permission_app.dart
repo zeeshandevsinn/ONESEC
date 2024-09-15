@@ -126,7 +126,7 @@ class PermissionService {
     // For Android 11 and above, request manageExternalStorage
     if (Platform.isAndroid && number >= 11) {
       statuses = await [
-        Permission.storage,
+        // Permission.storage,
         Permission.camera,
         Permission.location,
         Permission.manageExternalStorage, // Android 11+

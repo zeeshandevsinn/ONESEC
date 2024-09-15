@@ -1,11 +1,10 @@
-import 'dart:io';
-
-class UserProfileDetails {
-  final int id;
+class UserProfileModel {
+  final int? id; // Added id field
   final String firstName;
   final String lastName;
   final String email;
-  final String position; // Corrected from 'postion'
+  final String? username;
+  final String? displayEmail;
   final String phone;
   final String address;
   final String bio;
@@ -15,55 +14,62 @@ class UserProfileDetails {
   final String? linkedin;
   final String? github;
   final int? whatsapp;
-  final String profilePic; // Changed to String?
+  final String profilePic;
+  final String position;
   final int user;
 
-  UserProfileDetails({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.position, // Corrected
-    required this.phone,
-    required this.address,
-    required this.bio,
-    this.facebook,
-    this.instagram,
-    this.website,
-    this.linkedin,
-    this.github,
-    this.whatsapp,
-    required this.profilePic,
-    required this.user,
-  });
+  UserProfileModel(
+      {required this.id, // Added id field
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      this.username,
+      this.displayEmail,
+      required this.phone,
+      required this.address,
+      required this.bio,
+      this.facebook,
+      this.instagram,
+      this.website,
+      this.linkedin,
+      this.github,
+      this.whatsapp,
+      required this.profilePic,
+      required this.user,
+      required this.position});
 
-  factory UserProfileDetails.fromJson(Map<String, dynamic> json) {
-    return UserProfileDetails(
-      id: json['id'],
-      firstName: json['first_name'] ?? '', // Handle null with default value
-      lastName: json['last_name'] ?? '', // Handle null with default value
-      email: json['email'] ?? '', // Handle null with default value
-      position: json['position'] ?? '', // Handle null with default value
-      phone: json['phone'] ?? '', // Handle null with default value
-      address: json['address'] ?? '', // Handle null with default value
-      bio: json['bio'] ?? '', // Handle null with default value
-      facebook: json['facebook'], // Handle null
-      instagram: json['instagram'], // Handle null
-      website: json['website'], // Handle null
-      linkedin: json['linkedin'], // Handle null
-      github: json['github'], // Handle null
-      whatsapp: json['whatsapp'], // Handle null
-      profilePic: json['profile_pic'] ?? '', // Handle null
-      user: json['user'],
-    );
+  // Factory method to create an instance from a JSON map
+  factory UserProfileModel.fromJson(Map<String, dynamic> json) {
+    return UserProfileModel(
+        id: json['id'], // Parse id field
+        firstName: json['first_name'],
+        lastName: json['last_name'],
+        email: json['email'],
+        username: json['username'],
+        displayEmail: json['display_email'],
+        phone: json['phone'],
+        address: json['address'],
+        bio: json['bio'],
+        facebook: json['facebook'],
+        instagram: json['instagram'],
+        website: json['website'],
+        linkedin: json['linkedin'],
+        github: json['github'],
+        whatsapp: json['whatsapp'],
+        profilePic: json['profile_pic'],
+        user: json['user'],
+        position: json['position']);
   }
 
+  // Method to convert the instance to a JSON map
   Map<String, dynamic> toJson() {
     return {
-      'user': user,
+      // 'id': id, // Include id in JSON
       'first_name': firstName,
       'last_name': lastName,
       'email': email,
+      'username': username,
+      'display_email': displayEmail,
       'phone': phone,
       'address': address,
       'bio': bio,
@@ -74,7 +80,8 @@ class UserProfileDetails {
       'github': github,
       'whatsapp': whatsapp,
       'profile_pic': profilePic,
-      'position': position, // Corrected from 'postion'
+      'user': user,
+      'position': position
     };
   }
 }

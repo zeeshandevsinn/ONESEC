@@ -8,10 +8,10 @@ import 'package:http/http.dart' as http;
 
 class CompanyProfileDetailService {
   // Fetch a company profile (GET)
-  static getCompanyProfileDetail(String token, int userID) async {
+  static getCompanyProfileDetail(String token, username) async {
     try {
       final response = await http.get(
-        Uri.parse('${CompanyProfileService.baseUrl}$userID/'),
+        Uri.parse('${CompanyProfileService.baseUrl}$username/'),
         headers: {
           'Authorization': 'Token $token',
         },
@@ -22,6 +22,7 @@ class CompanyProfileDetailService {
         print(data);
         // debugger();
         final request = CompanyProfile.fromJson(data);
+
         return request;
       } else if (response.statusCode == 404) {
         MyToast('Company does not exist.', Type: false);
@@ -39,9 +40,9 @@ class CompanyProfileDetailService {
 
   // Update a company profile (PUT)
   static updateCompanyProfile(
-      String token, int userID, Map<String, dynamic> profileData) async {
+      String token, username, Map<String, dynamic> profileData) async {
     final response = await http.put(
-      Uri.parse('${CompanyProfileService.baseUrl}$userID/'),
+      Uri.parse('${CompanyProfileService.baseUrl}$username/'),
       headers: {
         'Authorization': 'Token $token',
         'Content-Type': 'application/json',

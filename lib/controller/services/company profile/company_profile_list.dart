@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:http/http.dart' as http;
 
 class CompanyProfileService {
   static const String baseUrl = 'https://api.onesec.shop/api/companies/';
 
   // Fetch company profiles (GET)
-  static Future<List<dynamic>> getCompanyProfiles(String token) async {
+  static Future<List<dynamic>> getCompanyProfiles(
+      String token, username) async {
     final response = await http.get(
-      Uri.parse(baseUrl),
+      Uri.parse(baseUrl + username + '/'),
       headers: {
         'Authorization': 'Token $token',
       },
@@ -23,7 +26,7 @@ class CompanyProfileService {
   }
 
   // Create a new company profile (POST)
-  static Future<Map<String, dynamic>> createCompanyProfile(
+  static createCompanyProfile(
       String token, Map<String, dynamic> profileData) async {
     final response = await http.post(
       Uri.parse(baseUrl),
@@ -33,13 +36,15 @@ class CompanyProfileService {
       },
       body: jsonEncode(profileData),
     );
-
+    // debugger();
     if (response.statusCode == 201) {
       return jsonDecode(response.body);
     } else if (response.statusCode == 400) {
-      throw Exception('Validation errors: ${response.body}');
+      MyToast('Validation errors: ${response.body}', Type: false);
+      return null;
     } else {
-      throw Exception('Failed to create company profile');
+      MyToast('Failed to create company profile', Type: false);
+      return null;
     }
   }
 }

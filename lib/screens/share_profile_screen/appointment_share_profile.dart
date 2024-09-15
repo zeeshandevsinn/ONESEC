@@ -65,9 +65,9 @@ class _AppoinmentShareProfileScreenState
     }
   }
 
-  late Future<UserProfileDetails?> _profileUserFuture;
+  late Future<UserProfileModel?> _profileUserFuture;
 
-  Future<UserProfileDetails?> _fetchUserProfile() async {
+  Future<UserProfileModel?> _fetchUserProfile() async {
     var pro = context.read<UserProfileProvider>();
     final data =
         await pro.GetUserProfile(widget.userID_share_from, widget.auth_token);
@@ -116,7 +116,7 @@ class _AppoinmentShareProfileScreenState
   }
 
   CompanyProfile? companyProfile;
-  UserProfileDetails? userProfile;
+  UserProfileModel? userProfile;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,8 +192,7 @@ class _AppoinmentShareProfileScreenState
                                     ? Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 24.0),
-                                        child:
-                                            FutureBuilder<UserProfileDetails?>(
+                                        child: FutureBuilder<UserProfileModel?>(
                                           future: _profileUserFuture,
                                           builder: (context, snapshot) {
                                             if (snapshot.connectionState ==

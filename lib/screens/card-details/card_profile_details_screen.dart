@@ -11,7 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DigitalCardProfile extends StatefulWidget {
   final authToken;
-  final UserProfileDetails profileDetails;
+  final UserProfileModel profileDetails;
   const DigitalCardProfile(
       {super.key, required this.authToken, required this.profileDetails});
 

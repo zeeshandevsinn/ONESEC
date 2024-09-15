@@ -7,6 +7,9 @@ class EmployeeProfile {
   String? address;
   String? bio;
   String? facebook;
+
+  String? username;
+  String? displayEmail;
   String? instagram;
   String? website;
   String? linkedin;
@@ -15,22 +18,25 @@ class EmployeeProfile {
   String? profilePic;
   int? company;
 
-  EmployeeProfile(
-      {this.firstName,
-      this.lastName,
-      required this.email,
-      required this.position,
-      this.phone,
-      this.address,
-      this.bio,
-      this.facebook,
-      this.instagram,
-      this.website,
-      this.linkedin,
-      this.github,
-      this.whatsapp,
-      this.profilePic,
-      required this.company});
+  EmployeeProfile({
+    this.firstName,
+    this.lastName,
+    required this.email,
+    required this.position,
+    this.phone,
+    this.address,
+    this.bio,
+    this.facebook,
+    this.instagram,
+    this.website,
+    this.linkedin,
+    this.github,
+    this.whatsapp,
+    this.profilePic,
+    required this.company,
+    this.username,
+    this.displayEmail,
+  });
 
   // Convert JSON to EmployeeProfile
   factory EmployeeProfile.fromJson(Map<String, dynamic> json) {
@@ -44,6 +50,8 @@ class EmployeeProfile {
         bio: json['bio'],
         facebook: json['facebook'],
         instagram: json['instagram'],
+        username: json['username'],
+        displayEmail: json['display_email'],
         website: json['website'],
         linkedin: json['linkedin'],
         github: json['github'],
@@ -64,6 +72,8 @@ class EmployeeProfile {
       'bio': bio,
       'facebook': facebook,
       'instagram': instagram,
+      'username': username,
+      'display_email': displayEmail,
       'website': website,
       'linkedin': linkedin,
       'github': github,

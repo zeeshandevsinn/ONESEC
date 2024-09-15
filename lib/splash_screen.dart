@@ -51,6 +51,7 @@ class _SplashScreenState extends State<SplashScreen>
     }
 
     try {
+      log("Auth Token is : $authTokenUser");
       final User userDetails = await UserService().fetchUser(authTokenUser!);
       return userDetails;
     } catch (e) {
@@ -62,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> _checkPermissionsAndNavigate() async {
     // Check if permissions are already granted
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool AllPermissions = prefs.getBool('allPermissions') ?? false;
+    bool AllPermissions = prefs.getBool('allPermissionsGranted') ?? false;
     // bool storagePermissionGranted = prefs.getBool('storagePermission') ?? false;
     // bool notificationPermissionGranted =
     //     prefs.getBool('notificationPermission') ?? false;
@@ -74,6 +75,7 @@ class _SplashScreenState extends State<SplashScreen>
       log("Permission Successfully");
       // All permissions are granted, proceed with user authentication
       User? user = await _fetchUserData();
+      print(user);
       if (user != null && authTokenUser != null) {
         _navigateToHome(user);
       } else {

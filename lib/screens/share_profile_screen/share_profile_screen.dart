@@ -252,6 +252,12 @@ class _ShareProfileScreenState extends State<ShareProfileScreen> {
                             ),
                             SizedBox(height: 24),
                             CustomTextField(
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return null;
+                                }
+                                return null;
+                              },
                               keyboardType: TextInputType.emailAddress,
                               controller: emailController,
                               hintText: "ex.email@domain.com",

@@ -9,6 +9,7 @@ import 'package:client_nfc_mobile_app/utils/colors.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
@@ -46,7 +47,8 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
       TextEditingController();
   final TextEditingController _websiteController = TextEditingController();
   final TextEditingController _linkedinController = TextEditingController();
-
+  final TextEditingController displayEmailController = TextEditingController();
+  String username = "";
   bool _isEmailLocked = false;
   String networkUserImage = '';
 
@@ -66,6 +68,8 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
           _linkedinController.text = widget.profileDetails!.linkedin ?? '';
           networkUserImage = widget.profileDetails!.companyLogo ?? '';
           _downloadURL = networkUserImage;
+          displayEmailController.text = widget.profileDetails!.displayEmail!;
+          username = widget.userDetails!.username;
         });
     } else {
       if (mounted)
@@ -74,6 +78,7 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
           _adminNameController.text = widget.userDetails!.adminName;
           _emailController.text = widget.userDetails!.email;
           _isEmailLocked = _emailController.text.isNotEmpty;
+          username = widget.userDetails!.username;
         });
     }
   }
@@ -90,43 +95,65 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
   bool? _isUploading;
 
   Future<void> getImage(ImageSource source) async {
-    // Request camera permission if the source is camera
-    if (source == ImageSource.camera) {
-      PermissionStatus cameraPermission = await Permission.camera.request();
-      // if (!cameraPermission.isGranted) {
-      //   print('Camera permission is not granted.');
-      //   return;
-      // }
-    }
+    try {
+      // Pick an image from the selected source (camera or gallery)
+      final pickedFile = await ImagePicker().pickImage(source: source);
 
-    // Request storage permission
-    PermissionStatus storagePermission = await Permission.storage.request();
-    // if (!storagePermission.isGranted) {
-    //   print('Storage permission is not granted.');
-    //   return;
-    // }
+      // Check if an image was picked
+      if (pickedFile != null) {
+        // Crop the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false,
+            ),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+            ),
+          ],
+        );
 
-    // Pick an image from the selected source (camera or gallery)
-    final pickedFile = await picker.pickImage(source: source);
+        // Check if the image was cropped successfully
+        if (croppedFile != null) {
+          setState(() {
+            _image = File(croppedFile.path);
+            networkUserImage = ''; // Reset network image
+          });
 
-    if (pickedFile != null) {
-      setState(() {
-        _image = File(pickedFile.path);
-        networkUserImage = '';
-      });
+          // Compress and upload the image, then get the download URL
+          var downloadURL = await compressAndUploadImage(_image!);
 
-      // Compress and upload the image, then get the download URL
-      var downloadURL = await compressAndUploadImage(_image!);
-
-      if (downloadURL != null) {
-        setState(() {
-          _downloadURL = downloadURL;
-          networkUserImage = _downloadURL!;
-          _isUploading = false;
-        });
+          // Check if the image was uploaded successfully
+          if (downloadURL != null) {
+            setState(() {
+              _downloadURL = downloadURL;
+              networkUserImage = _downloadURL!;
+              _isUploading = false;
+            });
+          } else {
+            MyToast('Failed to upload image.', Type: false);
+          }
+        } else {
+          MyToast('Image cropping canceled.', Type: false);
+        }
+      } else {
+        MyToast('No image selected.', Type: false);
       }
-    } else {
-      print('No image selected.');
+    } catch (e) {
+      // Handle any exceptions that occur during the process
+      MyToast('An error occurred: $e', Type: false);
     }
   }
 
@@ -256,6 +283,19 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                                     enabled: !_isEmailLocked),
                                 _buildTextField(_phoneController, 'Phone',
                                     keyboardType: TextInputType.number),
+                                _buildTextField(
+                                    displayEmailController, 'Display Email',
+                                    validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'The email you want to show in your digital profile';
+                                  } else if (!displayEmailController.text
+                                          .contains('@') &&
+                                      !displayEmailController.text
+                                          .contains('.com')) {
+                                    return "Email is not Correct";
+                                  }
+                                  return null;
+                                }, keyboardType: TextInputType.emailAddress),
                                 _buildTextField(_addressController, 'Address',
                                     maxLines: 2),
                                 _buildTextField(_companyDescriptionController,
@@ -284,8 +324,7 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                                           if (newKey.currentState!.validate()) {
                                             if (_image == null &&
                                                 networkUserImage == null) {
-                                              MyToast(
-                                                  "Please upload a company logo",
+                                              MyToast("Please Put Image",
                                                   Type: false);
                                             } else if (_downloadURL == null) {
                                               MyToast(
@@ -316,6 +355,11 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                                                     .trim(),
                                                 companyLogo: _downloadURL,
                                                 user: widget.userDetails!.id,
+                                                display_email:
+                                                    displayEmailController.text
+                                                        .trim(),
+                                                username: widget
+                                                    .userDetails!.username,
                                               );
                                               final data =
                                                   company_user_profile.toJson();
@@ -358,32 +402,37 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                                               MyToast(
                                                   "Please wait few second Image Uploading...");
                                             } else {
-                                              final company_user_profile =
-                                                  CompanyUserProfile(
-                                                companyName:
-                                                    _companyNameController.text
-                                                        .trim(),
-                                                adminName: _adminNameController
-                                                    .text
-                                                    .trim(),
-                                                email: _emailController.text
-                                                    .trim(),
-                                                phone: _phoneController.text
-                                                    .trim(),
-                                                address: _addressController.text
-                                                    .trim(),
-                                                companyDescription:
-                                                    _companyDescriptionController
-                                                        .text
-                                                        .trim(),
-                                                website: _websiteController.text
-                                                    .trim(),
-                                                linkedin: _linkedinController
-                                                    .text
-                                                    .trim(),
-                                                companyLogo: _downloadURL,
-                                                user: widget.userDetails!.id,
-                                              );
+                                              final company_user_profile = CompanyUserProfile(
+                                                  companyName:
+                                                      _companyNameController.text
+                                                          .trim(),
+                                                  adminName:
+                                                      _adminNameController.text
+                                                          .trim(),
+                                                  email: _emailController.text
+                                                      .trim(),
+                                                  phone: _phoneController.text
+                                                      .trim(),
+                                                  address: _addressController.text
+                                                      .trim(),
+                                                  companyDescription:
+                                                      _companyDescriptionController
+                                                          .text
+                                                          .trim(),
+                                                  website: _websiteController
+                                                      .text
+                                                      .trim(),
+                                                  linkedin: _linkedinController
+                                                      .text
+                                                      .trim(),
+                                                  companyLogo: _downloadURL,
+                                                  user: widget.userDetails!.id,
+                                                  display_email:
+                                                      displayEmailController
+                                                          .text
+                                                          .trim(),
+                                                  username: widget
+                                                      .userDetails!.username);
                                               final data =
                                                   company_user_profile.toJson();
                                               print(_downloadURL);
@@ -391,7 +440,8 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                                               final response = await pro
                                                   .UpdateCompanyProfile(
                                                       widget.token,
-                                                      widget.userDetails?.id,
+                                                      widget.userDetails
+                                                          ?.username,
                                                       data);
 
                                               if (response != null) {

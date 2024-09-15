@@ -1,5 +1,6 @@
 import 'package:client_nfc_mobile_app/controller/OnWillPop.dart';
 import 'package:client_nfc_mobile_app/screens/card-details/card_profile_details_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/user_profile_provider.dart';
@@ -31,13 +32,13 @@ class IndividualBottomNavigationBar extends StatefulWidget {
 class _IndividualBottomNavigationBarState
     extends State<IndividualBottomNavigationBar> {
   int currentIndex = 0;
-  late Future<UserProfileDetails?> _profileFuture;
-  UserProfileDetails? profileDetails;
+  late Future<UserProfileModel?> _profileFuture;
+  UserProfileModel? profileDetails;
 
-  Future<UserProfileDetails?> _fetchProfile() async {
+  Future<UserProfileModel?> _fetchProfile() async {
     var pro = context.read<UserProfileProvider>();
-    final data =
-        await pro.GetUserProfile(widget.futureUser?.id, widget.user_auth_token);
+    final data = await pro.GetUserProfile(
+        widget.futureUser?.username, widget.user_auth_token);
     return data;
   }
 
@@ -53,7 +54,7 @@ class _IndividualBottomNavigationBarState
       onWillPop: () {
         return onWillPop(context);
       },
-      child: FutureBuilder<UserProfileDetails?>(
+      child: FutureBuilder<UserProfileModel?>(
         future: _profileFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -137,7 +138,9 @@ class _IndividualBottomNavigationBarState
                 items: [
                   BottomNavigationBarItem(
                     icon: GradientIcon(
-                      icon: Icons.menu,
+                      icon: currentIndex == 0
+                          ? Icons.home_filled
+                          : Icons.home_outlined,
                       gradient: LinearGradient(
                         colors: [
                           AppColors.primaryColor,

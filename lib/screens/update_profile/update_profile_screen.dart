@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:client_nfc_mobile_app/controller/services/firebase%20storeage/storeage_image.dart';
 import 'package:client_nfc_mobile_app/controller/services/user_profile_provider.dart';
 import 'package:client_nfc_mobile_app/individual_bottom_navigationbar.dart';
@@ -11,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 
 import 'package:provider/provider.dart';
@@ -19,7 +16,7 @@ import 'package:provider/provider.dart';
 class CreatAndUpdateProfileScreen extends StatefulWidget {
   final User? userDetails;
   final bool create;
-  final UserProfileDetails? profileDetails;
+  final UserProfileModel? profileDetails;
   final token;
 
   CreatAndUpdateProfileScreen({
@@ -53,12 +50,14 @@ class _CreatAndUpdateProfileScreenState
   final TextEditingController _githubController = TextEditingController();
   final TextEditingController _whatsappController = TextEditingController();
   final TextEditingController _postionController = TextEditingController();
+  final TextEditingController displayEmailController = TextEditingController();
+  String? username;
   int? _whatsappNumber = null;
 
   // void _updateNumber() {}
 
   bool _isEmailLocked = false;
-  bool _isNameLocked = false;
+  // bool _isNameLocked = false;
   String networkUserImage = '';
   void profileDetailCheck() {
     if (widget.profileDetails != null) {
@@ -68,6 +67,9 @@ class _CreatAndUpdateProfileScreenState
           _lastNameController.text = widget.profileDetails!.lastName;
           _emailController.text = widget.profileDetails!.email;
           _isEmailLocked = _emailController.text.isNotEmpty;
+          username = widget.profileDetails!.username;
+          displayEmailController.text =
+              widget.profileDetails!.displayEmail.toString();
           // _isNameLocked = (_firstNameController.text.isNotEmpty) &&
           //     (_lastNameController.text.isNotEmpty);
           _phoneController.text = widget.profileDetails!.phone;
@@ -96,6 +98,7 @@ class _CreatAndUpdateProfileScreenState
           _firstNameController.text = widget.userDetails?.firstName ?? '';
           _lastNameController.text = widget.userDetails?.lastName ?? '';
           _emailController.text = widget.userDetails?.email ?? '';
+          username = widget.userDetails!.username;
 
           _isEmailLocked = _emailController.text.isNotEmpty;
           // _isNameLocked = (_firstNameController.text.isNotEmpty) &&
@@ -116,192 +119,15 @@ class _CreatAndUpdateProfileScreenState
   void initState() {
     super.initState();
     context.read<UserProfileProvider>();
+    _initializeData();
+  }
+
+  void _initializeData() {
     if (widget.create) {
       userDetailCheck();
     } else {
       profileDetailCheck();
     }
-  }
-
-  Future<void> getImage(ImageSource source) async {
-    try {
-      // Request camera or storage permission based on the source
-      if (source == ImageSource.camera) {
-        PermissionStatus cameraPermission = await Permission.camera.request();
-        // if (!cameraPermission.isGranted) {
-        //   MyToast('Camera permission is not granted.', Type: false);
-        //   return; // Exit if permission is not granted
-        // }
-      } else {
-        PermissionStatus storagePermission = await Permission.storage.request();
-        // if (!storagePermission.isGranted) {
-        //   MyToast('Storage permission is not granted.', Type: false);
-        //   return; // Exit if permission is not granted
-        // }
-      }
-
-      // Pick an image from the selected source (camera or gallery)
-      final pickedFile = await ImagePicker().pickImage(source: source);
-
-      // Check if an image was picked
-      if (pickedFile != null) {
-        // Crop the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-          sourcePath: pickedFile.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9,
-          ],
-          uiSettings: [
-            AndroidUiSettings(
-              toolbarTitle: 'Crop Image',
-              toolbarColor: Colors.deepOrange,
-              toolbarWidgetColor: Colors.white,
-              initAspectRatio: CropAspectRatioPreset.original,
-              lockAspectRatio: false,
-            ),
-            IOSUiSettings(
-              minimumAspectRatio: 1.0,
-            ),
-          ],
-        );
-
-        // Check if the image was cropped successfully
-        if (croppedFile != null) {
-          setState(() {
-            _image = File(croppedFile.path);
-            networkUserImage = ''; // Reset network image
-          });
-
-          // Compress and upload the image, then get the download URL
-          var downloadURL = await compressAndUploadImage(_image!);
-
-          // Check if the image was uploaded successfully
-          if (downloadURL != null) {
-            setState(() {
-              _downloadURL = downloadURL;
-              networkUserImage = _downloadURL!;
-              _isUploading = false;
-            });
-          } else {
-            MyToast('Failed to upload image.', Type: false);
-          }
-        } else {
-          MyToast('Image cropping canceled.', Type: false);
-        }
-      } else {
-        MyToast('No image selected.', Type: false);
-      }
-    } catch (e) {
-      // Handle any exceptions that occur during the process
-      MyToast('An error occurred: $e', Type: false);
-    }
-  }
-
-  Future<void> _pickAndCropImage() async {
-    try {
-      // Pick an image from the gallery
-      final pickedFile =
-          await ImagePicker().pickImage(source: ImageSource.gallery);
-
-      if (pickedFile != null) {
-        // Crop the image
-        CroppedFile? croppedFile = await ImageCropper().cropImage(
-          sourcePath: pickedFile.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9,
-          ],
-          uiSettings: [
-            AndroidUiSettings(
-              toolbarTitle: 'Crop Image',
-              toolbarColor: Colors.deepOrange,
-              toolbarWidgetColor: Colors.white,
-              initAspectRatio: CropAspectRatioPreset.original,
-              lockAspectRatio: false,
-            ),
-            IOSUiSettings(
-              minimumAspectRatio: 1.0,
-            ),
-          ],
-        );
-
-        // Check if the image was cropped successfully
-        if (croppedFile != null) {
-          setState(() {
-            _image =
-                File(croppedFile.path); // Update the UI with the cropped image
-            networkUserImage = ''; // Reset network image URL
-            _isUploading = true; // Indicate upload is in progress
-          });
-
-          // Compress and upload the image, then get the download URL
-          String? downloadURL = await compressAndUploadImage(_image!);
-
-          // Check if the image was uploaded successfully
-          if (downloadURL != null) {
-            setState(() {
-              _downloadURL = downloadURL;
-              networkUserImage = _downloadURL!;
-              _isUploading = false; // Upload is complete
-            });
-            MyToast('Image uploaded successfully.', Type: true);
-          } else {
-            setState(() {
-              _isUploading = false; // Upload failed
-            });
-            MyToast('Failed to upload image.', Type: false);
-          }
-        } else {
-          MyToast('Image cropping canceled.', Type: false);
-        }
-      } else {
-        MyToast('No image selected.', Type: false);
-      }
-    } catch (e) {
-      // Handle the error gracefully
-      MyToast("Error: $e", Type: false);
-      setState(() {
-        _isUploading = false; // Ensure upload state is reset
-      });
-    }
-  }
-
-  Future<void> _showImageSourceDialog() async {
-    return showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: Icon(Icons.photo_library),
-                title: Text('Gallery'),
-                onTap: () async {
-                  Navigator.of(context).pop();
-                  // await getImage(ImageSource.gallery);
-                  await _pickAndCropImage();
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.photo_camera),
-                title: Text('Camera'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  getImage(ImageSource.camera);
-                },
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   final newKey = GlobalKey<FormState>();
@@ -427,6 +253,24 @@ class _CreatAndUpdateProfileScreenState
                                 _buildTextField(_emailController, 'Email',
                                     enabled: !_isEmailLocked),
                                 _buildTextField(_postionController, 'Position'),
+                                // SizedBox(height: 15),
+                                // Text(
+                                //   '',
+                                //   style: Theme.of(context)
+                                //       .textTheme
+                                //       .subtitle1!
+                                //       .copyWith(
+                                //           fontWeight: FontWeight.normal,
+                                //           color: Colors.black87),
+                                // ),
+                                _buildTextField(
+                                    displayEmailController, 'Display Email',
+                                    validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return 'The email you want to show in your digital profile';
+                                  }
+                                  return null;
+                                }, keyboardType: TextInputType.emailAddress),
                                 _buildTextField(_phoneController, 'Phone',
                                     keyboardType: TextInputType.number),
                                 _buildTextField(_addressController, 'Address',
@@ -595,6 +439,11 @@ class _CreatAndUpdateProfileScreenState
 
                                               final response =
                                                   await pro.CreateProfileData(
+                                                displayEmail:
+                                                    displayEmailController.text
+                                                        .trim(),
+                                                username: widget
+                                                    .userDetails!.username,
                                                 authToken: widget.token,
                                                 firstName: _firstNameController
                                                     .text
@@ -674,6 +523,11 @@ class _CreatAndUpdateProfileScreenState
                                               // debugger();
                                               final response =
                                                   await pro.UpdateUserProfile(
+                                                display_email:
+                                                    displayEmailController.text
+                                                        .trim(),
+                                                username: widget
+                                                    .userDetails!.username,
                                                 authToken: widget.token,
                                                 id: widget.userDetails!.id,
                                                 firstName: _firstNameController
@@ -792,6 +646,172 @@ class _CreatAndUpdateProfileScreenState
                 ),
               );
       }),
+    );
+  }
+
+  Future<void> getImage(ImageSource source) async {
+    try {
+      // Pick an image from the selected source (camera or gallery)
+      final pickedFile = await ImagePicker().pickImage(source: source);
+
+      // Check if an image was picked
+      if (pickedFile != null) {
+        // Crop the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false,
+            ),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+            ),
+          ],
+        );
+
+        // Check if the image was cropped successfully
+        if (croppedFile != null) {
+          setState(() {
+            _image = File(croppedFile.path);
+            networkUserImage = ''; // Reset network image
+          });
+
+          // Compress and upload the image, then get the download URL
+          var downloadURL = await compressAndUploadImage(_image!);
+
+          // Check if the image was uploaded successfully
+          if (downloadURL != null) {
+            setState(() {
+              _downloadURL = downloadURL;
+              networkUserImage = _downloadURL!;
+              _isUploading = false;
+            });
+          } else {
+            MyToast('Failed to upload image.', Type: false);
+          }
+        } else {
+          MyToast('Image cropping canceled.', Type: false);
+        }
+      } else {
+        MyToast('No image selected.', Type: false);
+      }
+    } catch (e) {
+      // Handle any exceptions that occur during the process
+      MyToast('An error occurred: $e', Type: false);
+    }
+  }
+
+  Future<void> _pickAndCropImage() async {
+    try {
+      // Pick an image from the gallery
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        // Crop the image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+          uiSettings: [
+            AndroidUiSettings(
+              toolbarTitle: 'Crop Image',
+              toolbarColor: Colors.deepOrange,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false,
+            ),
+            IOSUiSettings(
+              minimumAspectRatio: 1.0,
+            ),
+          ],
+        );
+
+        // Check if the image was cropped successfully
+        if (croppedFile != null) {
+          setState(() {
+            _image =
+                File(croppedFile.path); // Update the UI with the cropped image
+            networkUserImage = ''; // Reset network image URL
+            _isUploading = true; // Indicate upload is in progress
+          });
+
+          // Compress and upload the image, then get the download URL
+          String? downloadURL = await compressAndUploadImage(_image!);
+
+          // Check if the image was uploaded successfully
+          if (downloadURL != null) {
+            setState(() {
+              _downloadURL = downloadURL;
+              networkUserImage = _downloadURL!;
+              _isUploading = false; // Upload is complete
+            });
+            MyToast('Image uploaded successfully.', Type: true);
+          } else {
+            setState(() {
+              _isUploading = false; // Upload failed
+            });
+            MyToast('Failed to upload image.', Type: false);
+          }
+        } else {
+          MyToast('Image cropping canceled.', Type: false);
+        }
+      } else {
+        MyToast('No image selected.', Type: false);
+      }
+    } catch (e) {
+      // Handle the error gracefully
+      MyToast("Error: $e", Type: false);
+      setState(() {
+        _isUploading = false; // Ensure upload state is reset
+      });
+    }
+  }
+
+  Future<void> _showImageSourceDialog() async {
+    return showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Gallery'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  // await getImage(ImageSource.gallery);
+                  await _pickAndCropImage();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.photo_camera),
+                title: Text('Camera'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  getImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

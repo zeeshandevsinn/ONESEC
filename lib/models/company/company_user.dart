@@ -6,6 +6,8 @@ class CompanyUserProfile {
   final String phone;
   final String address;
   final String companyDescription;
+  final String display_email;
+  final String username;
   final String? website;
   final String? linkedin;
   final int? user;
@@ -15,6 +17,8 @@ class CompanyUserProfile {
     required this.adminName,
     this.companyLogo,
     required this.email,
+    required this.display_email,
+    required this.username,
     required this.phone,
     required this.address,
     required this.companyDescription,
@@ -32,6 +36,8 @@ class CompanyUserProfile {
         phone: json['phone'],
         address: json['address'],
         companyDescription: json['company_description'],
+        display_email: json['display_email'],
+        username: json['username'],
         website: json['website'],
         linkedin: json['linkedin'],
         user: json['user']);
@@ -46,6 +52,8 @@ class CompanyUserProfile {
       'phone': phone,
       'address': address,
       'company_description': companyDescription,
+      'display_email': display_email,
+      'username': username,
       'website': website,
       'linkedin': linkedin,
       'user': user

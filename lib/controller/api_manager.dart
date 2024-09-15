@@ -278,9 +278,10 @@ class APIsManager {
 //                       USER PROFILE DETAILS
 //_________________________________________________________
 
-  static GetUserProfileData(userId, authToken) async {
+  static GetUserProfileData(username, authToken) async {
     try {
-      final url = Uri.parse('https://api.onesec.shop/api/profiles/${userId}/');
+      final url =
+          Uri.parse('https://api.onesec.shop/api/profiles/${username}/');
 
       final response = await http.get(
         url,
@@ -294,7 +295,7 @@ class APIsManager {
       if (response.statusCode == 200) {
         // Account deleted successfully
         final jsonData = jsonDecode(response.body);
-        return UserProfileDetails.fromJson(jsonData);
+        return UserProfileModel.fromJson(jsonData);
       } else if (response.statusCode == 404) {
         MyToast('Profile does not exist.', Type: false);
         MyToast('Please Create Profile First', Type: false);
@@ -346,6 +347,8 @@ class APIsManager {
     required String phone,
     required String address,
     required String bio,
+    required String display_email,
+    String? username,
     String? facebook,
     String? instagram,
     String? website,
@@ -374,6 +377,8 @@ class APIsManager {
       'profile_pic': profilePic,
       'receive_marketing_emails': false,
       'user': user,
+      'display_email': display_email,
+      "username": username
     };
     print(payload);
     final request = await http.post(
@@ -390,9 +395,11 @@ class APIsManager {
       if (request.statusCode == 200 ||
           request.statusCode == 201 ||
           request.statusCode == 204) {
+        // debugger();
         // Profile updated successfully
         return jsonResponse;
       } else if (request.statusCode == 400) {
+        // debugger();
         UserProfileErrors errors = UserProfileErrors.fromJson(jsonResponse);
 
         if (errors.facebook != null && errors.facebook!.isNotEmpty) {
@@ -476,6 +483,8 @@ class APIsManager {
     required String phone,
     required String address,
     required String bio,
+    required String display_email,
+    String? username,
     String? facebook,
     String? instagram,
     String? website,
@@ -485,7 +494,7 @@ class APIsManager {
     String? profilePic,
     required int user,
   }) async {
-    final String url = 'https://api.onesec.shop/api/profiles/$user/';
+    final String url = 'https://api.onesec.shop/api/profiles/$username/';
     // debugger();
     final payload = {
       'id': id,
@@ -506,6 +515,8 @@ class APIsManager {
       'profile_pic': profilePic,
       'receive_marketing_emails': false,
       'user': user,
+      'display_email': display_email,
+      'username': username
     };
     final request = await http.put(
       Uri.parse(url),

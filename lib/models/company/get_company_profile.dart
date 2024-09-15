@@ -14,6 +14,8 @@ class CompanyProfile {
   final String? companyDescription;
   final String? website;
   final String? linkedin;
+  final String? displayEmail; // Optional field
+  final String? username; // Optional field
   final int user;
 
   CompanyProfile({
@@ -21,13 +23,15 @@ class CompanyProfile {
     required this.employees,
     required this.companyName,
     required this.adminName,
-    required this.companyLogo,
+    this.companyLogo,
     required this.email,
     required this.phone,
     required this.address,
-    required this.companyDescription,
-    required this.website,
-    required this.linkedin,
+    this.companyDescription,
+    this.website,
+    this.linkedin,
+    this.displayEmail, // Optional field
+    this.username, // Optional field
     required this.user,
   });
 
@@ -44,6 +48,8 @@ class CompanyProfile {
       companyDescription: json['company_description'],
       website: json['website'],
       linkedin: json['linkedin'],
+      displayEmail: json['display_email'], // Optional field
+      username: json['username'], // Optional field
       user: json['user'],
     );
   }

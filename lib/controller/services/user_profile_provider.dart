@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 class UserProfileProvider extends ChangeNotifier {
   bool isLoading = false;
 
-  GetUserProfile(userID, authToken) async {
+  GetUserProfile(username, authToken) async {
     isLoading = true;
     notifyListeners();
     try {
-      final data = await APIsManager.GetUserProfileData(userID, authToken);
+      final data = await APIsManager.GetUserProfileData(username, authToken);
       isLoading = false;
       notifyListeners();
       return data;
@@ -32,6 +32,8 @@ class UserProfileProvider extends ChangeNotifier {
       required String phone,
       required String address,
       required String bio,
+      required String displayEmail,
+      String? username,
       String? facebook,
       String? instagram,
       String? website,
@@ -44,6 +46,8 @@ class UserProfileProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final data = await APIsManager.CreateUserProfile(
+          display_email: displayEmail,
+          username: username,
           authToken: authToken,
           firstName: firstName,
           lastName: lastName,
@@ -82,6 +86,8 @@ class UserProfileProvider extends ChangeNotifier {
       required String phone,
       required String address,
       required String bio,
+      required String display_email,
+      String? username,
       String? facebook,
       String? instagram,
       String? website,
@@ -94,6 +100,8 @@ class UserProfileProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final data = await APIsManager.UpdateUserProfileDetails(
+          display_email: display_email,
+          username: username,
           authToken: authToken,
           id: id,
           firstName: firstName,

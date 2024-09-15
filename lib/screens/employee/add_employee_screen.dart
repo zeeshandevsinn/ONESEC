@@ -31,6 +31,9 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _postionController = TextEditingController();
+  final TextEditingController displayEmailController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -51,6 +54,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
         previousEmail = employees['email'];
         _phoneController.text = employees['phone'];
         _postionController.text = employees['position'];
+        displayEmailController.text = employees['display_email'];
+        usernameController.text = employees['username'];
       });
     }
   }
@@ -167,6 +172,33 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                 ),
                                 SizedBox(height: 16.0),
                                 CustomTextField(
+                                    controller: displayEmailController,
+                                    hintText: 'Display Email',
+                                    validator: (val) {
+                                      if (val!.isEmpty) {
+                                        return 'The email you want to show in your digital profile';
+                                      } else if (!displayEmailController.text
+                                              .contains('@') &&
+                                          !displayEmailController.text
+                                              .contains('.com')) {
+                                        return "Email is not Correct";
+                                      }
+                                      return null;
+                                    },
+                                    keyboardType: TextInputType.emailAddress),
+                                SizedBox(height: 16.0),
+                                CustomTextField(
+                                    controller: usernameController,
+                                    hintText: 'Employee Username (Optional)',
+                                    validator: (val) {
+                                      if (val!.isEmpty) {
+                                        return null;
+                                      }
+                                      return null;
+                                    },
+                                    keyboardType: TextInputType.text),
+                                SizedBox(height: 16.0),
+                                CustomTextField(
                                   controller: _phoneController,
                                   hintText: 'Phone',
                                   keyboardType: TextInputType.phone,
@@ -184,25 +216,29 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                       ? () async {
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            final response = await pro
-                                                .addEmployee(widget.authToken,
-                                                    companyID: widget
-                                                        .companyDetails?.id,
-                                                    firstName:
-                                                        _firstNameController
-                                                            .text
-                                                            .trim(),
-                                                    lastName:
-                                                        _lastNameController.text
-                                                            .trim(),
-                                                    email: _emailController.text
+                                            final response = await pro.addEmployee(
+                                                widget.authToken,
+                                                display_email:
+                                                    displayEmailController.text
                                                         .trim(),
-                                                    position:
-                                                        _postionController
-                                                            .text
-                                                            .trim(),
-                                                    phone: _phoneController.text
-                                                        .trim());
+                                                username: usernameController
+                                                    .text
+                                                    .trim(),
+                                                companyID:
+                                                    widget.companyDetails?.id,
+                                                firstName: _firstNameController
+                                                    .text
+                                                    .trim(),
+                                                lastName: _lastNameController
+                                                    .text
+                                                    .trim(),
+                                                email: _emailController.text
+                                                    .trim(),
+                                                position: _postionController
+                                                    .text
+                                                    .trim(),
+                                                phone: _phoneController.text
+                                                    .trim());
 
                                             if (response != null) {
                                               Navigator.pushAndRemoveUntil(

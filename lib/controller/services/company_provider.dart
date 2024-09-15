@@ -29,12 +29,12 @@ class CompanyProvider extends ChangeNotifier {
     }
   }
 
-  GetCurrentUserProfile(token, userID) async {
+  GetCurrentUserProfile(token, username) async {
     isLoading = true;
     notifyListeners();
     try {
       final data = await CompanyProfileDetailService.getCompanyProfileDetail(
-          token, userID);
+          token, username);
 
       if (data != null) {
         isLoading = false;
@@ -52,12 +52,12 @@ class CompanyProvider extends ChangeNotifier {
     }
   }
 
-  UpdateCompanyProfile(token, userID, profileDetails) async {
+  UpdateCompanyProfile(token, username, profileDetails) async {
     isLoading = true;
     notifyListeners();
     try {
       final data = await CompanyProfileDetailService.updateCompanyProfile(
-          token, userID, profileDetails);
+          token, username, profileDetails);
       if (data != null) {
         isLoading = false;
         notifyListeners();
@@ -82,6 +82,8 @@ class CompanyProvider extends ChangeNotifier {
     required String email,
     required String position,
     required String? phone,
+    required String? display_email,
+    required String? username,
     String? address,
     String? bio,
     String? facebook,
@@ -96,6 +98,8 @@ class CompanyProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final data = await EmployeeProfileServices.addEmployee(token,
+          display_email: display_email,
+          username: username,
           companyID: companyID,
           firstName: firstName,
           lastName: lastName,

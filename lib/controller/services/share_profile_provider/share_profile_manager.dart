@@ -29,7 +29,7 @@ class ShareProfileManager {
   }
 
   static shareProfile(String token, String email) async {
-    final completeUrl = EndPointsURLs.BASE_URL + "/api/share-profile/";
+    final completeUrl = EndPointsURLs.BASE_URL + "api/share-profile/";
     final url = Uri.parse(completeUrl);
     final response = await http.post(
       url,

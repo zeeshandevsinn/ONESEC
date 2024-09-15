@@ -47,7 +47,7 @@ class _CompanyAdminBottomNavigationBarState
     try {
       var provider = context.read<CompanyProvider>();
       final CompanyProfile? data = await provider.GetCurrentUserProfile(
-          widget.authToken, widget.userDetails!.id);
+          widget.authToken, widget.userDetails!.username);
       if (data != null) {
         setState(() {
           companyData = data;

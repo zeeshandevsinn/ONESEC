@@ -83,19 +83,21 @@ class _ManageUsersState extends State<ManageUsers> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Are you sure you want to delete your Employee $email?',
-                        style: TextStyle(
-                          fontFamily: "GothamRegular",
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.textColor18,
-                        ),
+                  Container(
+                    height: 80,
+                    width: MediaQuery.of(context).size.width * .70,
+                    child: Text(
+                      'Are you sure you want to delete your Employee $email?',
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: "GothamRegular",
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textColor18,
                       ),
-                    ],
+                    ),
                   ),
                   SizedBox(height: 32),
                   pro.isLoading

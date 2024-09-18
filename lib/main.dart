@@ -34,7 +34,7 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  // clearStoredPermissions();
+  clearStoredPermissions();
 
   runApp(MyApp());
 }

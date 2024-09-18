@@ -17,12 +17,14 @@ class AppoinmentShareProfileScreen extends StatefulWidget {
   final userID_share_from;
   final profile_type;
   final userDetails;
+  final username;
   const AppoinmentShareProfileScreen(
       {super.key,
       required this.auth_token,
       required this.userID_share_from,
       required this.profile_type,
-      required this.userDetails});
+      required this.userDetails,
+      required this.username});
 
   @override
   State<AppoinmentShareProfileScreen> createState() =>
@@ -69,8 +71,7 @@ class _AppoinmentShareProfileScreenState
 
   Future<UserProfileModel?> _fetchUserProfile() async {
     var pro = context.read<UserProfileProvider>();
-    final data =
-        await pro.GetUserProfile(widget.userID_share_from, widget.auth_token);
+    final data = await pro.GetUserProfile(widget.username, widget.auth_token);
     print(data);
 
     return data;
@@ -242,6 +243,7 @@ class _AppoinmentShareProfileScreenState
                                                                   .profilePic)),
                                                   Text(
                                                     '${userProfile?.firstName} ${userProfile?.lastName}',
+                                                    textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: "GothamBold",
                                                       fontSize: 22.0,

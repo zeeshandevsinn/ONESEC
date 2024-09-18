@@ -103,6 +103,8 @@ class _ReceivedProfileScreenState extends State<ReceivedProfileScreen> {
                             final profileType =
                                 profile['profile_type_who_shared'];
                             final sharedFrom = profile['shared_from'];
+                            final username = profile['shared_from_username'];
+                            final user_email = profile['shared_from_email'];
 
                             return Card(
                               margin: EdgeInsets.symmetric(vertical: 10),
@@ -131,7 +133,15 @@ class _ReceivedProfileScreenState extends State<ReceivedProfileScreen> {
                                     ),
                                     SizedBox(height: 10),
                                     Text(
-                                      'Shared From User ID: $sharedFrom',
+                                      'User Email: $user_email',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: AppColors.textColor14,
+                                      ),
+                                    ),
+                                    SizedBox(height: 10),
+                                    Text(
+                                      'Username: $username',
                                       style: TextStyle(
                                         fontSize: 16,
                                         color: AppColors.textColor14,
@@ -145,6 +155,7 @@ class _ReceivedProfileScreenState extends State<ReceivedProfileScreen> {
                                             CupertinoDialogRoute(
                                                 builder: (_) =>
                                                     AppoinmentShareProfileScreen(
+                                                        username: username,
                                                         userDetails:
                                                             widget.userDetails,
                                                         auth_token:

@@ -1,7 +1,7 @@
 class EndPointsURLs {
   static const String BASE_URL = "https://api.onesec.shop/";
   static const String register_Endpoint = "auth/users/";
-  static const String login_Endpoint = "auth/token/login/";
+  static const String login_Endpoint = "auth/custom/token/login/";
   static const String activation_Endpoint = "auth/users/activation/";
   static const String user_profile_Endpoint = "auth/users/me/";
   static const String user_reset_password = "auth/users/reset_password/";

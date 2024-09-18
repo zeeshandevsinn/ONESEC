@@ -1,4 +1,5 @@
 import 'package:client_nfc_mobile_app/company_admin_bottom_navigationbar.dart';
+import 'package:client_nfc_mobile_app/controller/permissions/permission_app.dart';
 import 'package:client_nfc_mobile_app/controller/services/company_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/firebase%20storeage/storeage_image.dart';
 import 'package:client_nfc_mobile_app/controller/services/user_profile_provider.dart';
@@ -14,6 +15,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompanyUserCreateDetails extends StatefulWidget {
   final User? userDetails;
@@ -96,8 +98,46 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
 
   Future<void> getImage(ImageSource source) async {
     try {
-      // Pick an image from the selected source (camera or gallery)
-      final pickedFile = await ImagePicker().pickImage(source: source);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool permission = prefs.getBool('allPermissionsGranted') ?? false;
+      var pickedFile;
+      print(permission);
+      if (!permission) {
+        if (source == ImageSource.camera) {
+          PermissionStatus permissionCamera = await Permission.camera.request();
+          if (permissionCamera.isGranted) {
+            // Pick an image from the selected source (camera or gallery)
+            print("Camera Granted");
+            pickedFile = await ImagePicker().pickImage(source: source);
+          } else {
+            pickedFile = null;
+          }
+        } else if (ImageSource.gallery == source) {
+          String number = await PermissionService().getAndroidVersion();
+          int version = int.parse(number);
+          if (version >= 11) {
+            PermissionStatus permissionStoreage =
+                await Permission.manageExternalStorage.request();
+
+            if (permissionStoreage.isGranted) {
+              print("Storeage Granted");
+              pickedFile = await ImagePicker().pickImage(source: source);
+            } else {
+              pickedFile = null;
+            }
+          } else {
+            PermissionStatus permissionStoreage =
+                await Permission.storage.request();
+
+            if (permissionStoreage.isGranted) {
+              print("Storeage Granted");
+              pickedFile = await ImagePicker().pickImage(source: source);
+            } else {
+              pickedFile = null;
+            }
+          }
+        }
+      }
 
       // Check if an image was picked
       if (pickedFile != null) {

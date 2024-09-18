@@ -141,6 +141,8 @@ class PermissionService {
         Permission.storage,
         Permission.camera,
         Permission.location,
+        Permission.notification,
+        // Permission.gallery
         // No need to request manageExternalStorage for Android <11
       ].request();
     }

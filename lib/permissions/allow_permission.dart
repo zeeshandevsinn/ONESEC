@@ -346,7 +346,10 @@ class _AllowPermissionScreenState extends State<AllowPermissionScreen> {
                     ),
               SizedBox(height: 10),
               TextButton(
-                onPressed: () {
+                onPressed: () async {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.setBool('allPermissionsGranted', false);
                   Navigator.pushAndRemoveUntil(
                     context,
                     CupertinoDialogRoute(

@@ -75,7 +75,7 @@ class GoogleSignInHelper {
       await _googleSignIn.signOut();
       await _googleSignIn.disconnect();
     } catch (e) {
-      // MyToast(e.toString());
+      MyToast(e.toString());
     }
   }
 }

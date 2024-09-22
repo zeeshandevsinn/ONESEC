@@ -53,29 +53,28 @@ class LoginUserProvider extends ChangeNotifier {
             MyToast("Your Account did not found in $type");
           }
         } else if (futureUser!.profileType == 'company') {
-          if(futureUser!.profileType == type){
+          if (futureUser!.profileType == type) {
             notifyListeners();
             MyToast("Login Successfully");
- Navigator.push(
-              context,
-              CupertinoDialogRoute(
-                  builder: (_) => CompanyAdminBottomNavigationBar(
-                        profileData: null, authToken: Auth_Token,
-                        userDetails: futureUser,
+            Navigator.push(
+                context,
+                CupertinoDialogRoute(
+                    builder: (_) => CompanyAdminBottomNavigationBar(
+                          profileData: null, authToken: Auth_Token,
+                          userDetails: futureUser,
 
-                        // user_auth_token: Auth_Token,
-                      ),
-                  context: context));
-          }else{
+                          // user_auth_token: Auth_Token,
+                        ),
+                    context: context));
+          } else {
             notifyListeners();
             MyToast("Your Account did not found in $type");
           }
-         
         }
       } else {
         // debugger();
         print(data.toString());
-        MyToast("Error 400 Credentials not found", Type: false);
+        // MyToast("Error 400 Credentials not found", Type: false);
         isLoading = false;
         notifyListeners();
         Navigator.pop(context);

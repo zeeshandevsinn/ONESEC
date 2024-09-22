@@ -34,7 +34,7 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  clearStoredPermissions();
+  // clearStoredPermissions();
 
   runApp(MyApp());
 }
@@ -42,21 +42,6 @@ void main() async {
 void clearStoredPermissions() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('allPermissionsGranted');
-  // Remove the stored permissions
-  // await prefs.remove('storagePermission');
-  // await prefs.remove('notificationPermission');
-  // await prefs.remove('locationPermission');
-
-  // Optionally, you can verify if the removal was successful
-  // bool isStoragePermissionRemoved = prefs.getBool('storagePermission') == null;
-  // bool isNotificationPermissionRemoved =
-  //     prefs.getBool('notificationPermission') == null;
-  // bool isLocationPermissionRemoved =
-  //     prefs.getBool('locationPermission') == null;
-
-  // print('Storage Permission Removed: $isStoragePermissionRemoved');
-  // print('Notification Permission Removed: $isNotificationPermissionRemoved');
-  // print('Location Permission Removed: $isLocationPermissionRemoved');
 }
 
 class MyApp extends StatelessWidget {

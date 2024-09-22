@@ -68,11 +68,12 @@ class APIsManager {
     }
   }
 
-  static Future<dynamic> LoginUsers(
+  static LoginUsers(
     String email,
     String password,
   ) async {
     try {
+      // ignore: prefer_const_declarations
       final completeURL = EndPointsURLs.BASE_URL + EndPointsURLs.login_Endpoint;
       final url = Uri.parse(completeURL);
       final payLoad = {
@@ -86,11 +87,20 @@ class APIsManager {
         url,
         body: payLoad,
       );
+      final data = jsonDecode(response.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return jsonDecode(response.body);
-      } else {
+      } else if (response.statusCode == 401) {
         // debugger();
-        MyToast("Unable to log in with provided credentials.", Type: false);
+
+        final message = data['detail'];
+        MyToast(message, Type: false);
+        // MyToast("Error: ${response.statusCode} ${response.reasonPhrase}",
+        //     Type: false);
+        return null;
+      } else if (response.statusCode == 400) {
+        final message = data['detail'];
+        MyToast(message, Type: false);
         // MyToast("Error: ${response.statusCode} ${response.reasonPhrase}",
         //     Type: false);
         return null;

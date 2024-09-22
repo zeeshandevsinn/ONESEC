@@ -362,6 +362,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             .contains('.com')) {
                                       return "Email is not Correct";
                                     }
+                                    return null;
                                   },
                                   keyboardType: TextInputType.emailAddress,
                                   controller: emailController,
@@ -374,6 +375,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 const SizedBox(height: 16),
                                 CustomTextField(
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return "Please Enter your Password";
+                                    }
+                                    if (passwordController.text.length < 8) {
+                                      return "Password should must be 8 characters or above";
+                                    }
+                                    return null;
+                                  },
                                   obscureCharacter: "*",
                                   isObscureText: true,
                                   keyboardType: TextInputType.text,
@@ -422,20 +432,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                       if (newKey.currentState!.validate()) {
                                         // debugger();
                                         print("login to employee screen");
-                                        if (passwordController.text.length <
-                                            8) {
-                                          MyToast(
-                                              "Passwords at least 8 Characters",
-                                              Type: false);
-                                        } else {
-                                          print("Doing Login Process");
-                                          // debugger();
-                                          await pro.LoginUsers(
-                                              context,
-                                              emailController.text.trim(),
-                                              passwordController.text.trim(),
-                                              tab ? 'individual' : 'company');
-                                        }
+
+                                        print("Doing Login Process");
+                                        // debugger();
+                                        await pro.LoginUsers(
+                                            context,
+                                            emailController.text.trim(),
+                                            passwordController.text.trim(),
+                                            tab ? 'individual' : 'company');
                                       }
                                     },
                                     child: Container(

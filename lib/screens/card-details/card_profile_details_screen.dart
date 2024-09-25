@@ -51,15 +51,16 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
                         height:
                             140, // Adjust width and height to match the radius * 2
                         imageErrorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors
-                                .grey[200], // Background color when image fails
-                            child: Icon(
-                              Icons.error,
-                              color: Colors.red,
-                              size: 70, // Adjust size to fit within the circle
-                            ),
-                          );
+                          return Image.asset('assets/images/logo.png');
+                          // Container(
+                          //   color: Colors
+                          //       .grey[200], // Background color when image fails
+                          //   child: Icon(
+                          //     Icons.error,
+                          //     color: Colors.red,
+                          //     size: 70, // Adjust size to fit within the circle
+                          //   ),
+                          // );
                         },
                       ),
                     )),

@@ -133,7 +133,9 @@ class APIsManager {
         await AuthTokenStorage.saveAuthToken(token);
         return data;
       } else if (response.statusCode == 400) {
-        MyToast("Please Try Again Network Issue", Type: false);
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final message = data['detail'];
+        MyToast(message, Type: false);
         return null;
       } else {
         // debugger();
@@ -163,10 +165,9 @@ class APIsManager {
         return jsonDecode(result.body);
       } else {
         // debugger();
-        MyToast("Error: ${result.statusCode} ${result.reasonPhrase}",
-            Type: false);
-        MyToast("Error: ${result.statusCode} ${result.reasonPhrase}",
-            Type: false);
+        final data = jsonDecode(result.body) as Map<String, dynamic>;
+        final message = data['detail'];
+        MyToast(message, Type: false);
         return null;
       }
     } catch (e) {
@@ -194,9 +195,12 @@ class APIsManager {
         return true;
       } else {
         // debugger();
-        MyToast("Authentication credentials were not provided.", Type: false);
-        MyToast("Error: ${response.statusCode} Email is not Corrected.",
-            Type: false);
+        // MyToast("Authentication credentials were not provided.", Type: false);
+        // MyToast("Error: ${response.statusCode} Email is not Corrected.",
+        //     Type: false);
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        final message = data['detail'];
+        MyToast(message, Type: false);
         return null;
       }
     } catch (e) {
@@ -301,13 +305,14 @@ class APIsManager {
         },
       );
 
-      // debugger();
       if (response.statusCode == 200) {
         // Account deleted successfully
         final jsonData = jsonDecode(response.body);
+        // debugger();
         return UserProfileModel.fromJson(jsonData);
       } else if (response.statusCode == 404) {
-        MyToast('Profile does not exist.', Type: false);
+        // debugger();
+        // MyToast('Profile does not exist.', Type: false);
         MyToast('Please Create Profile First', Type: false);
         return null;
       } else {

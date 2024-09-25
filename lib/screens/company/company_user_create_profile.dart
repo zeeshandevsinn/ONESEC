@@ -2,6 +2,7 @@ import 'package:client_nfc_mobile_app/company_admin_bottom_navigationbar.dart';
 import 'package:client_nfc_mobile_app/controller/permissions/permission_app.dart';
 import 'package:client_nfc_mobile_app/controller/services/company_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/firebase%20storeage/storeage_image.dart';
+import 'package:client_nfc_mobile_app/controller/services/login_api.dart';
 import 'package:client_nfc_mobile_app/controller/services/user_profile_provider.dart';
 import 'package:client_nfc_mobile_app/models/company/company_user.dart';
 import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
@@ -10,12 +11,14 @@ import 'package:client_nfc_mobile_app/utils/colors.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class CompanyUserCreateDetails extends StatefulWidget {
   final User? userDetails;
@@ -228,6 +231,166 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
   }
 
   final newKey = GlobalKey<FormState>();
+  logoutDialogueBox(context, authToken, authType) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          var pro = context.watch<LoginUserProvider>();
+          return Dialog(
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.containerColor8,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          size: 30,
+                          color: AppColors.textColor15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.containerColor5,
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        "assets/images/icon1.png",
+                        width: 47,
+                        height: 63,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 35),
+                  Text(
+                    "Are You Sure?",
+                    style: TextStyle(
+                      fontFamily: "GothamBold",
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textColor14,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "You want to Logout your account.",
+                        style: TextStyle(
+                          fontFamily: "GothamRegular",
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.textColor18,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 32),
+                  Builder(builder: (context) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 16, right: 16.0),
+                      child: Column(
+                        children: [
+                          // pro.isLoading
+                          //     ? Center(
+                          //         child: CircularProgressIndicator.adaptive())
+                          //     :
+                          GestureDetector(
+                            onTap: () async {
+                              await pro.logoutAccount(
+                                  context, authToken, authType);
+                            },
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 42,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.primaryColor,
+                                    AppColors.secondaryColor,
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Yes, Sure",
+                                  style: TextStyle(
+                                    fontFamily: "GothamRegular",
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: AppColors.textColor24,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 16),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 42,
+                                decoration: BoxDecoration(
+                                  color: AppColors.containerColor8,
+                                  border: const GradientBoxBorder(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        AppColors.primaryColor,
+                                        AppColors.secondaryColor,
+                                      ],
+                                    ),
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Center(
+                                  child: GradientText(
+                                    "No",
+                                    style: TextStyle(
+                                      fontFamily: "GothamRegular",
+                                      fontSize: 14.0,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    colors: [
+                                      AppColors.textColor9,
+                                      AppColors.textColor28,
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -264,15 +427,29 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                       SizedBox(
                         height: 20,
                       ),
-                      Text(
-                        widget.create ? "Create Profile" : "Update Profile",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontFamily: "GothamBold",
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textColor14,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            widget.create ? "Create Profile" : "Update Profile",
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                              fontFamily: "GothamBold",
+                              fontSize: 28.0,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textColor14,
+                            ),
+                          ),
+                          const Spacer(),
+                          Spacer(),
+                          if (widget.create)
+                            GestureDetector(
+                              onTap: () {
+                                logoutDialogueBox(context, widget.token,
+                                    widget.userDetails!.auth_type);
+                              },
+                              child: Icon(Icons.logout_sharp),
+                            )
+                        ],
                       ),
                       SizedBox(
                         height: 20,

@@ -23,7 +23,7 @@ class _SFMAPScreenState extends State<SFMAPScreen> {
   MapZoomPanBehavior? _zoomPanBehavior;
   String? _hoveredCountry;
   Color? _hoveredColor;
-  double _zoomLevel = 3.0; // Initial zoom level
+  double _zoomLevel = 0.0; // Initial zoom level
   final double _zoomIncrement = 1.0;
   final double _zoomDecrement = 1.0;
   String maxInteraction = "";

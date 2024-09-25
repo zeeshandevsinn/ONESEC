@@ -170,33 +170,34 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                     return null;
                                   },
                                 ),
-                                SizedBox(height: 16.0),
-                                CustomTextField(
-                                    controller: displayEmailController,
-                                    hintText: 'Display Email',
-                                    validator: (val) {
-                                      if (val!.isEmpty) {
-                                        return 'The email you want to show in your digital profile';
-                                      } else if (!displayEmailController.text
-                                              .contains('@') &&
-                                          !displayEmailController.text
-                                              .contains('.com')) {
-                                        return "Email is not Correct";
-                                      }
-                                      return null;
-                                    },
-                                    keyboardType: TextInputType.emailAddress),
-                                SizedBox(height: 16.0),
-                                CustomTextField(
-                                    controller: usernameController,
-                                    hintText: 'Employee Username (Optional)',
-                                    validator: (val) {
-                                      if (val!.isEmpty) {
-                                        return null;
-                                      }
-                                      return null;
-                                    },
-                                    keyboardType: TextInputType.text),
+                                // SizedBox(height: 16.0),
+                                // CustomTextField(
+                                //     controller: displayEmailController,
+                                //     hintText: 'Display Email',
+                                //     validator: (val) {
+                                //       if (val!.isEmpty) {
+                                //         return 'The email you want to show in your digital profile';
+                                //       } else if (!displayEmailController.text
+                                //               .contains('@') &&
+                                //           !displayEmailController.text
+                                //               .contains('.com')) {
+                                //         return "Email is not Correct";
+                                //       }
+                                //       return null;
+                                //     },
+                                //     keyboardType: TextInputType.emailAddress),
+                                // SizedBox(height: 16.0),
+                                // CustomTextField(
+                                //     controller: usernameController,
+                                //     hintText: 'Employee Username (Optional)',
+                                //     validator: (val) {
+                                //       if (val!.isEmpty) {
+                                //         return null;
+                                //       }
+                                //       return null;
+                                //     },
+                                //     keyboardType: TextInputType.text),
+
                                 SizedBox(height: 16.0),
                                 CustomTextField(
                                   controller: _phoneController,

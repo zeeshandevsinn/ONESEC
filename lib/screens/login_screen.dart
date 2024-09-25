@@ -66,17 +66,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Builder(builder: (context) {
-        var pro = context.watch<LoginUserProvider>();
-        var gro = context.watch<GoogleProvider>();
-        if (pro.isLoading || gro.isLoading) {
-          Future.microtask(() => _showLoadingDialog(context));
-        }
+    return SafeArea(
+      child: Scaffold(
+        body: Builder(builder: (context) {
+          var pro = context.watch<LoginUserProvider>();
+          var gro = context.watch<GoogleProvider>();
+          if (pro.isLoading || gro.isLoading) {
+            Future.microtask(() => _showLoadingDialog(context));
+          }
 
-        return SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: SafeArea(
+          return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
@@ -533,9 +533,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

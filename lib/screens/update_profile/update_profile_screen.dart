@@ -67,52 +67,50 @@ class _CreatAndUpdateProfileScreenState
   String networkUserImage = '';
   void profileDetailCheck() {
     if (widget.profileDetails != null) {
-      if (mounted)
-        setState(() {
-          _firstNameController.text = widget.profileDetails!.firstName;
-          _lastNameController.text = widget.profileDetails!.lastName;
-          _emailController.text = widget.profileDetails!.email;
-          _isEmailLocked = _emailController.text.isNotEmpty;
-          username = widget.profileDetails!.username;
-          displayEmailController.text =
-              widget.profileDetails!.displayEmail.toString();
-          // _isNameLocked = (_firstNameController.text.isNotEmpty) &&
-          //     (_lastNameController.text.isNotEmpty);
-          _phoneController.text = widget.profileDetails!.phone;
-          _addressController.text = widget.profileDetails!.address;
-          _bioController.text = widget.profileDetails!.bio;
-          _postionController.text = widget.profileDetails!.position;
-          _websiteController.text = widget.profileDetails!.website ?? '';
-          _facebookController.text = widget.profileDetails!.facebook ?? '';
-          _instagramController.text = widget.profileDetails!.instagram ?? '';
-          _linkedInController.text = widget.profileDetails!.linkedin ?? '';
-          _githubController.text = widget.profileDetails!.github ?? '';
-          _whatsappController.text =
-              widget.profileDetails!.whatsapp?.toString() ?? '';
-          _whatsappNumber = widget.profileDetails!.whatsapp;
-          networkUserImage = widget.profileDetails!.profilePic ?? '';
-          _downloadURL = networkUserImage;
-          // Ensure this is handled appropriately
-        });
+      setState(() {
+        _firstNameController.text = widget.profileDetails!.firstName ?? "";
+        _lastNameController.text = widget.profileDetails!.lastName ?? "";
+        _emailController.text = widget.profileDetails!.email ?? "";
+        _isEmailLocked = _emailController.text.isNotEmpty;
+        username = widget.profileDetails!.username;
+        displayEmailController.text =
+            widget.profileDetails!.displayEmail.toString();
+        // _isNameLocked = (_firstNameController.text.isNotEmpty) &&
+        //     (_lastNameController.text.isNotEmpty);
+        _phoneController.text = widget.profileDetails!.phone ?? "";
+        _addressController.text = widget.profileDetails!.address ?? " ";
+        _bioController.text = widget.profileDetails!.bio ?? "";
+        _postionController.text = widget.profileDetails!.position ?? "";
+        _websiteController.text = widget.profileDetails!.website ?? '';
+        _facebookController.text = widget.profileDetails!.facebook ?? '';
+        _instagramController.text = widget.profileDetails!.instagram ?? '';
+        _linkedInController.text = widget.profileDetails!.linkedin ?? '';
+        _githubController.text = widget.profileDetails!.github ?? '';
+        _whatsappController.text =
+            widget.profileDetails!.whatsapp?.toString() ?? '';
+        _whatsappNumber = widget.profileDetails!.whatsapp;
+        networkUserImage = widget.profileDetails!.profilePic ?? '';
+        _downloadURL = networkUserImage;
+        // Ensure this is handled appropriately
+      });
     }
   }
 
   void userDetailCheck() {
     if (widget.userDetails != null) {
-      if (mounted)
-        setState(() {
-          _firstNameController.text = widget.userDetails?.firstName ?? '';
-          _lastNameController.text = widget.userDetails?.lastName ?? '';
-          _emailController.text = widget.userDetails?.email ?? '';
-          username = widget.userDetails!.username;
+      setState(() {
+        _firstNameController.text = widget.userDetails?.firstName ?? '';
+        _lastNameController.text = widget.userDetails?.lastName ?? '';
+        _emailController.text = widget.userDetails?.email ?? '';
+        username = widget.userDetails!.username;
 
-          _isEmailLocked = _emailController.text.isNotEmpty;
-          // _isNameLocked = (_firstNameController.text.isNotEmpty) &&
-          //     (_lastNameController.text.isNotEmpty);
+        _isEmailLocked = _emailController.text.isNotEmpty;
+        // _isNameLocked = (_firstNameController.text.isNotEmpty) &&
+        //     (_lastNameController.text.isNotEmpty);
 
-          networkUserImage = widget.userDetails!.companyName;
-          _downloadURL = networkUserImage;
-        });
+        networkUserImage = widget.userDetails!.companyName;
+        _downloadURL = networkUserImage;
+      });
     }
   }
 
@@ -142,7 +140,7 @@ class _CreatAndUpdateProfileScreenState
     showDialog(
         context: context,
         builder: (context) {
-          var pro = context.watch<LoginUserProvider>();
+          var pro = context.read<LoginUserProvider>();
           return Dialog(
             child: Container(
               decoration: BoxDecoration(
@@ -210,87 +208,86 @@ class _CreatAndUpdateProfileScreenState
                   ),
                   SizedBox(height: 32),
                   Builder(builder: (context) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16.0),
-                      child: Column(
-                        children: [
-                          // pro.isLoading
-                          //     ? Center(
-                          //         child: CircularProgressIndicator.adaptive())
-                          //     :
-                          GestureDetector(
-                            onTap: () async {
-                              await pro.logoutAccount(
-                                  context, authToken, authType);
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 42,
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.primaryColor,
-                                    AppColors.secondaryColor,
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Yes, Sure",
-                                  style: TextStyle(
-                                    fontFamily: "GothamRegular",
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400,
-                                    color: AppColors.textColor24,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 16.0),
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 42,
-                                decoration: BoxDecoration(
-                                  color: AppColors.containerColor8,
-                                  border: const GradientBoxBorder(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        AppColors.primaryColor,
-                                        AppColors.secondaryColor,
-                                      ],
+                    return pro.isLoading
+                        ? Center(child: CircularProgressIndicator.adaptive())
+                        : Padding(
+                            padding:
+                                const EdgeInsets.only(left: 16, right: 16.0),
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    await pro.logoutAccount(
+                                        context, authToken, authType);
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 42,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          AppColors.primaryColor,
+                                          AppColors.secondaryColor,
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Center(
-                                  child: GradientText(
-                                    "No",
-                                    style: TextStyle(
-                                      fontFamily: "GothamRegular",
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w400,
+                                    child: Center(
+                                      child: Text(
+                                        "Yes, Sure",
+                                        style: TextStyle(
+                                          fontFamily: "GothamRegular",
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w400,
+                                          color: AppColors.textColor24,
+                                        ),
+                                      ),
                                     ),
-                                    colors: [
-                                      AppColors.textColor9,
-                                      AppColors.textColor28,
-                                    ],
                                   ),
                                 ),
-                              ),
+                                SizedBox(height: 16),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 16.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      height: 42,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.containerColor8,
+                                        border: const GradientBoxBorder(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              AppColors.primaryColor,
+                                              AppColors.secondaryColor,
+                                            ],
+                                          ),
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Center(
+                                        child: GradientText(
+                                          "No",
+                                          style: TextStyle(
+                                            fontFamily: "GothamRegular",
+                                            fontSize: 14.0,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          colors: [
+                                            AppColors.textColor9,
+                                            AppColors.textColor28,
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
-                    );
+                          );
                   }),
                 ],
               ),
@@ -838,36 +835,35 @@ class _CreatAndUpdateProfileScreenState
       SharedPreferences prefs = await SharedPreferences.getInstance();
       bool permission = prefs.getBool('allPermissionsGranted') ?? false;
       var pickedFile;
-      if (!permission) {
-        if (source == ImageSource.camera) {
-          PermissionStatus permissionCamera = await Permission.camera.request();
-          if (permissionCamera.isGranted) {
-            // Pick an image from the selected source (camera or gallery)
+
+      if (source == ImageSource.camera) {
+        PermissionStatus permissionCamera = await Permission.camera.request();
+        if (permissionCamera.isGranted) {
+          // Pick an image from the selected source (camera or gallery)
+          pickedFile = await ImagePicker().pickImage(source: source);
+        } else {
+          pickedFile = null;
+        }
+      } else if (ImageSource.gallery == source) {
+        String number = await PermissionService().getAndroidVersion();
+        int version = int.parse(number);
+        if (version >= 11) {
+          PermissionStatus permissionStoreage =
+              await Permission.manageExternalStorage.request();
+
+          if (permissionStoreage.isGranted) {
             pickedFile = await ImagePicker().pickImage(source: source);
           } else {
             pickedFile = null;
           }
-        } else if (ImageSource.gallery == source) {
-          String number = await PermissionService().getAndroidVersion();
-          int version = int.parse(number);
-          if (version >= 11) {
-            PermissionStatus permissionStoreage =
-                await Permission.manageExternalStorage.request();
+        } else {
+          PermissionStatus permissionStoreage =
+              await Permission.storage.request();
 
-            if (permissionStoreage.isGranted) {
-              pickedFile = await ImagePicker().pickImage(source: source);
-            } else {
-              pickedFile = null;
-            }
+          if (permissionStoreage.isGranted) {
+            pickedFile = await ImagePicker().pickImage(source: source);
           } else {
-            PermissionStatus permissionStoreage =
-                await Permission.storage.request();
-
-            if (permissionStoreage.isGranted) {
-              pickedFile = await ImagePicker().pickImage(source: source);
-            } else {
-              pickedFile = null;
-            }
+            pickedFile = null;
           }
         }
       }

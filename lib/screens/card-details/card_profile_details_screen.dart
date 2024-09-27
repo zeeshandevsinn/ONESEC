@@ -44,7 +44,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
                     child: ClipOval(
                       child: FadeInImage.assetNetwork(
                         placeholder: 'assets/images/logo.png',
-                        image: widget.profileDetails.profilePic,
+                        image: widget.profileDetails.profilePic!,
                         fit: BoxFit.cover,
                         width:
                             140, // Adjust width and height to match the radius * 2
@@ -71,9 +71,9 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               child: Column(
                 children: [
                   Text(
-                    widget.profileDetails.firstName +
+                    widget.profileDetails.firstName! +
                         ' ' +
-                        widget.profileDetails.lastName,
+                        widget.profileDetails.lastName!,
                     style: TextStyle(
                       fontFamily: "GothamBold",
                       fontSize: 20.0,
@@ -82,7 +82,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
                     ),
                   ),
                   Text(
-                    widget.profileDetails.position,
+                    widget.profileDetails.position ?? "",
                     style: TextStyle(
                       fontFamily: "GothamRegular",
                       fontSize: 14.0,
@@ -139,7 +139,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
             Padding(
               padding: EdgeInsets.all(16.0),
               child: Text(
-                widget.profileDetails.bio,
+                widget.profileDetails.bio ?? "",
                 style: TextStyle(fontSize: 17),
               ),
             ),
@@ -161,10 +161,12 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildContactInfo(Icons.email, widget.profileDetails.email),
-                  _buildContactInfo(Icons.phone, widget.profileDetails.phone),
                   _buildContactInfo(
-                      Icons.location_on, widget.profileDetails.address),
+                      Icons.email, widget.profileDetails.email ?? ""),
+                  _buildContactInfo(
+                      Icons.phone, widget.profileDetails.phone ?? ""),
+                  _buildContactInfo(
+                      Icons.location_on, widget.profileDetails.address ?? ""),
                 ],
               ),
             ),

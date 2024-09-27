@@ -128,13 +128,15 @@ class APIsManager {
       // debugger();
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
+        // debugger();
         final token = data['auth_token'] ?? "";
 
         await AuthTokenStorage.saveAuthToken(token);
         return data;
       } else if (response.statusCode == 400) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
-        final message = data['detail'];
+        // debugger();
+        final message = data['error'];
         MyToast(message, Type: false);
         return null;
       } else {

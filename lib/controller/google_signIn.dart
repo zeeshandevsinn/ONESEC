@@ -11,16 +11,21 @@ class GoogleSignInHelper {
 
   // General Sign-In/Registration Function
   static Future<String?> handleGoogleSignIn(
-      {bool forceAccountSelection = false}) async {
+      {bool forceAccountSelection = true}) async {
     try {
       if (forceAccountSelection) {
-        // Sign out and disconnect any existing session to force account selection
+        // Force account selection only when explicitly requested
         await _googleSignIn.signOut();
         await _googleSignIn.disconnect();
       }
 
-      // Prompt the user to sign in or select an account
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      // Check if the user is already signed in
+      GoogleSignInAccount? googleUser = _googleSignIn.currentUser;
+
+      if (googleUser == null) {
+        // User is not signed in, so attempt to sign in
+        googleUser = await _googleSignIn.signIn();
+      }
 
       if (googleUser == null) {
         // The user canceled the sign-in
@@ -50,7 +55,7 @@ class GoogleSignInHelper {
 
   // Register Function (Forcing account selection)
   static Future<String?> registerWithGoogle() async {
-    return await handleGoogleSignIn(forceAccountSelection: false);
+    return await handleGoogleSignIn(forceAccountSelection: true);
   }
 
   // Delete Account Function

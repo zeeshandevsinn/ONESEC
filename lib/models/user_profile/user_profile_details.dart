@@ -1,21 +1,21 @@
 class UserProfileModel {
   final int? id; // Added id field
-  final String firstName;
-  final String lastName;
-  final String email;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
   final String? username;
   final String? displayEmail;
-  final String phone;
-  final String address;
-  final String bio;
+  final String? phone;
+  final String? address;
+  final String? bio;
   final String? facebook;
   final String? instagram;
   final String? website;
   final String? linkedin;
   final String? github;
   final int? whatsapp;
-  final String profilePic;
-  final String position;
+  final String? profilePic;
+  final String? position;
   final int user;
 
   UserProfileModel(

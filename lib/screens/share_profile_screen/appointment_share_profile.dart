@@ -238,9 +238,9 @@ class _AppoinmentShareProfileScreenState
                                                   CircleAvatar(
                                                       radius: 62,
                                                       backgroundImage:
-                                                          NetworkImage(
-                                                              userProfile!
-                                                                  .profilePic)),
+                                                          NetworkImage(userProfile!
+                                                                  .profilePic ??
+                                                              "")),
                                                   Text(
                                                     '${userProfile?.firstName} ${userProfile?.lastName}',
                                                     textAlign: TextAlign.center,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:client_nfc_mobile_app/company_admin_bottom_navigationbar.dart';
 import 'package:client_nfc_mobile_app/controller/api_manager.dart';
 import 'package:client_nfc_mobile_app/controller/google_signIn.dart';
@@ -18,7 +20,7 @@ class GoogleProvider extends ChangeNotifier {
       if (accessToken != null) {
         final result =
             await APIsManager.sendAccessToken(accessToken, profileType);
-
+        // debugger();
         if (result != null) {
           final token = result['auth_token'];
           if (token != null) {
@@ -94,6 +96,12 @@ class GoogleProvider extends ChangeNotifier {
               }
             }
           }
+        } else {
+          Navigator.pop(context);
+          // MyToast("Your Account is not recongnize from $profileType",
+          //     Type: false);
+          isLoading = false;
+          notifyListeners();
         }
       } else {
         Navigator.pop(context);

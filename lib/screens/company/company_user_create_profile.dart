@@ -105,39 +105,38 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
       bool permission = prefs.getBool('allPermissionsGranted') ?? false;
       var pickedFile;
       print(permission);
-      if (!permission) {
-        if (source == ImageSource.camera) {
-          PermissionStatus permissionCamera = await Permission.camera.request();
-          if (permissionCamera.isGranted) {
-            // Pick an image from the selected source (camera or gallery)
-            print("Camera Granted");
+
+      if (source == ImageSource.camera) {
+        PermissionStatus permissionCamera = await Permission.camera.request();
+        if (permissionCamera.isGranted) {
+          // Pick an image from the selected source (camera or gallery)
+          print("Camera Granted");
+          pickedFile = await ImagePicker().pickImage(source: source);
+        } else {
+          pickedFile = null;
+        }
+      } else if (ImageSource.gallery == source) {
+        String number = await PermissionService().getAndroidVersion();
+        int version = int.parse(number);
+        if (version >= 11) {
+          PermissionStatus permissionStoreage =
+              await Permission.manageExternalStorage.request();
+
+          if (permissionStoreage.isGranted) {
+            print("Storeage Granted");
             pickedFile = await ImagePicker().pickImage(source: source);
           } else {
             pickedFile = null;
           }
-        } else if (ImageSource.gallery == source) {
-          String number = await PermissionService().getAndroidVersion();
-          int version = int.parse(number);
-          if (version >= 11) {
-            PermissionStatus permissionStoreage =
-                await Permission.manageExternalStorage.request();
+        } else {
+          PermissionStatus permissionStoreage =
+              await Permission.storage.request();
 
-            if (permissionStoreage.isGranted) {
-              print("Storeage Granted");
-              pickedFile = await ImagePicker().pickImage(source: source);
-            } else {
-              pickedFile = null;
-            }
+          if (permissionStoreage.isGranted) {
+            print("Storeage Granted");
+            pickedFile = await ImagePicker().pickImage(source: source);
           } else {
-            PermissionStatus permissionStoreage =
-                await Permission.storage.request();
-
-            if (permissionStoreage.isGranted) {
-              print("Storeage Granted");
-              pickedFile = await ImagePicker().pickImage(source: source);
-            } else {
-              pickedFile = null;
-            }
+            pickedFile = null;
           }
         }
       }
@@ -539,8 +538,7 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                                   onTap: widget.create
                                       ? () async {
                                           if (newKey.currentState!.validate()) {
-                                            if (_image == null &&
-                                                networkUserImage == null) {
+                                            if (_image == null) {
                                               MyToast("Please Put Image",
                                                   Type: false);
                                             } else if (_downloadURL == null) {

@@ -472,33 +472,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 SizedBox(height: 16),
                                 CustomTextField(
                                   validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return "Field is Empty";
-                                    } else if (passwordController.text.length <
-                                        8) {
-                                      return 'Password Character length at least 8';
-                                    } else if (!passwordController.text
-                                            .contains('!') &&
-                                        !passwordController.text
-                                            .contains('@') &&
-                                        !passwordController.text
-                                            .contains('#') &&
-                                        !passwordController.text
-                                            .contains('\$') &&
-                                        !passwordController.text
-                                            .contains('%') &&
-                                        !passwordController.text
-                                            .contains('^') &&
-                                        !passwordController.text
-                                            .contains('&') &&
-                                        !passwordController.text
-                                            .contains('*') &&
-                                        !passwordController.text
-                                            .contains(')') &&
-                                        !passwordController.text
-                                            .contains('(')) {
-                                      return 'Passwrod contains must {!@#\$%^&*()}';
-                                    }
+                                    // if (val!.isEmpty) {
+                                    //   return "Field is Empty";
+                                    // } else if (passwordController.text.length <
+                                    //     8) {
+                                    //   return 'Password Character length at least 8';
+                                    // } else if (!passwordController.text
+                                    //         .contains('!') &&
+                                    //     !passwordController.text
+                                    //         .contains('@') &&
+                                    //     !passwordController.text
+                                    //         .contains('#') &&
+                                    //     !passwordController.text
+                                    //         .contains('\$') &&
+                                    //     !passwordController.text
+                                    //         .contains('%') &&
+                                    //     !passwordController.text
+                                    //         .contains('^') &&
+                                    //     !passwordController.text
+                                    //         .contains('&') &&
+                                    //     !passwordController.text
+                                    //         .contains('*') &&
+                                    //     !passwordController.text
+                                    //         .contains(')') &&
+                                    //     !passwordController.text
+                                    //         .contains('(')) {
+                                    //   return 'Passwrod contains must {!@#\$%^&*()}';
+                                    // }
                                     return null;
                                   },
                                   obscureCharacter: "*",

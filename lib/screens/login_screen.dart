@@ -376,12 +376,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const SizedBox(height: 16),
                                 CustomTextField(
                                   validator: (val) {
-                                    if (val!.isEmpty) {
-                                      return "Please Enter your Password";
-                                    }
-                                    if (passwordController.text.length < 8) {
-                                      return "Password should must be 8 characters or above";
-                                    }
+                                    // if (val!.isEmpty) {
+                                    //   return "Please Enter your Password";
+                                    // }
+                                    // if (passwordController.text.length < 8) {
+                                    //   return "Password should must be 8 characters or above";
+                                    // }
                                     return null;
                                   },
                                   obscureCharacter: "*",

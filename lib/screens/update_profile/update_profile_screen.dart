@@ -922,7 +922,7 @@ class _CreatAndUpdateProfileScreenState
       }
     } catch (e) {
       // Handle any exceptions that occur during the process
-      MyToast('An error occurred: $e', Type: false);
+      // MyToast('An error occurred: $e', Type: false);
     }
   }
 
@@ -991,7 +991,7 @@ class _CreatAndUpdateProfileScreenState
       }
     } catch (e) {
       // Handle the error gracefully
-      MyToast("Error: $e", Type: false);
+      // MyToast("Error: $e", Type: false);
       setState(() {
         _isUploading = false; // Ensure upload state is reset
       });

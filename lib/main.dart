@@ -21,6 +21,7 @@ import 'package:client_nfc_mobile_app/utils/colors.dart';
 import 'package:client_nfc_mobile_app/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'splash_screen.dart';
+import 'dart:async';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,6 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  // clearStoredPermissions();
 
   runApp(MyApp());
 }
@@ -86,25 +86,37 @@ class ConnectivityCheck extends StatefulWidget {
 
 class _ConnectivityCheckState extends State<ConnectivityCheck> {
   bool isConnected = true;
+  StreamSubscription<ConnectivityResult>? _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
     _checkConnectivity();
+    _connectivitySubscription =
+        Connectivity().onConnectivityChanged.listen((result) {
+      if (mounted) {
+        // Ensure the widget is still mounted
+        setState(() {
+          isConnected = result != ConnectivityResult.none;
+        });
+      }
+    });
   }
 
   Future<void> _checkConnectivity() async {
     final ConnectivityResult result = await Connectivity().checkConnectivity();
-    setState(() {
-      isConnected = result != ConnectivityResult.none;
-    });
-
-    // Listen to connectivity changes
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+    if (mounted) {
+      // Ensure the widget is still mounted
       setState(() {
         isConnected = result != ConnectivityResult.none;
       });
-    });
+    }
+  }
+
+  @override
+  void dispose() {
+    _connectivitySubscription?.cancel(); // Cancel the subscription
+    super.dispose();
   }
 
   @override

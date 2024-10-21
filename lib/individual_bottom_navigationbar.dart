@@ -137,81 +137,87 @@ class _IndividualBottomNavigationBarState
                 onTap: (index) => setState(() => currentIndex = index),
                 items: [
                   BottomNavigationBarItem(
-                    icon: GradientIcon(
-                      icon: currentIndex == 0
-                          ? Icons.home_filled
-                          : Icons.home_outlined,
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primaryColor,
-                          AppColors.secondaryColor
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                      icon: GradientIcon(
+                        icon: currentIndex == 0
+                            ? Icons.home_filled
+                            : Icons.home_outlined,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.secondaryColor
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
-                    ),
-                    label: "Home",
-                  ),
+                      label: ""
+                      // label: "Home",
+                      ),
                   BottomNavigationBarItem(
-                    icon: GradientIcon(
-                      icon: Icons.wifi,
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primaryColor,
-                          AppColors.secondaryColor
-                        ],
+                      icon: GradientIcon(
+                        icon: Icons.wifi,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.secondaryColor
+                          ],
+                        ),
                       ),
-                    ),
-                    label: "NFC",
-                  ),
+                      label: ""
+                      // label: "NFC",
+                      ),
                   BottomNavigationBarItem(
-                    icon: GradientIcon(
-                      icon: Icons.person,
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primaryColor,
-                          AppColors.secondaryColor
-                        ],
+                      icon: GradientIcon(
+                        icon: Icons.person,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.secondaryColor
+                          ],
+                        ),
                       ),
-                    ),
-                    label: "Profile",
-                  ),
+                      label: ""
+                      // label: "Profile",
+                      ),
                   BottomNavigationBarItem(
-                    icon: GradientIcon(
-                      icon: Icons.calendar_month,
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primaryColor,
-                          AppColors.secondaryColor
-                        ],
+                      icon: GradientIcon(
+                        icon: Icons.calendar_month,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.secondaryColor
+                          ],
+                        ),
                       ),
-                    ),
-                    label: "Appointment",
-                  ),
+                      label: ""
+                      // label: "Appointment",
+                      ),
                   BottomNavigationBarItem(
-                    icon: GradientIcon(
-                      icon: Icons.card_membership,
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primaryColor,
-                          AppColors.secondaryColor
-                        ],
+                      icon: GradientIcon(
+                        icon: Icons.card_membership,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.secondaryColor
+                          ],
+                        ),
                       ),
-                    ),
-                    label: "Digital Card",
-                  ),
+                      label: ""
+                      // label: "Digital Card",
+                      ),
                   BottomNavigationBarItem(
-                    icon: GradientIcon(
-                      icon: Icons.analytics_outlined,
-                      gradient: LinearGradient(
-                        colors: [
-                          AppColors.primaryColor,
-                          AppColors.secondaryColor
-                        ],
+                      icon: GradientIcon(
+                        icon: Icons.analytics_outlined,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primaryColor,
+                            AppColors.secondaryColor
+                          ],
+                        ),
                       ),
-                    ),
-                    label: "Analytics",
-                  ),
+                      label: ""
+                      // label: "Analytics",
+                      ),
                 ],
               ),
             );

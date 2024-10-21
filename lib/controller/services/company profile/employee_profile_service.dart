@@ -88,10 +88,12 @@ class EmployeeProfileServices {
         return newEmployee;
         // notifyListeners();
       } else if (response.statusCode == 400) {
-        MyToast('Validation errors: ${response.body}', Type: false);
+        final data = jsonDecode(response.body);
+        print(data);
+        MyToast(data['error'][0], Type: false);
         return null;
       } else {
-        MyToast('Failed to create employee', Type: false);
+        MyToast('Failed to create employee Try Again', Type: false);
         return null;
       }
     } catch (error) {

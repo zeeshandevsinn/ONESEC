@@ -16,6 +16,7 @@ class LoginUserProvider extends ChangeNotifier {
   bool isLoading = false;
   String Auth_Token = "";
   User? futureUser;
+  bool logoutLoading = false;
   LoginUsers(context, String email, String password, String type) async {
     try {
       isLoading = true;
@@ -154,7 +155,7 @@ class LoginUserProvider extends ChangeNotifier {
   }
 
   logoutAccount(context, auth_token, authtype) async {
-    isLoading = true;
+    logoutLoading = true;
     notifyListeners();
     try {
       if (authtype == "google") {

@@ -23,7 +23,7 @@ class AppointmentServices {
         return null;
       }
     } catch (e) {
-      MyToast(e.toString(), Type: false);
+      // MyToast(e.toString(), Type: false);
       return null;
     }
   }

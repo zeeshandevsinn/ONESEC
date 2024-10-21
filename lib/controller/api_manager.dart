@@ -173,7 +173,7 @@ class APIsManager {
         return null;
       }
     } catch (e) {
-      MyToast("Error: $e", Type: false);
+      // MyToast("Error: $e", Type: false);
       return null;
     }
   }
@@ -315,7 +315,7 @@ class APIsManager {
       } else if (response.statusCode == 404) {
         // debugger();
         // MyToast('Profile does not exist.', Type: false);
-        MyToast('Please Create Profile First', Type: false);
+        // MyToast('Please Create Profile First', Type: false);
         return null;
       } else {
         // Failed to delete account

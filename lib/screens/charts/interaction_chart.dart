@@ -74,10 +74,6 @@ class _InteractionChartWidgetState extends State<InteractionChartWidget> {
       default:
         titles = [];
     }
-
-    // if (titles.length > 12) {
-    //   titles = List.generate(titles.length ~/ 2, (index) => titles[index * 2]);
-    // }
     return titles;
   }
 
@@ -120,6 +116,24 @@ class _InteractionChartWidgetState extends State<InteractionChartWidget> {
                     barTouchData: BarTouchData(enabled: false),
                     titlesData: FlTitlesData(
                       bottomTitles: AxisTitles(
+                        axisNameWidget: Row(
+                          children: [
+                            SizedBox(
+                              width: 30,
+                            ),
+                            Text(
+                              _selectedValue == 'daily'
+                                  ? 'Date Progress'
+                                  : _selectedValue == 'weekly'
+                                      ? 'Week Progress'
+                                      : 'Month Progress',
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
+                            ),
+                          ],
+                        ),
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 40,
@@ -144,6 +158,16 @@ class _InteractionChartWidgetState extends State<InteractionChartWidget> {
                         ),
                       ),
                       leftTitles: AxisTitles(
+                        axisNameWidget: RotatedBox(
+                          quarterTurns: 4, // Rotate text for Y-axis
+                          child: Text(
+                            'Frequency f(x)',
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red),
+                          ),
+                        ),
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 40,
@@ -282,5 +306,12 @@ class _InteractionChartWidgetState extends State<InteractionChartWidget> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    setState(() {});
   }
 }

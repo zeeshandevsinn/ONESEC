@@ -191,44 +191,49 @@ class _CompanyAdminBottomNavigationBarState
                 end: Alignment.bottomRight,
               ),
             ),
-            label: "Profile",
+            label: "",
+            // label: "Profile",
           ),
           const BottomNavigationBarItem(
-            icon: GradientIcon(
-              icon: Icons.people_alt_sharp,
-              gradient: LinearGradient(
-                colors: [AppColors.primaryColor, AppColors.secondaryColor],
+              icon: GradientIcon(
+                icon: Icons.people_alt_sharp,
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryColor, AppColors.secondaryColor],
+                ),
               ),
-            ),
-            label: "Employees",
-          ),
+              label: ""
+              // label: "Employees",
+              ),
           const BottomNavigationBarItem(
-            icon: GradientIcon(
-              icon: Icons.calendar_month,
-              gradient: LinearGradient(
-                colors: [AppColors.primaryColor, AppColors.secondaryColor],
+              icon: GradientIcon(
+                icon: Icons.calendar_month,
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryColor, AppColors.secondaryColor],
+                ),
               ),
-            ),
-            label: "Appointment",
-          ),
+              label: ""
+              // label: "Appointment",
+              ),
           const BottomNavigationBarItem(
-            icon: GradientIcon(
-              icon: Icons.card_membership,
-              gradient: LinearGradient(
-                colors: [AppColors.primaryColor, AppColors.secondaryColor],
+              icon: GradientIcon(
+                icon: Icons.card_membership,
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryColor, AppColors.secondaryColor],
+                ),
               ),
-            ),
-            label: "Digital Card",
-          ),
+              label: ""
+              // label: "Digital Card",
+              ),
           const BottomNavigationBarItem(
-            icon: GradientIcon(
-              icon: Icons.analytics_outlined,
-              gradient: LinearGradient(
-                colors: [AppColors.primaryColor, AppColors.secondaryColor],
+              icon: GradientIcon(
+                icon: Icons.analytics_outlined,
+                gradient: LinearGradient(
+                  colors: [AppColors.primaryColor, AppColors.secondaryColor],
+                ),
               ),
-            ),
-            label: "Analytics",
-          ),
+              label: ""
+              // label: "Analytics",
+              ),
         ],
       ),
     );

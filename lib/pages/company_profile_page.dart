@@ -412,7 +412,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                     SizedBox(height: 32),
                     Builder(builder: (context) {
                       var pro = context.watch<LoginUserProvider>();
-                      return pro.isLoading
+                      return pro.logoutLoading
                           ? Center(child: CircularProgressIndicator.adaptive())
                           : Padding(
                               padding:

@@ -40,7 +40,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    context.read<CompanyProvider>();
+    context.read<CompanyProvider>().isLoading = false;
     updateEmployee(widget.employeeDetail);
   }
 
@@ -65,154 +65,160 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     return Scaffold(
       body: Builder(builder: (context) {
         var pro = context.watch<CompanyProvider>();
-        return pro.isLoading
-            ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator.adaptive(),
-                    SizedBox(height: 20),
-                    // Add space between the spinner and text
-                    Text(
-                      widget.create
-                          ? 'Waiting Create Employee Profile...'
-                          : 'Waiting Update Employee Profile...',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black, // Set text color
-                      ),
-                    ),
-                  ],
+        return
+            // pro.isLoading
+            //     ? Center(
+            //         child: Column(
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             CircularProgressIndicator.adaptive(),
+            //             SizedBox(height: 20),
+            //             // Add space between the spinner and text
+            //             Text(
+            //               widget.create
+            //                   ? 'Waiting Create Employee Profile...'
+            //                   : 'Waiting Update Employee Profile...',
+            //               style: TextStyle(
+            //                 fontSize: 16,
+            //                 fontWeight: FontWeight.w500,
+            //                 color: Colors.black, // Set text color
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       )
+            //     :
+            SingleChildScrollView(
+          padding: EdgeInsets.all(16.0),
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(
+                  height: 20,
                 ),
-              )
-            : SingleChildScrollView(
-                padding: EdgeInsets.all(16.0),
-                child: SafeArea(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        widget.create ? "Add Employee" : "Update Employee",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                          fontFamily: "GothamBold",
-                          fontSize: 28.0,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.textColor14,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.containerColor8,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 24, right: 24.0),
-                          child: Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 30,
-                                ),
-                                CustomTextField(
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter the first name';
-                                    }
-                                    return null;
-                                  },
-                                  controller: _firstNameController,
-                                  hintText: 'First Name',
-                                ),
-                                SizedBox(height: 16.0),
-                                CustomTextField(
-                                  controller: _lastNameController,
-                                  hintText: 'Last Name',
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter the last name';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 16.0),
-                                CustomTextField(
-                                  controller: _emailController,
-                                  hintText: 'Email',
-                                  keyboardType: TextInputType.emailAddress,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter an email';
-                                    }
-                                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                        .hasMatch(value)) {
-                                      return 'Please enter a valid email address';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 16.0),
-                                CustomTextField(
-                                  controller: _postionController,
-                                  hintText: 'Position',
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter the position';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                // SizedBox(height: 16.0),
-                                // CustomTextField(
-                                //     controller: displayEmailController,
-                                //     hintText: 'Display Email',
-                                //     validator: (val) {
-                                //       if (val!.isEmpty) {
-                                //         return 'The email you want to show in your digital profile';
-                                //       } else if (!displayEmailController.text
-                                //               .contains('@') &&
-                                //           !displayEmailController.text
-                                //               .contains('.com')) {
-                                //         return "Email is not Correct";
-                                //       }
-                                //       return null;
-                                //     },
-                                //     keyboardType: TextInputType.emailAddress),
-                                // SizedBox(height: 16.0),
-                                // CustomTextField(
-                                //     controller: usernameController,
-                                //     hintText: 'Employee Username (Optional)',
-                                //     validator: (val) {
-                                //       if (val!.isEmpty) {
-                                //         return null;
-                                //       }
-                                //       return null;
-                                //     },
-                                //     keyboardType: TextInputType.text),
+                Text(
+                  widget.create ? "Add Employee" : "Update Employee",
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    fontFamily: "GothamBold",
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.textColor14,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.containerColor8,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 24, right: 24.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 30,
+                          ),
+                          CustomTextField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter the first name';
+                              }
+                              return null;
+                            },
+                            controller: _firstNameController,
+                            hintText: 'First Name',
+                          ),
+                          SizedBox(height: 16.0),
+                          CustomTextField(
+                            controller: _lastNameController,
+                            hintText: 'Last Name',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter the last name';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16.0),
+                          CustomTextField(
+                            controller: _emailController,
+                            hintText: 'Email',
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter an email';
+                              }
+                              if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                  .hasMatch(value)) {
+                                return 'Please enter a valid email address';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 16.0),
+                          CustomTextField(
+                            controller: _postionController,
+                            hintText: 'Position',
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter the position';
+                              }
+                              return null;
+                            },
+                          ),
+                          // SizedBox(height: 16.0),
+                          // CustomTextField(
+                          //     controller: displayEmailController,
+                          //     hintText: 'Display Email',
+                          //     validator: (val) {
+                          //       if (val!.isEmpty) {
+                          //         return 'The email you want to show in your digital profile';
+                          //       } else if (!displayEmailController.text
+                          //               .contains('@') &&
+                          //           !displayEmailController.text
+                          //               .contains('.com')) {
+                          //         return "Email is not Correct";
+                          //       }
+                          //       return null;
+                          //     },
+                          //     keyboardType: TextInputType.emailAddress),
+                          // SizedBox(height: 16.0),
+                          // CustomTextField(
+                          //     controller: usernameController,
+                          //     hintText: 'Employee Username (Optional)',
+                          //     validator: (val) {
+                          //       if (val!.isEmpty) {
+                          //         return null;
+                          //       }
+                          //       return null;
+                          //     },
+                          //     keyboardType: TextInputType.text),
 
-                                SizedBox(height: 16.0),
-                                CustomTextField(
-                                  controller: _phoneController,
-                                  hintText: 'Phone',
-                                  keyboardType: TextInputType.phone,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter a phone number';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                                SizedBox(height: 32.0),
-                                SizedBox(height: 20),
-                                GestureDetector(
+                          SizedBox(height: 16.0),
+                          CustomTextField(
+                            controller: _phoneController,
+                            hintText: 'Phone',
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a phone number';
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 32.0),
+                          SizedBox(height: 20),
+                          pro.isLoading
+                              ? Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                )
+                              : GestureDetector(
                                   onTap: widget.create
                                       ? () async {
                                           if (_formKey.currentState!
@@ -330,18 +336,18 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 30,
-                                ),
-                              ],
-                            ),
+                          SizedBox(
+                            height: 30,
                           ),
-                        ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              );
+              ],
+            ),
+          ),
+        );
       }),
     );
   }

@@ -449,7 +449,12 @@ class _CreatAndUpdateProfileScreenState
                                   return null;
                                 }, keyboardType: TextInputType.emailAddress),
                                 _buildTextField(_phoneController, 'Phone',
-                                    keyboardType: TextInputType.number),
+                                    validator: (val) {
+                                  if (val!.isEmpty) {
+                                    return "Phone Field is required";
+                                  }
+                                  return null;
+                                }, keyboardType: TextInputType.number),
                                 _buildTextField(_addressController, 'Address',
                                     maxLines: 2),
                                 _buildTextField(_bioController, 'Bio',

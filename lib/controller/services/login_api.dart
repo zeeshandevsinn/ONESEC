@@ -163,7 +163,7 @@ class LoginUserProvider extends ChangeNotifier {
       }
       final data = await APIsManager.LogoutUser(auth_token);
       if (data != null) {
-        await AuthTokenStorage.removeAuthToken();
+        // await AuthTokenStorage.removeAuthToken();
         isLoading = false;
         notifyListeners();
         // MyToast("Logout Successfully");

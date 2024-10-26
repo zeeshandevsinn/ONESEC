@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:client_nfc_mobile_app/controller/services/share_profile_provider/share_profile_provider.dart';
 import 'package:client_nfc_mobile_app/screens/share_profile_screen/appointment_share_profile.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +72,7 @@ class _ReceivedProfileScreenState extends State<ReceivedProfileScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
-                        child: CircularProgressIndicator(),
+                        child: LoadingCircle(),
                       );
                     } else if (snapshot.hasError) {
                       return Center(

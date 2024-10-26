@@ -1,4 +1,5 @@
 import 'package:client_nfc_mobile_app/controller/services/account%20update/account_update_provider.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:client_nfc_mobile_app/components/custom_text_field.dart';
 import 'package:provider/provider.dart';
@@ -147,7 +148,7 @@ class _ManageAccountSettingState extends State<ManageAccountSetting> {
                             SizedBox(height: 40),
                             pro.isLoading
                                 ? Center(
-                                    child: CircularProgressIndicator.adaptive(),
+                                    child: LoadingCircle(),
                                   )
                                 : GestureDetector(
                                     onTap: () async {

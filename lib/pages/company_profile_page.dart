@@ -12,6 +12,7 @@ import 'package:client_nfc_mobile_app/screens/delete_account_screen.dart';
 import 'package:client_nfc_mobile_app/screens/employee/add_employee_screen.dart';
 import 'package:client_nfc_mobile_app/screens/share_profile_screen/received_profile_screen.dart';
 import 'package:client_nfc_mobile_app/screens/share_profile_screen/share_profile_screen.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client_nfc_mobile_app/data/employees_items.dart';
@@ -413,7 +414,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                     Builder(builder: (context) {
                       var pro = context.watch<LoginUserProvider>();
                       return pro.logoutLoading
-                          ? Center(child: CircularProgressIndicator.adaptive())
+                          ? Center(child: LoadingCircle())
                           : Padding(
                               padding:
                                   const EdgeInsets.only(left: 16, right: 16.0),

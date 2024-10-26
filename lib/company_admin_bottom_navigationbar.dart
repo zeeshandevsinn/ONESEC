@@ -5,6 +5,7 @@ import 'package:client_nfc_mobile_app/models/user_model.dart';
 import 'package:client_nfc_mobile_app/pages/individual_analytic_page.dart';
 import 'package:client_nfc_mobile_app/screens/card-details/company_card_profile.dart';
 import 'package:client_nfc_mobile_app/screens/company/company_user_create_profile.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:client_nfc_mobile_app/pages/company_appointment_page.dart';
 import 'package:client_nfc_mobile_app/pages/company_employees_page.dart';
@@ -96,7 +97,7 @@ class _CompanyAdminBottomNavigationBarState
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator.adaptive(),
+            LoadingCircle(),
             SizedBox(height: 20),
             Text(
               'Fetching Company Profile...',

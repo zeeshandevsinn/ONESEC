@@ -5,6 +5,7 @@ import 'package:client_nfc_mobile_app/components/custom_text_field.dart';
 import 'package:client_nfc_mobile_app/controller/services/share_profile_provider/share_profile_manager.dart';
 import 'package:client_nfc_mobile_app/controller/services/share_profile_provider/share_profile_provider.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,10 @@ class _ShareProfileScreenState extends State<ShareProfileScreen> {
     try {
       var pro = context.read<ShareProfileProvider>();
       final url = await pro.ShareProfileURL(auth);
-      setState(() {
+      if(mounted)
+     { setState(() {
         profileUrl = url;
-      });
+      });}
     } catch (e) {
       MyToast(e.toString(), Type: false);
     }
@@ -270,7 +272,7 @@ class _ShareProfileScreenState extends State<ShareProfileScreen> {
                             SizedBox(height: 20),
                             pro.isLoading
                                 ? Center(
-                                    child: CircularProgressIndicator.adaptive(),
+                                    child: LoadingCircle(),
                                   )
                                 : GestureDetector(
                                     onTap: () async {

@@ -7,6 +7,7 @@ import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
 import 'package:client_nfc_mobile_app/models/user_profile/user_profile_details.dart';
 import 'package:client_nfc_mobile_app/pages/appointment_schedule.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -129,7 +130,7 @@ class _AppoinmentShareProfileScreenState
         }
         return gro.isLoading
             ? Center(
-                child: CircularProgressIndicator.adaptive(),
+                child: LoadingCircle(),
               )
             : SingleChildScrollView(
                 scrollDirection: Axis.vertical,

@@ -1,6 +1,7 @@
 import 'package:client_nfc_mobile_app/controller/services/appointment/appoinment_provider.dart';
 import 'package:client_nfc_mobile_app/models/appointments/appointment_model.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client_nfc_mobile_app/data/appointments_items.dart';
@@ -66,7 +67,7 @@ class _IndividualAppointmentPageState extends State<IndividualAppointmentPage> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                          return Center(child: LoadingCircle());
                         } else if (snapshot.hasError) {
                           return Center(
                               child: Text('Error: ${snapshot.error}'));

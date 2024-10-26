@@ -1,5 +1,6 @@
 import 'package:client_nfc_mobile_app/controller/OnWillPop.dart';
 import 'package:client_nfc_mobile_app/screens/card-details/card_profile_details_screen.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +65,7 @@ class _IndividualBottomNavigationBarState
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator.adaptive(),
+                    LoadingCircle(),
                     SizedBox(height: 20),
                     Text(
                       'Fetching Your Profile...',
@@ -139,7 +140,7 @@ class _IndividualBottomNavigationBarState
     if (mounted) {
       setState(() {
         currentIndex = index;
-        print('currentIndex:$currentIndex');
+        // print('currentIndex:$currentIndex');
       });
     }
   });

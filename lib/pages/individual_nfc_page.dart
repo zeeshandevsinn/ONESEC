@@ -1,6 +1,7 @@
 import 'package:client_nfc_mobile_app/components/custom_dialog_box.dart';
 import 'package:client_nfc_mobile_app/controller/NFC/nfc_provider/nfc_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/share_profile_provider/share_profile_provider.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +46,7 @@ class _IndividualNFCPageState extends State<IndividualNFCPage> {
     return Consumer<NFCNotifier>(builder: (context, nfc, child) {
       return Scaffold(
         body: nfc.isProcessing
-            ? Center(child: CircularProgressIndicator.adaptive())
+            ? Center(child: LoadingCircle())
             : SingleChildScrollView(
                 child: SafeArea(
                   child: Padding(

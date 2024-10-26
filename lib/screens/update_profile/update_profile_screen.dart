@@ -6,6 +6,7 @@ import 'package:client_nfc_mobile_app/individual_bottom_navigationbar.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
 import 'package:client_nfc_mobile_app/models/user_profile/user_profile_details.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -209,7 +210,7 @@ class _CreatAndUpdateProfileScreenState
                   SizedBox(height: 32),
                   Builder(builder: (context) {
                     return pro.isLoading
-                        ? Center(child: CircularProgressIndicator.adaptive())
+                        ? Center(child: LoadingCircle())
                         : Padding(
                             padding:
                                 const EdgeInsets.only(left: 16, right: 16.0),
@@ -306,7 +307,7 @@ class _CreatAndUpdateProfileScreenState
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator.adaptive(),
+                    LoadingCircle(),
                     SizedBox(height: 20),
                     // Add space between the spinner and text
                     Text(

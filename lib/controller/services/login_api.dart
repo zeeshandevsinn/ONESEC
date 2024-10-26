@@ -165,8 +165,7 @@ class LoginUserProvider extends ChangeNotifier {
       if (data != null) {
         // await AuthTokenStorage.removeAuthToken();
         isLoading = false;
-        notifyListeners();
-
+        Future.microtask(() => notifyListeners());
         // MyToast("Logout Successfully");
         Navigator.pushAndRemoveUntil(
             context,
@@ -174,11 +173,6 @@ class LoginUserProvider extends ChangeNotifier {
                 builder: (_) => WelcomeScreen(), context: context),
             (route) => false);
       }
-      isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      isLoading = false;
-      notifyListeners();
-    }
+    } catch (e) {}
   }
 }

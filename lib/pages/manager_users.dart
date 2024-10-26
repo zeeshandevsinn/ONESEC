@@ -2,6 +2,7 @@ import 'package:client_nfc_mobile_app/controller/services/company_provider.dart'
 import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
 import 'package:client_nfc_mobile_app/screens/employee/add_employee_screen.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client_nfc_mobile_app/data/employees_items.dart';
@@ -218,7 +219,7 @@ class _ManageUsersState extends State<ManageUsers> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator.adaptive(),
+                    LoadingCircle(),
                     SizedBox(height: 20),
                     // Add space between the spinner and text
                     Text(

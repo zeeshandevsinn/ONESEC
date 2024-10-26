@@ -8,6 +8,7 @@ import 'package:client_nfc_mobile_app/models/company/company_user.dart';
 import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -308,7 +309,7 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                         children: [
                           // pro.isLoading
                           //     ? Center(
-                          //         child: CircularProgressIndicator.adaptive())
+                          //         child: LoadingCircle())
                           //     :
                           GestureDetector(
                             onTap: () async {
@@ -401,7 +402,7 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator.adaptive(),
+                    LoadingCircle(),
                     SizedBox(height: 20),
                     // Add space between the spinner and text
                     Text(

@@ -63,37 +63,40 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
       ],
     );
   }
+void showMenuCard(BuildContext context, token, bool isGoogle) {
+  List<String> filteredChoices = PopUpMenuItems.choices
+      .where((choice) => !(isGoogle && choice == PopUpMenuItems.accountSetting))
+      .toList();
 
-  void showMenuCard(BuildContext context, token) {
-    showMenu(
-      color: Colors.black,
-      context: context,
-      position: RelativeRect.fromLTRB(100, 100, 0, 0),
-      items: PopUpMenuItems.choices.map((String choice) {
-        return PopupMenuItem<String>(
-          value: choice,
-          child: ListTile(
-            title: Text(
-              choice,
-              style: TextStyle(
-                fontFamily: "GothamRegular",
-                fontSize: 16.0,
-                fontWeight: FontWeight.w400,
-                color: Colors.white,
-              ),
-            ),
-            leading: Icon(
-              PopUpMenuItems.choiceIcons[choice],
-              size: 24,
+  showMenu(
+    color: Colors.black,
+    context: context,
+    position: RelativeRect.fromLTRB(100, 100, 0, 0),
+    items: filteredChoices.map((String choice) {
+      return PopupMenuItem<String>(
+        value: choice,
+        child: ListTile(
+          title: Text(
+            choice,
+            style: TextStyle(
+              fontFamily: "GothamRegular",
+              fontSize: 16.0,
+              fontWeight: FontWeight.w400,
               color: Colors.white,
             ),
           ),
-        );
-      }).toList(),
-    ).then((value) {
-      if (value != null) choiceAction(value, token);
-    });
-  }
+          leading: Icon(
+            PopUpMenuItems.choiceIcons[choice],
+            size: 24,
+            color: Colors.white,
+          ),
+        ),
+      );
+    }).toList(),
+  ).then((value) {
+    if (value != null) choiceAction(value, token);
+  });
+}
 
   void _showDeleteDialog(BuildContext context, tokenId, auth_type) {
     showDialog(
@@ -544,6 +547,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    var gro = context.watch<GoogleProvider>();
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
@@ -586,7 +590,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                     IconButton(
                       onPressed: () {
                         // _showPopupMenu(context, widget.auth_token);
-                        showMenuCard(context, widget.auth_token);
+                        showMenuCard(context, widget.auth_token,gro.isGoogleLogin);
                         // print(widget.auth_token);
                       },
                       icon: Icon(
@@ -597,7 +601,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                     ),
                   ],
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Container(
                   height: 120,
                   width: MediaQuery.of(context).size.width,
@@ -637,11 +641,11 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                           child: Container(
                             width: size.width * .70,
                             child: Text(
-                              "Hi, ${widget.name}" ?? "John Doe",
+                              "Hi, ${widget.name}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: "GothamBold",
-                                fontSize: 28,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w700,
                                 color: AppColors.textColor14,
                               ),
@@ -676,7 +680,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
                 Container(
                   height: 400,
                   decoration: BoxDecoration(
@@ -684,12 +688,12 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.only(top: 24),
+                    padding: const EdgeInsets.only(top: 24),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 24, right: 24),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 24, right: 24),
                           child: Row(
                             children: [
                               Text(
@@ -704,22 +708,22 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         Expanded(
                           child: FutureBuilder<List<dynamic>>(
                             future: _getAppointments,
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Center(
+                                return const Center(
                                     child: CircularProgressIndicator());
                               } else if (snapshot.hasError) {
                                 return Center(
                                     child: Text('Error: ${snapshot.error}'));
                               } else if (snapshot.hasData) {
-                                final appointments = snapshot.data!;
-                                if (appointments.isEmpty) {
-                                  return Center(
+                                final appointments = snapshot.data;
+                                if (appointments!.isEmpty) {
+                                  return const Center(
                                       child: Text(
                                     'No appointments available.',
                                     textAlign: TextAlign.center,
@@ -740,9 +744,9 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
                                           height: 150,
-                                          padding: EdgeInsets.only(
+                                          padding: const EdgeInsets.only(
                                               left: 16, right: 16),
-                                          margin: EdgeInsets.only(
+                                          margin: const EdgeInsets.only(
                                             bottom: 20,
                                           ),
                                           width:
@@ -773,7 +777,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
-                                                  Container(
+                                                  SizedBox(
                                                     width:
                                                         MediaQuery.of(context)
                                                                 .size
@@ -783,7 +787,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                       data.title,
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontFamily:
                                                             "GothamRegular",
                                                         fontSize: 16.0,
@@ -796,7 +800,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                   ),
                                                   Text(
                                                     data.datetime.toString(),
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       fontFamily: "GothamBold",
                                                       fontSize: 13.0,
                                                       fontWeight:
@@ -804,7 +808,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                       color: Colors.black,
                                                     ),
                                                   ),
-                                                  Container(
+                                                  SizedBox(
                                                     width:
                                                         MediaQuery.of(context)
                                                                 .size
@@ -815,7 +819,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                       overflow:
                                                           TextOverflow.ellipsis,
                                                       softWrap: true,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                         fontFamily:
                                                             "GothamBold",
                                                         fontSize: 14.0,
@@ -843,10 +847,10 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                                   .circular(10),
                                                         ),
                                                       ),
-                                                      SizedBox(width: 10),
+                                                      const SizedBox(width: 10),
                                                       Text(
                                                         data.meetingStatus,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           fontFamily:
                                                               "GothamRegular",
                                                           fontSize: 15.0,
@@ -860,7 +864,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                   )
                                                 ],
                                               ),
-                                              Row(
+                                              const Row(
                                                 children: [],
                                               )
                                             ],
@@ -873,7 +877,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                   );
                                 }
                               } else {
-                                return Center(
+                                return const Center(
                                     child: Text(
                                   'No Appointments Found!',
                                   textAlign: TextAlign.center,

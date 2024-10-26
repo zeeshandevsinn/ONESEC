@@ -20,4 +20,15 @@ class AuthTokenStorage {
     final prefs = await SharedPreferences.getInstance();
     return await prefs.remove(_authTokenKey);
   }
+
+  static Future<void> saveGoogleLoginState(bool isGoogleLogin) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isGoogleLogin', isGoogleLogin);
+  }
+
+    static Future<bool> getGoogleLoginState() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isGoogleLogin') ?? false;
+  }
+
 }

@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 
 class GoogleProvider extends ChangeNotifier {
   bool isLoading = false;
+  bool isGoogleLogin = false;
   SignInGoogle(context, profileType) async {
     isLoading = true;
     notifyListeners();

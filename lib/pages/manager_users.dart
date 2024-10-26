@@ -243,7 +243,7 @@ class _ManageUsersState extends State<ManageUsers> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "Manage Users",
+                              "Manage Employees",
                               style: TextStyle(
                                 fontFamily: "GothamBold",
                                 fontSize: 28.0,
@@ -526,126 +526,6 @@ class _ManageUsersState extends State<ManageUsers> {
                                           ),
                                         ],
                                       )),
-
-                                // Expanded(
-                                //     child: ListView.builder(
-                                //       itemCount: 12,
-                                //       scrollDirection: Axis.vertical,
-                                //       shrinkWrap: true,
-                                //       itemBuilder: (BuildContext context,
-                                //           int index) {
-                                //         return Container(
-                                //           height: 80,
-                                //           padding: EdgeInsets.only(
-                                //               left: 16, right: 10),
-                                //           margin: EdgeInsets.only(
-                                //             bottom: 20,
-                                //           ),
-                                //           width: MediaQuery.of(context)
-                                //               .size
-                                //               .width,
-                                //           decoration: BoxDecoration(
-                                //             color:
-                                //                 AppColors.containerColor3,
-                                //             borderRadius:
-                                //                 BorderRadius.circular(16),
-                                //           ),
-                                //           child: Row(
-                                //             mainAxisAlignment:
-                                //                 MainAxisAlignment
-                                //                     .spaceAround,
-                                //             children: [
-                                //               ClipRRect(
-                                //                 borderRadius:
-                                //                     BorderRadius.circular(
-                                //                         60),
-                                //                 child: Image.asset(
-                                //                   employees
-                                //                       .myEmployees[index]
-                                //                       .image,
-                                //                   width: 60,
-                                //                   height: 60,
-                                //                   fit: BoxFit.cover,
-                                //                 ),
-                                //               ),
-                                //               SizedBox(width: 6),
-                                //               Text(
-                                //                 employees.myEmployees[index]
-                                //                     .title,
-                                //                 style: TextStyle(
-                                //                   fontFamily:
-                                //                       "GothamRegular",
-                                //                   fontSize: 16.0,
-                                //                   fontWeight:
-                                //                       FontWeight.w400,
-                                //                   color: Colors.black,
-                                //                 ),
-                                //               ),
-                                //               SizedBox(width: 10),
-                                //               Row(
-                                //                 children: [
-                                //                   GestureDetector(
-                                //                     onTap: () {
-                                //                       print(
-                                //                           "edit appointment");
-                                //                     },
-                                //                     child: Container(
-                                //                       height: 34,
-                                //                       width: 34,
-                                //                       padding:
-                                //                           EdgeInsets.all(6),
-                                //                       decoration:
-                                //                           BoxDecoration(
-                                //                         color: AppColors
-                                //                             .containerColor6,
-                                //                         shape:
-                                //                             BoxShape.circle,
-                                //                       ),
-                                //                       child: Center(
-                                //                         child: Icon(
-                                //                           Icons.edit,
-                                //                           color: AppColors
-                                //                               .containerColor8,
-                                //                         ),
-                                //                       ),
-                                //                     ),
-                                //                   ),
-                                //                   SizedBox(width: 10),
-                                //                   GestureDetector(
-                                //                     onTap: () {
-                                //                       print(
-                                //                           "delete appointment");
-                                //                     },
-                                //                     child: Container(
-                                //                       height: 34,
-                                //                       width: 34,
-                                //                       padding:
-                                //                           EdgeInsets.all(6),
-                                //                       decoration:
-                                //                           BoxDecoration(
-                                //                         color: AppColors
-                                //                             .containerColor7,
-                                //                         shape:
-                                //                             BoxShape.circle,
-                                //                       ),
-                                //                       child: Center(
-                                //                         child: Icon(
-                                //                           Icons
-                                //                               .delete_outline,
-                                //                           color: AppColors
-                                //                               .containerColor8,
-                                //                         ),
-                                //                       ),
-                                //                     ),
-                                //                   ),
-                                //                 ],
-                                //               )
-                                //             ],
-                                //           ),
-                                //         );
-                                //       },
-                                //     ),
-                                //   ),
                               ],
                             ),
                           ),

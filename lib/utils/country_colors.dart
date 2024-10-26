@@ -48,7 +48,7 @@ class CountryColors {
     'OM': Colors.lightBlue,
     'PK': Colors.green,
     'PS': Colors.red,
-    'PA': Colors.blueAccent,
+    'PA': Color(0XFF0062FF),
     'PG': Colors.orange,
     'PY': Colors.redAccent,
     'PE': Colors.lightGreen,

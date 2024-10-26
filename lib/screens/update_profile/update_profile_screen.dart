@@ -526,49 +526,13 @@ class _CreatAndUpdateProfileScreenState
                                   }
                                   return null;
                                 },
-                                    // validator: (val) {
-                                    //   if (val!.isEmpty) {
-                                    //     return null;
-                                    //   } else {
-                                    //     final input = _whatsappController.text;
-
-                                    //     // Check if the input is not empty and is numeric
-                                    //     if (input.isNotEmpty) {
-                                    //       final number = int.tryParse(input);
-
-                                    //       if (number != null) {
-                                    //         setState(() {
-                                    //           _whatsappNumber = number;
-                                    //         });
-                                    //         // Optionally, show a success message or perform an action
-                                    //         MyToast(
-                                    //             "'WhatsApp Number Updated: $_whatsappNumber'");
-                                    //         print('$_whatsappNumber');
-                                    //         return null;
-                                    //       } else {
-                                    //         // Handle invalid number format
-                                    //         return 'Invalid Number format $_whatsappNumber';
-                                    //       }
-                                    //     }
-                                    //   }
-                                    // },
                                     keyboardType: TextInputType.number),
                                 SizedBox(height: 20),
                                 GestureDetector(
                                   onTap: widget.create
                                       ? () async {
                                           if (newKey.currentState!.validate()) {
-                                            // if (_image == null &&
-                                            //     networkUserImage.isEmpty) {
-                                            //   MyToast("Please Put Image in it",
-                                            //       Type: false);
-                                            // } else if (_downloadURL!.isEmpty) {
-                                            //   MyToast(
-                                            //       "Waiting Profile Uploading ...",
-                                            //       Type: false);
-                                            // } else
-
-                                            {
+                                               {
                                               if (_whatsappController
                                                   .text.isEmpty) {
                                                 // if (mounted)
@@ -576,49 +540,6 @@ class _CreatAndUpdateProfileScreenState
                                                   _whatsappNumber = 0;
                                                 });
                                               }
-                                              // _convertImageToBase64();
-                                              // debugger();
-                                              // if (_image != null) {
-                                              //   final imageURL =
-                                              //       await _imageToBase64(
-                                              //           File(_image!.path));
-                                              // }
-                                              // debugger();
-                                              // final userProfile =
-                                              //     UserProfileDetails(
-                                              //   id: widget.userDetails!.id,
-                                              //   firstName: _firstNameController
-                                              //       .text
-                                              //       .trim(),
-                                              //   lastName: _lastNameController
-                                              //       .text
-                                              //       .trim(),
-                                              //   email: _emailController.text
-                                              //       .trim(),
-                                              //   phone: _phoneController.text
-                                              //       .trim(),
-                                              //   address: _addressController.text
-                                              //       .trim(),
-                                              //   bio: _bioController.text.trim(),
-                                              //   facebook: _facebookController
-                                              //       .text
-                                              //       .trim(),
-                                              //   instagram: _instagramController
-                                              //       .text
-                                              //       .trim(),
-                                              //   website: _websiteController.text
-                                              //       .trim(),
-                                              //   linkedin: _linkedInController
-                                              //       .text
-                                              //       .trim(),
-                                              //   github: _githubController.text
-                                              //       .trim(),
-                                              //   whatsapp: _whatsappNumber,
-                                              //   profilePic: null,
-                                              //   user: widget.userDetails!.id,
-                                              // );
-
-                                              // final data = userProfile.toJson();
                                               print(widget.userDetails!.id);
 
                                               final response =
@@ -682,18 +603,6 @@ class _CreatAndUpdateProfileScreenState
                                       : () async {
                                           //Update Profile
                                           if (newKey.currentState!.validate()) {
-                                            // if (_image == null &&
-                                            //     networkUserImage.isEmpty) {
-                                            //   MyToast("Please Put Image in it",
-                                            //       Type: false);
-                                            // } else if (networkUserImage
-                                            //         .isEmpty &&
-                                            //     _downloadURL!.isEmpty) {
-                                            //   MyToast(
-                                            //       "Waiting Profile Uploading ...",
-                                            //       Type: false);
-                                            // } else
-
                                             {
                                               // debugger();
                                               if (_whatsappController
@@ -800,33 +709,6 @@ class _CreatAndUpdateProfileScreenState
                           ),
                         ),
                       ),
-                      // ListTile(
-                      //   leading: Stack(
-                      //     children: [
-                      //       CircleAvatar(
-                      //         radius: 40,
-                      //         backgroundImage: _image == null
-                      //             ? AssetImage('assets/images/profile4.png')
-                      //             : FileImage(_image!) as ImageProvider,
-                      //       ),
-                      //       Positioned(
-                      //         bottom: 0,
-                      //         right: 0,
-                      //         child: InkWell(
-                      //           onTap: getImage,
-                      //           child: CircleAvatar(
-                      //             radius: 12,
-                      //             backgroundColor: Colors.white,
-                      //             child: Icon(Icons.edit, size: 15),
-                      //           ),
-                      //         ),
-                      //       ),
-                      //     ],
-                      //   ),
-                      //   title: Text(
-                      //       '${_firstNameController.text} ${_lastNameController.text}'),
-                      //   subtitle: Text('Username here'),
-                      // ),
                     ],
                   ),
                 ),

@@ -121,27 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                 ),
-                              ),
-                              // Spacer(),
-                              // Row(
-                              //   children: [
-                              //     Text(
-                              //       "English (United States)",
-                              //       style: TextStyle(
-                              //         fontFamily: "GothamRegular",
-                              //         fontSize: 14.0,
-                              //         fontWeight: FontWeight.w400,
-                              //         color: AppColors.textColor7,
-                              //       ),
-                              //     ),
-                              //     Icon(
-                              //       Icons.arrow_drop_down,
-                              //       color: Colors.black,
-                              //       size: 30,
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
+                              ),         ],
                           ),
                         ),
                         SizedBox(height: 30),
@@ -292,6 +272,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onTap: () async {
                                   await gro.SignInGoogle(
                                       context, tab ? "individual" : "company");
+                                      print('gro.isGoogleLogin:${gro.isGoogleLogin}');
+                                 gro.isGoogleLogin=true;
                                 },
                                 child: SocialMediaButtons(
                                   image: "assets/images/googleicon.png",
@@ -300,17 +282,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       : "Login with Company",
                                 ),
                               ),
-                              SizedBox(height: 16),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     print("login with facebook");
-                              //   },
-                              //   child: SocialMediaButtons(
-                              //     image: "assets/images/facebookicon.png",
-                              //     text: "Login with Facebook",
-                              //   ),
-                              // ),
-                            ],
+                              SizedBox(height: 16),   ],
                           ),
                         ),
                         SizedBox(height: 22),
@@ -325,6 +297,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   color: AppColors.containerColor9,
                                 ),
                               ),
+
                             ),
                             Text(
                               "or",
@@ -375,14 +348,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 const SizedBox(height: 16),
                                 CustomTextField(
-                                  validator: (val) {
-                                    // if (val!.isEmpty) {
-                                    //   return "Please Enter your Password";
-                                    // }
-                                    // if (passwordController.text.length < 8) {
-                                    //   return "Password should must be 8 characters or above";
-                                    // }
-                                    return null;
+                                  validator: (val) {  return null;
                                   },
                                   obscureCharacter: "*",
                                   isObscureText: true,

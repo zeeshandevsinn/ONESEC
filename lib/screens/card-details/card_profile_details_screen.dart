@@ -74,7 +74,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
                     widget.profileDetails.firstName! +
                         ' ' +
                         widget.profileDetails.lastName!,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: "GothamBold",
                       fontSize: 20.0,
                       fontWeight: FontWeight.w700,
@@ -83,7 +83,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
                   ),
                   Text(
                     widget.profileDetails.position ?? "",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: "GothamRegular",
                       fontSize: 14.0,
                       fontWeight: FontWeight.w400,
@@ -93,9 +93,9 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -123,8 +123,8 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               ),
             ),
 
-            SizedBox(height: 20),
-            Padding(
+            const SizedBox(height: 20),
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 "About",
@@ -137,14 +137,14 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
+              padding: const EdgeInsets.all(16.0),
+              child:(widget.profileDetails.bio!=null)? Text(
                 widget.profileDetails.bio ?? "",
-                style: TextStyle(fontSize: 17),
-              ),
+                style: const TextStyle(fontSize: 17),
+              ):const SizedBox(),
             ),
-            SizedBox(height: 20),
-            Padding(
+            const SizedBox(height: 20),
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Text(
                 "Contact Me",
@@ -157,20 +157,23 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  (widget.profileDetails.email!=null)?
                   _buildContactInfo(
-                      Icons.email, widget.profileDetails.email ?? ""),
+                      Icons.email, widget.profileDetails.email ?? ""):const SizedBox(),
+                  (widget.profileDetails.phone!=null)?
                   _buildContactInfo(
-                      Icons.phone, widget.profileDetails.phone ?? ""),
+                      Icons.phone, widget.profileDetails.phone ?? ""):const SizedBox(),
+                  (widget.profileDetails.address!=null)?
                   _buildContactInfo(
-                      Icons.location_on, widget.profileDetails.address ?? ""),
+                      Icons.location_on, widget.profileDetails.address ?? ""):const SizedBox(),
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -181,7 +184,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
                         context: context));
               },
               child: Container(
-                margin: EdgeInsets.all(20),
+                margin: const EdgeInsets.all(20),
                 width: MediaQuery.of(context).size.width,
                 height: 42,
                 decoration: BoxDecoration(
@@ -208,7 +211,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               ),
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
@@ -236,7 +239,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               //   MyToast("Invalid URL format: $url", Type: false);
               //   return;
               // }
-
+              if (!mounted) return;
               await launchUrl(uri, mode: LaunchMode.externalApplication);
               // if (await canLaunchUrl(uri)) {
               //   // final bool isSocialMedia = url.contains('linkedin.com') ||
@@ -255,6 +258,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
               //   MyToast("Cannot Launch $url", Type: false);
               // }
             } catch (e) {
+              if (!mounted) return; 
               // Handle any errors that occur during launching
               MyToast("Error launching $url: $e", Type: false);
             }
@@ -263,7 +267,7 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
         child: Container(
           width: 50,
           height: 50,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
                 AppColors.primaryColor,
@@ -289,15 +293,13 @@ class _DigitalCardProfileState extends State<DigitalCardProfile> {
       child: Row(
         children: [
           Icon(icon, color: Colors.grey),
-          SizedBox(width: 12),
+          const SizedBox(width: 12),
           Flexible(
-            child: Container(
-              child: Text(
-                info,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                style: TextStyle(fontSize: 16),
-              ),
+            child: Text(
+              info,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: const TextStyle(fontSize: 16),
             ),
           ),
         ],

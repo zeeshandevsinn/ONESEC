@@ -1,3 +1,4 @@
+import 'package:client_nfc_mobile_app/controller/services/company_provider.dart';
 import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
 import 'package:client_nfc_mobile_app/models/user_model.dart';
 import 'package:client_nfc_mobile_app/screens/employee/add_employee_screen.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:client_nfc_mobile_app/data/employees_items.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class CompanyEmployeesPage extends StatefulWidget {
@@ -20,6 +23,182 @@ class CompanyEmployeesPage extends StatefulWidget {
 
 class _CompanyEmployeesPageState extends State<CompanyEmployeesPage> {
   var employees = EmployeesItems();
+
+  _showDeleteEmployee(BuildContext context, tokenId, email) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          var pro = context.watch<CompanyProvider>();
+          return Dialog(
+            child: Container(
+              decoration: BoxDecoration(
+                color: AppColors.containerColor8,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          size: 30,
+                          color: AppColors.textColor15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.containerColor5,
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        "assets/images/icon1.png",
+                        width: 47,
+                        height: 63,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 35),
+                  Text(
+                    "Are You Sure?",
+                    style: TextStyle(
+                      fontFamily: "GothamBold",
+                      fontSize: 28.0,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textColor14,
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  Container(
+                    height: 80,
+                    width: MediaQuery.of(context).size.width * .70,
+                    child: Text(
+                      'Are you sure you want to delete your Employee $email?',
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontFamily: "GothamRegular",
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.textColor18,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 32),
+                  pro.isLoading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.only(left: 16, right: 16.0),
+                          child: Column(
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  print(tokenId);
+
+                                  final response = await pro.DeleteEmployee(
+                                    tokenId,
+                                    email,
+                                  );
+                                  if (response != null) {
+                                    widget.companyDetails!.employees
+                                        .removeWhere((employee) =>
+                                            employee['email'] == email);
+                                    setState(() {
+                                      widget.companyDetails!.employees;
+                                    });
+                                  }
+                                  Navigator.of(context)
+                                      .pop(); // Navigate to delete screen
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 42,
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        AppColors.primaryColor,
+                                        AppColors.secondaryColor,
+                                      ],
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "Yes, Sure",
+                                      style: TextStyle(
+                                        fontFamily: "GothamRegular",
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w400,
+                                        color: AppColors.textColor24,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 16.0),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    height: 42,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.containerColor8,
+                                      border: const GradientBoxBorder(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            AppColors.primaryColor,
+                                            AppColors.secondaryColor,
+                                          ],
+                                        ),
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Center(
+                                      child: GradientText(
+                                        "No",
+                                        style: TextStyle(
+                                          fontFamily: "GothamRegular",
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                        colors: [
+                                          AppColors.textColor9,
+                                          AppColors.textColor28,
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,51 +220,16 @@ class _CompanyEmployeesPageState extends State<CompanyEmployeesPage> {
                 ),
                 SizedBox(height: 24),
                 Container(
-                  height: 1150,
+                  height: MediaQuery.of(context).size.height * .85,
                   decoration: BoxDecoration(
                     color: AppColors.containerColor8,
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 14.0, right: 14),
+                    padding: EdgeInsets.all(12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(height: 24),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Our Employees",
-                              style: TextStyle(
-                                fontFamily: "GothamBold",
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.textColor14,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    CupertinoDialogRoute(
-                                        builder: (_) => AddEmployeeScreen(
-                                            companyDetails:
-                                                widget.companyDetails,
-                                            create: true,
-                                            authToken: widget.authToken,
-                                            userDetails: widget.userDetails),
-                                        context: context));
-                              },
-                              icon: Icon(
-                                Icons.add_circle_outline_outlined,
-                                size: 30,
-                                color: Color(0xFF3C4B4B),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 24),
                         widget.companyDetails!.employees.isNotEmpty
                             ? Expanded(
                                 child: ListView.builder(
@@ -102,91 +246,136 @@ class _CompanyEmployeesPageState extends State<CompanyEmployeesPage> {
                                       final position = employee['position'];
                                       final profilePic =
                                           employee['profile_pic'];
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 8.0),
-                                        child: Container(
-                                          height: 80,
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 10,
-                                          ),
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.containerColor3,
-                                            borderRadius:
-                                                BorderRadius.circular(16),
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    EdgeInsets.only(left: 12.0),
-                                                child: ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.circular(60),
-                                                  child: profilePic != null
-                                                      ? FadeInImage
-                                                          .assetNetwork(
-                                                          placeholder:
-                                                              'assets/images/logo.png',
-                                                          image: profilePic,
-                                                          imageErrorBuilder:
-                                                              (context, error,
-                                                                  stackTrace) {
-                                                            return Icon(
-                                                              Icons
-                                                                  .error, // Show an error icon if the image fails to load
-                                                              color: Colors.red,
-                                                            );
-                                                          },
-                                                          width: 60,
-                                                          height: 60,
-                                                          fit: BoxFit.cover,
-                                                        )
-                                                      : CircleAvatar(
-                                                          child: Icon(Icons
-                                                              .person), // Default icon when profile_pic is null
-                                                        ),
+                                      final email = employee['email'];
+
+                                      return Container(
+                                        height: 80,
+                                        padding: EdgeInsets.only(
+                                            left: 16, right: 10),
+                                        margin: EdgeInsets.only(
+                                          bottom: 20,
+                                        ),
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.containerColor3,
+                                          borderRadius:
+                                              BorderRadius.circular(16),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(60),
+                                              child: profilePic != null
+                                                  ? FadeInImage.assetNetwork(
+                                                      placeholder:
+                                                          'assets/images/logo.png',
+                                                      image: profilePic,
+                                                      imageErrorBuilder:
+                                                          (context, error,
+                                                              stackTrace) {
+                                                        return Icon(
+                                                          Icons
+                                                              .error, // Show an error icon if the image fails to load
+                                                          color: Colors.red,
+                                                        );
+                                                      },
+                                                      width: 60,
+                                                      height: 60,
+                                                      fit: BoxFit.cover,
+                                                    )
+                                                  : CircleAvatar(
+                                                      child: Icon(Icons
+                                                          .person), // Default icon when profile_pic is null
+                                                    ),
+                                            ),
+                                            SizedBox(width: 6),
+                                            Flexible(
+                                              child: Container(
+                                                child: Text(
+                                                  fullName,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontFamily: "GothamRegular",
+                                                    fontSize: 16.0,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.black,
+                                                  ),
                                                 ),
                                               ),
-                                              SizedBox(width: 12),
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 10),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      fullName,
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "GothamBold",
-                                                        fontSize: 18.0,
-                                                        fontWeight:
-                                                            FontWeight.w700,
+                                            ),
+                                            SizedBox(width: 10),
+                                            Row(
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        CupertinoDialogRoute(
+                                                            builder: (_) => AddEmployeeScreen(
+                                                                employeeDetail:
+                                                                    employee,
+                                                                create: false,
+                                                                authToken: widget
+                                                                    .authToken,
+                                                                userDetails: widget
+                                                                    .userDetails,
+                                                                companyDetails:
+                                                                    widget
+                                                                        .companyDetails),
+                                                            context: context));
+                                                  },
+                                                  child: Container(
+                                                    height: 34,
+                                                    width: 34,
+                                                    padding: EdgeInsets.all(6),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors
+                                                          .containerColor6,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Icon(
+                                                        Icons.edit,
                                                         color: AppColors
-                                                            .textColor14,
+                                                            .containerColor8,
                                                       ),
                                                     ),
-                                                    Text(
-                                                      position,
-                                                      style: TextStyle(
-                                                        fontFamily:
-                                                            "GothamRegular",
-                                                        fontSize: 13.0,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: Color(0xFF111111)
-                                                            .withOpacity(.6),
-                                                      ),
-                                                    ),
-                                                  ],
+                                                  ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
+                                                SizedBox(width: 10),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    _showDeleteEmployee(
+                                                        context,
+                                                        widget.authToken,
+                                                        email);
+                                                  },
+                                                  child: Container(
+                                                    height: 34,
+                                                    width: 34,
+                                                    padding: EdgeInsets.all(6),
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors
+                                                          .containerColor7,
+                                                      shape: BoxShape.circle,
+                                                    ),
+                                                    child: Center(
+                                                      child: Icon(
+                                                        Icons.delete_outline,
+                                                        color: AppColors
+                                                            .containerColor8,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
                                         ),
                                       );
                                     }))
@@ -222,94 +411,10 @@ class _CompanyEmployeesPageState extends State<CompanyEmployeesPage> {
                                   ),
                                 ],
                               )),
-
-                        // Expanded(
-                        //     child: ListView.builder(
-                        //       itemCount: 12,
-                        //       scrollDirection: Axis.vertical,
-                        //       physics: NeverScrollableScrollPhysics(),
-                        //       shrinkWrap: true,
-                        //       itemBuilder:
-                        //           (BuildContext context, int index) {
-                        //         return Padding(
-                        //           padding:
-                        //               const EdgeInsets.only(bottom: 8.0),
-                        //           child: Container(
-                        //             height: 80,
-                        //             padding: EdgeInsets.symmetric(
-                        //               vertical: 10,
-                        //             ),
-                        //             width:
-                        //                 MediaQuery.of(context).size.width,
-                        //             decoration: BoxDecoration(
-                        //               color: AppColors.containerColor3,
-                        //               borderRadius:
-                        //                   BorderRadius.circular(16),
-                        //             ),
-                        //             child: Row(
-                        //               children: [
-                        //                 Padding(
-                        //                   padding:
-                        //                       EdgeInsets.only(left: 12.0),
-                        //                   child: ClipRRect(
-                        //                     borderRadius:
-                        //                         BorderRadius.circular(60),
-                        //                     child: Image.asset(
-                        //                       employees
-                        //                           .myEmployees[index].image,
-                        //                       width: 60,
-                        //                       height: 60,
-                        //                       fit: BoxFit.cover,
-                        //                     ),
-                        //                   ),
-                        //                 ),
-                        //                 SizedBox(width: 12),
-                        //                 Padding(
-                        //                   padding: const EdgeInsets.only(
-                        //                       top: 10),
-                        //                   child: Column(
-                        //                     crossAxisAlignment:
-                        //                         CrossAxisAlignment.start,
-                        //                     children: [
-                        //                       Text(
-                        //                         employees.myEmployees[index]
-                        //                             .title,
-                        //                         style: TextStyle(
-                        //                           fontFamily: "GothamBold",
-                        //                           fontSize: 18.0,
-                        //                           fontWeight:
-                        //                               FontWeight.w700,
-                        //                           color:
-                        //                               AppColors.textColor14,
-                        //                         ),
-                        //                       ),
-                        //                       Text(
-                        //                         employees.myEmployees[index]
-                        //                             .subtitle,
-                        //                         style: TextStyle(
-                        //                           fontFamily:
-                        //                               "GothamRegular",
-                        //                           fontSize: 13.0,
-                        //                           fontWeight:
-                        //                               FontWeight.w400,
-                        //                           color: Color(0xFF111111)
-                        //                               .withOpacity(.6),
-                        //                         ),
-                        //                       ),
-                        //                     ],
-                        //                   ),
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ),
-                        //         );
-                        //       },
-                        //     ),
-                        //   ),
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

@@ -442,7 +442,7 @@ class _AppoinmentShareProfileScreenState
                                         ),
                                         child: Center(
                                           child: Text(
-                                            "Appointment Shedule",
+                                            "Appointment Schedule",
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily: "GothamRegular",

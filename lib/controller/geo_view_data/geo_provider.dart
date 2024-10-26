@@ -16,7 +16,7 @@ class GeoProvider extends ChangeNotifier {
       final response = await GeoDataService.fetchGeoData(token);
       if (response != null) {
         isLoading = false;
-        Future.microtask(() => notifyListeners());
+        notifyListeners();
 
         // Convert API data to a map of country codes to colors
 
@@ -25,12 +25,12 @@ class GeoProvider extends ChangeNotifier {
         // return data;
       } else {
         isLoading = false;
-        Future.microtask(() => notifyListeners());
+        notifyListeners();
         return null;
       }
     } catch (e) {
       isLoading = false;
-      Future.microtask(() => notifyListeners());
+      notifyListeners();
       MyToast(e.toString(), Type: false);
       return null;
     }

@@ -23,6 +23,7 @@ import 'package:client_nfc_mobile_app/pages/notification_setting.dart';
 import 'package:client_nfc_mobile_app/utils/colors.dart';
 import 'package:flutter/services.dart';
 import 'package:gradient_borders/gradient_borders.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -522,11 +523,13 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
     if (response is Map<String, dynamic>) {
       // Assuming the list of appointments is inside the 'appointments' key
       if (response.containsKey('results')) {
+        print(response);
         return response['results'];
       } else {
         return [];
       }
     } else if (response is List) {
+      print(response);
       return response;
     } else {
       return [];
@@ -538,7 +541,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
     super.initState();
     context.read<LoginUserProvider>();
     context.read<AppointmentProvider>();
-
+    context.read<LoginUserProvider>().logoutLoading = false;
     // Assign the function to the Future variable
     _getAppointments = _fetchReceivedAppointments();
   }
@@ -714,13 +717,13 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return const Center(
-                                    child: LoadingCircle());
+                                return const Center(child: LoadingCircle());
                               } else if (snapshot.hasError) {
                                 return Center(
                                     child: Text('Error: ${snapshot.error}'));
                               } else if (snapshot.hasData) {
                                 final appointments = snapshot.data;
+                                // debugger();
                                 if (appointments!.isEmpty) {
                                   return const Center(
                                       child: Text(
@@ -739,10 +742,21 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                     itemBuilder: (context, index) {
                                       Appointments data = Appointments.fromJson(
                                           appointments[index]);
+                                      String isoDate = data.datetime.toString();
+
+                                      // Parse the ISO string to a DateTime object
+                                      DateTime dateTime =
+                                          DateTime.parse(isoDate);
+
+                                      // Format the DateTime object into a human-readable string
+                                      String formattedDate =
+                                          DateFormat.yMMMMd('en_US')
+                                              .add_jm()
+                                              .format(dateTime);
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                          height: 150,
+                                          height: size.height * .20,
                                           padding: const EdgeInsets.only(
                                               left: 16, right: 16),
                                           margin: const EdgeInsets.only(
@@ -776,6 +790,36 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
+                                                  if (data.type == "host")
+                                                    Text(
+                                                      "Hosted by You:",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontFamily:
+                                                            "GothamRegular",
+                                                        fontSize: 13.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: AppColors
+                                                            .textColor14,
+                                                      ),
+                                                    )
+                                                  else
+                                                    Text(
+                                                      "Attendee by You:",
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        fontFamily:
+                                                            "GothamRegular",
+                                                        fontSize: 13.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: AppColors
+                                                            .textColor14,
+                                                      ),
+                                                    ),
                                                   SizedBox(
                                                     width:
                                                         MediaQuery.of(context)
@@ -789,7 +833,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                       style: const TextStyle(
                                                         fontFamily:
                                                             "GothamRegular",
-                                                        fontSize: 16.0,
+                                                        fontSize: 14.0,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: AppColors
@@ -798,7 +842,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    data.datetime.toString(),
+                                                    formattedDate,
                                                     style: const TextStyle(
                                                       fontFamily: "GothamBold",
                                                       fontSize: 13.0,
@@ -807,44 +851,39 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                                       color: Colors.black,
                                                     ),
                                                   ),
-                                                  SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            .60,
-                                                    child: Text(
-                                                      data.attendeeEmail,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      softWrap: true,
-                                                      style: const TextStyle(
-                                                        fontFamily:
-                                                            "GothamBold",
-                                                        fontSize: 14.0,
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        color: Colors.black,
+                                                  if (data
+                                                      .attendeeEmail.isNotEmpty)
+                                                    SizedBox(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              .60,
+                                                      child: Text(
+                                                        data.attendeeEmail,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        softWrap: true,
+                                                        style: const TextStyle(
+                                                          fontFamily:
+                                                              "GothamBold",
+                                                          fontSize: 14.0,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: Colors.black,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
                                                   Row(
                                                     children: [
-                                                      Container(
-                                                        width: 10,
-                                                        height: 12,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              data.meetingStatus ==
-                                                                      "pending"
-                                                                  ? Colors.red
-                                                                  : Colors
-                                                                      .green,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
+                                                      Icon(
+                                                        Icons.circle,
+                                                        size: 15,
+                                                        color:
+                                                            data.meetingStatus ==
+                                                                    "pending"
+                                                                ? Colors.red
+                                                                : Colors.green,
                                                       ),
                                                       const SizedBox(width: 10),
                                                       Text(

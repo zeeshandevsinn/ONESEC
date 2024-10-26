@@ -62,7 +62,7 @@ class _ScheduleAppointmentState extends State<ScheduleAppointment> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Shedule Appointments",
+                    "Schedule Appointments",
                     style: TextStyle(
                       fontFamily: "GothamBold",
                       fontSize: 28.0,

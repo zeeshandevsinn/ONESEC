@@ -49,14 +49,14 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   updateEmployee(employees) {
     if (employees != null) {
       setState(() {
-        _firstNameController.text = employees['first_name'];
-        _lastNameController.text = employees['last_name'];
-        _emailController.text = employees['email'];
-        previousEmail = employees['email'];
-        _phoneController.text = employees['phone'];
-        _postionController.text = employees['position'];
-        displayEmailController.text = employees['display_email'];
-        usernameController.text = employees['username'];
+        _firstNameController.text = employees['first_name'] ?? '';
+        _lastNameController.text = employees['last_name'] ?? '';
+        _emailController.text = employees['email'] ?? '';
+        previousEmail = employees['email'] ?? '';
+        _phoneController.text = employees['phone'] ?? '';
+        _postionController.text = employees['position'] ?? '';
+        displayEmailController.text = employees['display_email'] ?? '';
+        usernameController.text = employees['username'] ?? '';
       });
     }
   }

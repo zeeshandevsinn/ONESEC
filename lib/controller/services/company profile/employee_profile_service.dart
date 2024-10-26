@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:client_nfc_mobile_app/controller/endpoints.dart';
 import 'package:client_nfc_mobile_app/utils/toast.dart';
@@ -54,6 +55,27 @@ class EmployeeProfileServices {
   }) async {
     final completeURL = EndPointsURLs.BASE_URL + "api/employees/";
     final url = Uri.parse(completeURL);
+    final payload = {
+      'company':
+          companyID, // Assuming companyID is always provided and non-null
+      if (firstName != null) 'first_name': firstName,
+      if (lastName != null) 'last_name': lastName,
+      if (email != null) 'email': email,
+      if (position != null) 'position': position,
+      if (phone != null) 'phone': phone,
+      if (address != null) 'address': address,
+      if (bio != null) 'bio': bio,
+      if (facebook != null) 'facebook': facebook,
+      if (instagram != null) 'instagram': instagram,
+      if (website != null) 'website': website,
+      if (linkedin != null) 'linkedin': linkedin,
+      if (github != null) 'github': github,
+      if (whatsapp != null) 'whatsapp': whatsapp,
+      if (profilePic != null) 'profile_pic': profilePic,
+    };
+
+    print(payload);
+    // debugger();
     try {
       final response = await http.post(
         url,
@@ -61,27 +83,9 @@ class EmployeeProfileServices {
           'Authorization': 'Token $token',
           'Content-Type': 'application/json',
         },
-        body: json.encode({
-          'company': companyID,
-          'first_name': firstName,
-          'last_name': lastName,
-          'email': email,
-          'position': position,
-          'phone': phone,
-          'address': address,
-          'bio': bio,
-          'facebook': facebook,
-          'instagram': instagram,
-          'display_email': display_email,
-          'username': username,
-          'website': website,
-          'linkedin': linkedin,
-          'github': github,
-          'whatsapp': whatsapp,
-          'profile_pic': profilePic,
-        }),
+        body: json.encode(payload),
       );
-
+      // debugger();
       if (response.statusCode == 201) {
         final newEmployee = json.decode(response.body);
         // _employees.add(newEmployee);

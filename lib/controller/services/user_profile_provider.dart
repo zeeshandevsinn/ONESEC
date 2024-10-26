@@ -9,15 +9,15 @@ class UserProfileProvider extends ChangeNotifier {
 
   GetUserProfile(username, authToken) async {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = await APIsManager.GetUserProfileData(username, authToken);
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       return data;
     } catch (e) {
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       MyToast("Internet Issue 404 error");
       return null;
     }
@@ -43,7 +43,7 @@ class UserProfileProvider extends ChangeNotifier {
       String? profilePic,
       required int user}) async {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = await APIsManager.CreateUserProfile(
           display_email: displayEmail,
@@ -65,12 +65,12 @@ class UserProfileProvider extends ChangeNotifier {
           profilePic: profilePic,
           position: position);
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       return data;
     } catch (e) {
       // debugger();
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       MyToast("Server Issue 404 error", Type: false);
       return null;
     }
@@ -97,7 +97,7 @@ class UserProfileProvider extends ChangeNotifier {
       String? profilePic,
       required int user}) async {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = await APIsManager.UpdateUserProfileDetails(
           display_email: display_email,
@@ -121,18 +121,18 @@ class UserProfileProvider extends ChangeNotifier {
           position: position);
       if (data != null) {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         MyToast("Profile Update Successfully");
         return data;
       } else {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         MyToast("Here Some thing issue through Server", Type: false);
         return null;
       }
     } catch (e) {
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       MyToast("Internet Issue 404 error", Type: false);
       // debugger();
       return null;

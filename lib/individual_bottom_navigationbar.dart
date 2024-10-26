@@ -58,7 +58,7 @@ class _IndividualBottomNavigationBarState
         future: _profileFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Scaffold(
+            return const Scaffold(
               backgroundColor: AppColors.backgroundColor1,
               body: Center(
                 child: Column(
@@ -79,7 +79,7 @@ class _IndividualBottomNavigationBarState
               ),
             );
           } else if (snapshot.hasError) {
-            return Scaffold(
+            return const Scaffold(
               backgroundColor: AppColors.backgroundColor1,
               body: Center(
                 child: Text(
@@ -134,14 +134,25 @@ class _IndividualBottomNavigationBarState
                 type: BottomNavigationBarType.fixed,
                 unselectedItemColor: AppColors.textColor16,
                 currentIndex: currentIndex,
-                onTap: (index) => setState(() => currentIndex = index),
+              onTap: (index) {
+  Future.delayed(Duration.zero, () {
+    if (mounted) {
+      setState(() {
+        currentIndex = index;
+        print('currentIndex:$currentIndex');
+      });
+    }
+  });
+},
+
+
                 items: [
                   BottomNavigationBarItem(
                       icon: GradientIcon(
                         icon: currentIndex == 0
                             ? Icons.home_filled
                             : Icons.home_outlined,
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           colors: [
                             AppColors.primaryColor,
                             AppColors.secondaryColor
@@ -153,7 +164,7 @@ class _IndividualBottomNavigationBarState
                       label: ""
                       // label: "Home",
                       ),
-                  BottomNavigationBarItem(
+                  const BottomNavigationBarItem(
                       icon: GradientIcon(
                         icon: Icons.wifi,
                         gradient: LinearGradient(
@@ -166,7 +177,7 @@ class _IndividualBottomNavigationBarState
                       label: ""
                       // label: "NFC",
                       ),
-                  BottomNavigationBarItem(
+                  const BottomNavigationBarItem(
                       icon: GradientIcon(
                         icon: Icons.person,
                         gradient: LinearGradient(
@@ -179,7 +190,7 @@ class _IndividualBottomNavigationBarState
                       label: ""
                       // label: "Profile",
                       ),
-                  BottomNavigationBarItem(
+                  const BottomNavigationBarItem(
                       icon: GradientIcon(
                         icon: Icons.calendar_month,
                         gradient: LinearGradient(
@@ -192,7 +203,7 @@ class _IndividualBottomNavigationBarState
                       label: ""
                       // label: "Appointment",
                       ),
-                  BottomNavigationBarItem(
+                  const BottomNavigationBarItem(
                       icon: GradientIcon(
                         icon: Icons.card_membership,
                         gradient: LinearGradient(
@@ -205,7 +216,7 @@ class _IndividualBottomNavigationBarState
                       label: ""
                       // label: "Digital Card",
                       ),
-                  BottomNavigationBarItem(
+                  const BottomNavigationBarItem(
                       icon: GradientIcon(
                         icon: Icons.analytics_outlined,
                         gradient: LinearGradient(
@@ -244,186 +255,3 @@ class _IndividualBottomNavigationBarState
   }
 }
 
-
-// import 'package:client_nfc_mobile_app/screens/update_profile/update_profile_screen.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-// import 'package:flutter/scheduler.dart';
-// import 'package:client_nfc_mobile_app/controller/services/user_profile_provider.dart';
-// import 'package:client_nfc_mobile_app/models/user_model.dart';
-// import 'package:client_nfc_mobile_app/models/user_profile/user_profile_details.dart';
-// import 'package:client_nfc_mobile_app/pages/individual_profile_page.dart';
-// import 'package:client_nfc_mobile_app/pages/individual_nfc_page.dart';
-// import 'package:client_nfc_mobile_app/pages/individual_appointment_page.dart';
-// import 'package:client_nfc_mobile_app/pages/individual_analytic_page.dart';
-// import 'package:client_nfc_mobile_app/utils/colors.dart';
-// import 'package:gradient_icon/gradient_icon.dart';
-
-// class IndividualBottomNavigationBar extends StatefulWidget {
-//   final String userAuthToken;
-//   final User? futureUser;
-
-//   IndividualBottomNavigationBar({
-//     Key? key,
-//     required this.userAuthToken,
-//     required this.futureUser,
-//   }) : super(key: key);
-
-//   @override
-//   State<IndividualBottomNavigationBar> createState() =>
-//       _IndividualBottomNavigationBarState();
-// }
-
-// class _IndividualBottomNavigationBarState
-//     extends State<IndividualBottomNavigationBar> {
-//   int currentIndex = 0;
-//   late Future<UserProfileDetails?> _profileFuture;
-//   late List<Widget> pages;
-//   final ValueNotifier<UserProfileDetails?> _profileNotifier =
-//       ValueNotifier<UserProfileDetails?>(null);
-
-//   Future<UserProfileDetails?> _fetchProfile() async {
-//     var pro = context.read<UserProfileProvider>();
-//     return await pro.GetUserProfile(
-//         widget.futureUser!.id, widget.userAuthToken);
-//   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _profileFuture = _fetchProfile();
-//     _profileFuture.then((profileDetails) {
-//       _profileNotifier.value = profileDetails;
-//     });
-//     pages = [
-//       CheckingProfileDetails(
-//           authToken: widget.userAuthToken, profileNotifier: _profileNotifier),
-//       IndividualNFCPage(),
-//       CreatAndUpdateProfileScreen(
-//         create: false,
-//         profileDetails: _profileNotifier.value,
-//         userDetails: widget.futureUser,
-//         token: widget.userAuthToken,
-//       ),
-//       IndividualAppointmentPage(),
-//       IndividualAnalyticPage(),
-//     ];
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: AppColors.backgroundColor1,
-//       body: SafeArea(
-//         child: ValueListenableBuilder<UserProfileDetails?>(
-//           valueListenable: _profileNotifier,
-//           builder: (context, profileDetails, child) {
-//             if (profileDetails == null) {
-//               return Center(
-//                 child: CircularProgressIndicator.adaptive(),
-//               );
-//             }
-
-//             pages[2] = CreatAndUpdateProfileScreen(
-//               token: widget.userAuthToken,
-//               create: false,
-//               profileDetails: profileDetails,
-//               userDetails: widget.futureUser,
-//             );
-
-//             return pages[currentIndex];
-//           },
-//         ),
-//       ),
-//       bottomNavigationBar: BottomNavigationBar(
-//         type: BottomNavigationBarType.fixed,
-//         unselectedItemColor: AppColors.textColor16,
-//         currentIndex: currentIndex,
-//         onTap: (index) {
-//           setState(() {
-//             currentIndex = index;
-//           });
-//         },
-//         items: [
-//           BottomNavigationBarItem(
-//             icon: GradientIcon(
-//               icon: Icons.menu,
-//               gradient: LinearGradient(
-//                 colors: [AppColors.primaryColor, AppColors.secondaryColor],
-//                 begin: Alignment.topLeft,
-//                 end: Alignment.bottomRight,
-//               ),
-//             ),
-//             label: "Home",
-//           ),
-//           BottomNavigationBarItem(
-//             icon: GradientIcon(
-//               icon: Icons.wifi,
-//               gradient: LinearGradient(
-//                 colors: [AppColors.primaryColor, AppColors.secondaryColor],
-//               ),
-//             ),
-//             label: "NFC",
-//           ),
-//           BottomNavigationBarItem(
-//             icon: GradientIcon(
-//               icon: Icons.person,
-//               gradient: LinearGradient(
-//                 colors: [AppColors.primaryColor, AppColors.secondaryColor],
-//               ),
-//             ),
-//             label: "Profile",
-//           ),
-//           BottomNavigationBarItem(
-//             icon: GradientIcon(
-//               icon: Icons.calendar_month,
-//               gradient: LinearGradient(
-//                 colors: [AppColors.primaryColor, AppColors.secondaryColor],
-//               ),
-//             ),
-//             label: "Appointment",
-//           ),
-//           BottomNavigationBarItem(
-//             icon: GradientIcon(
-//               icon: Icons.analytics_outlined,
-//               gradient: LinearGradient(
-//                 colors: [AppColors.primaryColor, AppColors.secondaryColor],
-//               ),
-//             ),
-//             label: "Analytics",
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class CheckingProfileDetails extends StatelessWidget {
-//   final String authToken;
-//   final ValueNotifier<UserProfileDetails?> profileNotifier;
-
-//   CheckingProfileDetails({
-//     Key? key,
-//     required this.authToken,
-//     required this.profileNotifier,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ValueListenableBuilder<UserProfileDetails?>(
-//       valueListenable: profileNotifier,
-//       builder: (context, profileDetails, child) {
-//         if (profileDetails == null) {
-//           return Center(
-//             child: CircularProgressIndicator.adaptive(),
-//           );
-//         }
-
-//         // Your profile page implementation
-//         return IndividualProfilePage(
-//           auth_token: authToken,
-//         );
-//       },
-//     );
-//   }
-// }

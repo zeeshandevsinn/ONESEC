@@ -20,26 +20,26 @@ class LoginUserProvider extends ChangeNotifier {
   LoginUsers(context, String email, String password, String type) async {
     try {
       isLoading = true;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       final data = await APIsManager.LoginUsers(email, password);
       if (data != null) {
         // debugger();
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         isLoading = false;
         print(data['auth_token']);
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         Auth_Token = data['auth_token'] ?? "";
 
         await AuthTokenStorage.saveAuthToken(Auth_Token);
 
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         futureUser = await UserService().fetchUser(Auth_Token);
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         Navigator.pop(context);
         if (futureUser!.profileType == 'individual' ||
             futureUser!.profileType == 'employee') {
           if (futureUser!.profileType == type) {
-            notifyListeners();
+            Future.microtask(() => notifyListeners());
             MyToast("Login Successfully");
             Navigator.push(
                 context,
@@ -50,12 +50,12 @@ class LoginUserProvider extends ChangeNotifier {
                         ),
                     context: context));
           } else {
-            notifyListeners();
+            Future.microtask(() => notifyListeners());
             MyToast("Your Account did not found in $type");
           }
         } else if (futureUser!.profileType == 'company') {
           if (futureUser!.profileType == type) {
-            notifyListeners();
+            Future.microtask(() => notifyListeners());
             MyToast("Login Successfully");
             Navigator.push(
                 context,
@@ -68,7 +68,7 @@ class LoginUserProvider extends ChangeNotifier {
                         ),
                     context: context));
           } else {
-            notifyListeners();
+            Future.microtask(() => notifyListeners());
             MyToast("Your Account did not found in $type");
           }
         }
@@ -77,7 +77,7 @@ class LoginUserProvider extends ChangeNotifier {
         print(data.toString());
         // MyToast("Error 400 Credentials not found", Type: false);
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         Navigator.pop(context);
         // Navigator.pop(context);
       }
@@ -85,7 +85,7 @@ class LoginUserProvider extends ChangeNotifier {
       // debugger();
       MyToast("Error! $e", Type: false);
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       Navigator.pop(context);
       Navigator.pop(context);
     }
@@ -93,25 +93,25 @@ class LoginUserProvider extends ChangeNotifier {
 
   ResetPassword(context, email) async {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = await APIsManager.resetPassword(email);
       // debugger();
       if (data != null) {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         Navigator.pop(context);
         return true;
       } else {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
 
         Navigator.pop(context);
         return null;
       }
     } catch (e) {
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       Navigator.pop(context);
       MyToast("Error $e");
       return null;
@@ -120,13 +120,13 @@ class LoginUserProvider extends ChangeNotifier {
 
   DeleteAccount(context, token, password) async {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = await APIsManager.deleteAccount(token, password);
       // debugger();
       if (data) {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         MyToast("Successfully Delete your Account");
 
         Navigator.pop(context);
@@ -137,7 +137,7 @@ class LoginUserProvider extends ChangeNotifier {
             (route) => false);
       } else {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
 
         MyToast("Password did not Match Please forget your Password",
             Type: false);
@@ -147,7 +147,7 @@ class LoginUserProvider extends ChangeNotifier {
       }
     } catch (e) {
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       Navigator.pop(context);
       MyToast("Error $e");
       return null;
@@ -156,7 +156,7 @@ class LoginUserProvider extends ChangeNotifier {
 
   logoutAccount(context, auth_token, authtype) async {
     logoutLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       if (authtype == "google") {
         await GoogleSignInHelper.signOut();
@@ -165,7 +165,7 @@ class LoginUserProvider extends ChangeNotifier {
       if (data != null) {
         // await AuthTokenStorage.removeAuthToken();
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         // MyToast("Logout Successfully");
         Navigator.pushAndRemoveUntil(
             context,

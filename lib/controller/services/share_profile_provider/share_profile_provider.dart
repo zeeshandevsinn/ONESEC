@@ -7,42 +7,42 @@ class ShareProfileProvider extends ChangeNotifier {
 
   ShareProfileURL(authTOken) {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = ShareProfileManager.shareProfileUrl(authTOken);
       if (data != null) {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         return data;
       } else {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         return null;
       }
     } catch (e) {
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       MyToast(e.toString(), Type: false);
     }
   }
 
   ShareProfileThroughEmail(auth_token, email) async {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = await ShareProfileManager.shareProfile(auth_token, email);
       if (data != null) {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         return data;
       } else {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         return null;
       }
     } catch (e) {
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       MyToast(e.toString(), Type: false);
       return null;
     }
@@ -50,21 +50,21 @@ class ShareProfileProvider extends ChangeNotifier {
 
   ReceivedProfiles(token) {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = ShareProfileManager.getSharedProfiles(token);
       if (data != null) {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         return data;
       } else {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         return null;
       }
     } catch (e) {
       isLoading = false;
-      notifyListeners();
+      Future.microtask(() => notifyListeners());
       MyToast(e.toString(), Type: false);
       return null;
     }

@@ -7,12 +7,12 @@ class AppointmentProvider extends ChangeNotifier {
 
   getUpcomingAppointment(token) async {
     isLoading = true;
-    notifyListeners();
+    Future.microtask(() => notifyListeners());
     try {
       final data = await AppointmentServices.getAppointments(token);
       if (data != null) {
         isLoading = false;
-        notifyListeners();
+        Future.microtask(() => notifyListeners());
         return data;
       }
     } catch (e) {

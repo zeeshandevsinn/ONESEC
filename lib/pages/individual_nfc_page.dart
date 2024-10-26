@@ -31,9 +31,10 @@ class _IndividualNFCPageState extends State<IndividualNFCPage> {
     try {
       var pro = context.read<ShareProfileProvider>();
       final url = await pro.ShareProfileURL(auth);
-      setState(() {
+      if(mounted)
+      {setState(() {
         profileUrl = url;
-      });
+      });}
     } catch (e) {
       MyToast(e.toString(), Type: false);
     }

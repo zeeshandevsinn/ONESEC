@@ -1,3 +1,4 @@
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/http.dart' as http;
@@ -94,18 +95,18 @@ class _InteractionChartWidgetState extends State<InteractionChartWidget> {
         future: _barGroupsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: LoadingCircle());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No data available'));
+            return const Center(child: Text('No data available'));
           } else {
             final dataBars = snapshot.data!;
             final titles = _getBottomTitles();
 
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Container(
+              child: SizedBox(
                 width:
                     dataBars.length * 60.0, // Adjust width based on data length
                 height: 300, // Fixed height for the chart
@@ -306,12 +307,5 @@ class _InteractionChartWidgetState extends State<InteractionChartWidget> {
         ),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    setState(() {});
   }
 }

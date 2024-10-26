@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:client_nfc_mobile_app/utils/country_colors.dart';
+import 'package:client_nfc_mobile_app/utils/loading_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -167,7 +168,7 @@ class _SFMAPScreenState extends State<SFMAPScreen> {
       var pro = context.watch<GeoProvider>();
       return pro.isLoading
           ? Center(
-              child: CircularProgressIndicator.adaptive(),
+              child: LoadingCircle(),
             )
           : Container(
               margin: EdgeInsets.all(10),
@@ -383,7 +384,7 @@ class _SFMAPScreenState extends State<SFMAPScreen> {
                             ),
                             Text(
                               "$massive",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: "GothamBold",
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.w700,
@@ -506,59 +507,7 @@ class _SFMAPScreenState extends State<SFMAPScreen> {
                       ],
                     ),
                     SizedBox(height: 12),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.start,
-                    //   children: [
-                    //     Row(
-                    //       children: [
-                    //         Container(
-                    //           width: 10,
-                    //           height: 12,
-                    //           decoration: BoxDecoration(
-                    //             color: Color(0XFF0062FF),
-                    //             borderRadius: BorderRadius.circular(10),
-                    //           ),
-                    //         ),
-                    //         const SizedBox(width: 10),
-                    //         const Text(
-                    //           "Customer",
-                    //           style: TextStyle(
-                    //             fontFamily: "GothamRegular",
-                    //             fontSize: 14.0,
-                    //             fontWeight: FontWeight.w400,
-                    //             letterSpacing: 0.1,
-                    //             color: Color(0XFF0062FF),
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //     SizedBox(width: 20),
-                    //     Row(
-                    //       children: [
-                    //         Container(
-                    //           width: 10,
-                    //           height: 12,
-                    //           decoration: BoxDecoration(
-                    //             color: Color(0XFF8B8B8B),
-                    //             borderRadius: BorderRadius.circular(10),
-                    //           ),
-                    //         ),
-                    //         const SizedBox(width: 10),
-                    //         const Text(
-                    //           "No customer",
-                    //           style: TextStyle(
-                    //             fontFamily: "GothamRegular",
-                    //             fontSize: 14.0,
-                    //             fontWeight: FontWeight.w400,
-                    //             letterSpacing: 0.1,
-                    //             color: Color(0XFF8B8B8B),
-                    //           ),
-                    //         ),
-                    //       ],
-                    //     ),
-                    //   ],
-                    // ),
-                  ],
+                      ],
                 ),
               ),
             );

@@ -29,7 +29,7 @@ class ShareProfileManager {
   }
 
   static shareProfile(String token, String email) async {
-    final completeUrl = EndPointsURLs.BASE_URL + "api/share-profile/";
+    final completeUrl = EndPointsURLs.BASE_URL + "api/share-profile-url/";
     final url = Uri.parse(completeUrl);
     final response = await http.post(
       url,
@@ -42,7 +42,7 @@ class ShareProfileManager {
       }),
     );
     // debugger();
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
       MyToast("Successfully Share Profile");
       return true;
     } else if (response.statusCode == 400) {

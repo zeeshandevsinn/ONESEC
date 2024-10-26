@@ -63,40 +63,42 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
       ],
     );
   }
-void showMenuCard(BuildContext context, token, bool isGoogle) {
-  List<String> filteredChoices = PopUpMenuItems.choices
-      .where((choice) => !(isGoogle && choice == PopUpMenuItems.accountSetting))
-      .toList();
 
-  showMenu(
-    color: Colors.black,
-    context: context,
-    position: RelativeRect.fromLTRB(100, 100, 0, 0),
-    items: filteredChoices.map((String choice) {
-      return PopupMenuItem<String>(
-        value: choice,
-        child: ListTile(
-          title: Text(
-            choice,
-            style: TextStyle(
-              fontFamily: "GothamRegular",
-              fontSize: 16.0,
-              fontWeight: FontWeight.w400,
+  void showMenuCard(BuildContext context, token, bool isGoogle) {
+    List<String> filteredChoices = PopUpMenuItems.choices
+        .where(
+            (choice) => !(isGoogle && choice == PopUpMenuItems.accountSetting))
+        .toList();
+
+    showMenu(
+      color: Colors.black,
+      context: context,
+      position: RelativeRect.fromLTRB(100, 100, 0, 0),
+      items: filteredChoices.map((String choice) {
+        return PopupMenuItem<String>(
+          value: choice,
+          child: ListTile(
+            title: Text(
+              choice,
+              style: TextStyle(
+                fontFamily: "GothamRegular",
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+              ),
+            ),
+            leading: Icon(
+              PopUpMenuItems.choiceIcons[choice],
+              size: 24,
               color: Colors.white,
             ),
           ),
-          leading: Icon(
-            PopUpMenuItems.choiceIcons[choice],
-            size: 24,
-            color: Colors.white,
-          ),
-        ),
-      );
-    }).toList(),
-  ).then((value) {
-    if (value != null) choiceAction(value, token);
-  });
-}
+        );
+      }).toList(),
+    ).then((value) {
+      if (value != null) choiceAction(value, token);
+    });
+  }
 
   void _showDeleteDialog(BuildContext context, tokenId, auth_type) {
     showDialog(
@@ -348,87 +350,82 @@ void showMenuCard(BuildContext context, token, bool isGoogle) {
       showDialog(
           context: context,
           builder: (context) {
-            var pro = context.watch<LoginUserProvider>();
-            return pro.logoutLoading
-                ? Center(
-                    child: CircularProgressIndicator.adaptive(),
-                  )
-                : Dialog(
-                    child: Container(
+            return Dialog(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.containerColor8,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            size: 30,
+                            color: AppColors.textColor15,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      width: 120,
+                      height: 120,
                       decoration: BoxDecoration(
-                        color: AppColors.containerColor8,
-                        borderRadius: BorderRadius.circular(20),
+                        shape: BoxShape.circle,
+                        color: AppColors.containerColor5,
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: Icon(
-                                  Icons.close,
-                                  size: 30,
-                                  color: AppColors.textColor15,
-                                ),
-                              ),
-                            ],
+                      child: Center(
+                        child: Image.asset(
+                          "assets/images/icon1.png",
+                          width: 47,
+                          height: 63,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 35),
+                    Text(
+                      "Are You Sure?",
+                      style: TextStyle(
+                        fontFamily: "GothamBold",
+                        fontSize: 28.0,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.textColor14,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "You want to Logout your account.",
+                          style: TextStyle(
+                            fontFamily: "GothamRegular",
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.textColor18,
                           ),
-                          Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.containerColor5,
-                            ),
-                            child: Center(
-                              child: Image.asset(
-                                "assets/images/icon1.png",
-                                width: 47,
-                                height: 63,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: 35),
-                          Text(
-                            "Are You Sure?",
-                            style: TextStyle(
-                              fontFamily: "GothamBold",
-                              fontSize: 28.0,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textColor14,
-                            ),
-                          ),
-                          SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "You want to Logout your account.",
-                                style: TextStyle(
-                                  fontFamily: "GothamRegular",
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.textColor18,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 32),
-                          Builder(builder: (context) {
-                            return Padding(
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 32),
+                    Builder(builder: (context) {
+                      var pro = context.watch<LoginUserProvider>();
+
+                      return pro.logoutLoading
+                          ? Center(child: CircularProgressIndicator.adaptive())
+                          : Padding(
                               padding:
                                   const EdgeInsets.only(left: 16, right: 16.0),
                               child: Column(
                                 children: [
-                                  // pro.isLoading
-                                  //     ? Center(
-                                  //         child: CircularProgressIndicator.adaptive())
-                                  //     :
                                   GestureDetector(
                                     onTap: () async {
                                       await pro.logoutAccount(context,
@@ -505,11 +502,11 @@ void showMenuCard(BuildContext context, token, bool isGoogle) {
                                 ],
                               ),
                             );
-                          }),
-                        ],
-                      ),
-                    ),
-                  );
+                    }),
+                  ],
+                ),
+              ),
+            );
           });
     }
   }
@@ -590,7 +587,8 @@ void showMenuCard(BuildContext context, token, bool isGoogle) {
                     IconButton(
                       onPressed: () {
                         // _showPopupMenu(context, widget.auth_token);
-                        showMenuCard(context, widget.auth_token,gro.isGoogleLogin);
+                        showMenuCard(
+                            context, widget.auth_token, gro.isGoogleLogin);
                         // print(widget.auth_token);
                       },
                       icon: Icon(

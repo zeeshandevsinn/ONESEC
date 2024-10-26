@@ -61,8 +61,7 @@ class _SFMAPScreenState extends State<SFMAPScreen> {
 
           Color color;
           if (count > 0) {
-            color =
-                CountryColors.colors[location] ?? Colors.grey; // Default color
+            color = Color(0XFF0062FF); // Default color
           } else {
             color = Colors.grey; // No data or not colored
           }
@@ -507,7 +506,7 @@ class _SFMAPScreenState extends State<SFMAPScreen> {
                       ],
                     ),
                     SizedBox(height: 12),
-                      ],
+                  ],
                 ),
               ),
             );

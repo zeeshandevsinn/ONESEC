@@ -275,9 +275,10 @@ class APIsManager {
       );
 
       if (response.statusCode == 204) {
-        MyToast("Successfully Logout User");
         await AuthTokenStorage.removeAuthToken();
         // Account deleted successfully
+
+        MyToast("Successfully Logout User");
         return true;
       } else {
         MyToast("Authentication Wrong");
@@ -285,7 +286,7 @@ class APIsManager {
         return false;
       }
     } catch (e) {
-      // MyToast(e.toString());
+      MyToast(e.toString(), Type: false);
       return null;
     }
   }

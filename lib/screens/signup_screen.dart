@@ -320,7 +320,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     await gro.SignInGoogle(
                                         context, tab ? "individual" : "company");
                                         print('gro.isGoogleLogin:${gro.isGoogleLogin}');
-                                   gro.isGoogleLogin=true;
+                                  //  gro.isGoogleLogin=true;
                                   },
                                   child: SocialMediaButtons(
                                     image: "assets/images/googleicon.png",

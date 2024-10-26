@@ -37,6 +37,8 @@ class GoogleProvider extends ChangeNotifier {
               if (result['profile_type'] == profileType) {
                 MyToast("Successfully Sign In");
                 notifyListeners();
+                 isGoogleLogin = true;
+                 notifyListeners();
                 Navigator.pop(context);
                 Navigator.push(
                   context,
@@ -67,6 +69,8 @@ class GoogleProvider extends ChangeNotifier {
               if (result['profile_type'] == profileType) {
                 MyToast("Successfully Sign In");
                 notifyListeners();
+                 isGoogleLogin = true;
+                 notifyListeners();   
                 Navigator.pop(context);
                 Navigator.push(
                   context,
@@ -130,7 +134,8 @@ class GoogleProvider extends ChangeNotifier {
 
         if (result != null) {
           MyToast("Successfully Register");
-
+           isGoogleLogin = true;
+            notifyListeners();
           final token = result['auth_token'];
           if (token != null) {
             // Save the token in local storage

@@ -279,7 +279,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     await gro.SignInGoogle(context,
                                         tab ? "individual" : "company");
                                     print(
-                                        'gro.isGoogleLogin:${gro.isGoogleLogin}');
+                                        'gro.isGoogleLogin####:${gro.isGoogleLogin}');
                                     //  gro.isGoogleLogin=true;
                                   },
                                   child: SocialMediaButtons(
@@ -410,6 +410,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                           print("Doing Login Process");
                                           // debugger();
+                                          print(
+                                        'gro.isGoogleLogin:${gro.isGoogleLogin}');
                                           await pro.LoginUsers(
                                               context,
                                               emailController.text.trim(),

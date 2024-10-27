@@ -141,6 +141,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
   }
 
   void choiceAction(String choices, auth_token) {
+    var gro = Provider.of<GoogleProvider>(context, listen: false);
     if (choices == PopUpMenuItems.receivedProfiles) {
       Navigator.push(
         context,
@@ -349,6 +350,7 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
 
       // profileUrl = URlProfile(widget.auth_token);
     } else if (choices == PopUpMenuItems.logout) {
+      print('####');
       showDialog(
           context: context,
           builder: (context) {
@@ -432,6 +434,8 @@ class _IndividualProfilePageState extends State<IndividualProfilePage> {
                                     onTap: () async {
                                       await pro.logoutAccount(context,
                                           auth_token, widget.auth_type);
+                                          gro.isGoogleLogin=false;
+                                     print("gro.isGoogleLogin@@@@:${gro.isGoogleLogin}");
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width,

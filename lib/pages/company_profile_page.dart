@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:client_nfc_mobile_app/controller/services/google_provider.dart';
 import 'package:client_nfc_mobile_app/controller/services/login_api.dart';
 import 'package:client_nfc_mobile_app/data/popup_menu_items.dart';
 import 'package:client_nfc_mobile_app/models/company/get_company_profile.dart';
@@ -49,12 +50,17 @@ class CompanyProfilePage extends StatefulWidget {
 }
 
 class _CompanyProfilePageState extends State<CompanyProfilePage> {
-  void showMenuCard(BuildContext context, String token) {
+  void showMenuCard(BuildContext context, String token,bool isGoogle) {
+    List<String> filteredChoices = CompanyPopUpMenuItems.choices
+        .where(
+            (choice) => !(isGoogle && choice == CompanyPopUpMenuItems.accountSetting))
+        .toList();
+
     showMenu(
       color: Colors.black,
       context: context,
       position: RelativeRect.fromLTRB(100, 100, 0, 0),
-      items: CompanyPopUpMenuItems.choices.map((String choice) {
+      items: filteredChoices.map((String choice) {
         return PopupMenuItem<String>(
           value: choice,
           child: ListTile(
@@ -119,6 +125,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
   }
 
   void choiceAction(String choices, auth_token) {
+     var gro = Provider.of<GoogleProvider>(context, listen: false);
     if (choices == CompanyPopUpMenuItems.receivedProfiles) {
       Navigator.push(
         context,
@@ -424,6 +431,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                     onTap: () async {
                                       await pro.logoutAccount(context,
                                           auth_token, widget.auth_type);
+                                            gro.isGoogleLogin=false;
+                                     print("CompanyLogout:${gro.isGoogleLogin}");
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width,
@@ -516,7 +525,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
+    var gro = context.watch<GoogleProvider>();
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -555,7 +564,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          showMenuCard(context, widget.token);
+                          showMenuCard(context, widget.token,gro.isGoogleLogin);
                         },
                         child: Icon(
                           Icons.more_horiz,

@@ -11,7 +11,7 @@ class CompanyProfileDetailService {
   static getCompanyProfileDetail(String token, username) async {
     try {
       final response = await http.get(
-        Uri.parse('${CompanyProfileService.baseUrl}$username/'),
+        Uri.parse('https://api.onesec.shop/api/companies/$username/'),
         headers: {
           'Authorization': 'Token $token',
         },
@@ -25,15 +25,15 @@ class CompanyProfileDetailService {
 
         return request;
       } else if (response.statusCode == 404) {
-        MyToast('Company does not exist.', Type: false);
-        MyToast('Please Create Company Profile First', Type: false);
+        // MyToast('Company does not exist.', Type: false);
+        // MyToast('Please Create Company Profile First', Type: false);
         return null;
       } else {
-        MyToast('Failed to fetch company profile detail', Type: false);
+        // MyToast('Failed to fetch company profile detail', Type: false);
         return null;
       }
     } catch (e) {
-      MyToast('Internet Issue', Type: false);
+      // MyToast('Internet Issue', Type: false);
       return null;
     }
   }

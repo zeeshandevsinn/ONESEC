@@ -141,7 +141,7 @@ class CompanyProvider extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       notifyListeners();
-      MyToast("Internet Issue", Type: false);
+      // MyToast("Internet Issue", Type: false);
       return null;
     }
   }
@@ -210,7 +210,7 @@ class CompanyProvider extends ChangeNotifier {
         return null;
       }
     } catch (e) {
-      MyToast("Internet Issue 404", Type: false);
+      // MyToast("Internet Issue 404", Type: false);
       isLoading = false;
       notifyListeners();
       return null;

@@ -450,7 +450,7 @@ class APIsManager {
 
         return null;
       } else {
-        MyToast("Internet Issue ${request.statusCode}", Type: false);
+        // MyToast("Internet Issue ${request.statusCode}", Type: false);
         // Failed to update profile
         return null;
       }
@@ -584,7 +584,7 @@ class APIsManager {
 
         return null;
       } else {
-        MyToast("Internet Issue", Type: false);
+        // MyToast("Internet Issue", Type: false);
         // Failed to update profile
         return null;
       }

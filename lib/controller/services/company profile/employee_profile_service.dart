@@ -94,7 +94,11 @@ class EmployeeProfileServices {
       } else if (response.statusCode == 400) {
         final data = jsonDecode(response.body);
         print(data);
-        MyToast(data['error'][0], Type: false);
+        if (data['error'] != null) {
+          MyToast(data['error'][0], Type: false);
+        } else {
+          MyToast(data['email'][0], Type: false);
+        }
         return null;
       } else {
         MyToast('Failed to create employee Try Again', Type: false);

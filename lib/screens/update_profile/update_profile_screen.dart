@@ -735,7 +735,7 @@ class _CreatAndUpdateProfileScreenState
         int version = int.parse(number);
         if (version >= 11) {
           PermissionStatus permissionStoreage =
-              await Permission.manageExternalStorage.request();
+              await Permission.photos.request();
 
           if (permissionStoreage.isGranted) {
             pickedFile = await ImagePicker().pickImage(source: source);

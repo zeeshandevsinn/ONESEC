@@ -50,10 +50,10 @@ class CompanyProfilePage extends StatefulWidget {
 }
 
 class _CompanyProfilePageState extends State<CompanyProfilePage> {
-  void showMenuCard(BuildContext context, String token,bool isGoogle) {
+  void showMenuCard(BuildContext context, String token, bool isGoogle) {
     List<String> filteredChoices = CompanyPopUpMenuItems.choices
-        .where(
-            (choice) => !(isGoogle && choice == CompanyPopUpMenuItems.accountSetting))
+        .where((choice) =>
+            !(isGoogle && choice == CompanyPopUpMenuItems.accountSetting))
         .toList();
 
     showMenu(
@@ -125,7 +125,7 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
   }
 
   void choiceAction(String choices, auth_token) {
-     var gro = Provider.of<GoogleProvider>(context, listen: false);
+    var gro = Provider.of<GoogleProvider>(context, listen: false);
     if (choices == CompanyPopUpMenuItems.receivedProfiles) {
       Navigator.push(
         context,
@@ -431,8 +431,9 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                                     onTap: () async {
                                       await pro.logoutAccount(context,
                                           auth_token, widget.auth_type);
-                                            gro.isGoogleLogin=false;
-                                     print("CompanyLogout:${gro.isGoogleLogin}");
+                                      gro.isGoogleLogin = false;
+                                      print(
+                                          "CompanyLogout:${gro.isGoogleLogin}");
                                     },
                                     child: Container(
                                       width: MediaQuery.of(context).size.width,
@@ -518,7 +519,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    context.read<LoginUserProvider>();
+    context.read<LoginUserProvider>().isLoading = false;
+    context.read<LoginUserProvider>().logoutLoading = false;
   }
 
   var employees = EmployeesItems();
@@ -564,7 +566,8 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          showMenuCard(context, widget.token,gro.isGoogleLogin);
+                          showMenuCard(
+                              context, widget.token, gro.isGoogleLogin);
                         },
                         child: Icon(
                           Icons.more_horiz,
@@ -588,21 +591,28 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(80),
-                            child: widget.companylogo == null
-                                ? Center(
-                                    child: Icon(
-                                      Icons.error,
-                                      size: 30,
-                                      color: Colors.red,
-                                    ),
-                                  )
-                                : Image.network(
-                                    widget.companylogo ??
-                                        "https://s3-alpha-sig.figma.com/img/391e/015d/b2def2e8d0d0eb457914cd71c9558394?Expires=1723420800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=qroCsxaypdrkNMjW9Iq8oQPi20to3yI1ugY4xwEFxbP3QFHHU3E~5BPUCrEUYLoBKB5oKNTLOXdzaD83mX8o94mz1HE9rU4NHWI65rXKudMGWb1A1FyqS1O-fBbf0ZsDgQXktAnqjS2Fqs9-aNigE7~y6R-ra-nGKNaVrHaw~UCKnSSwOmf6WMUYBHpBMxuOOFfLej6Glc3cr3FYK2I9GaO~qt0i~ysS50qL5Qq0623hdJosjer2cEOc~~E~8eym250UexCSVKFgOsT~YuZbmnXiM8AzhsoK7uofIxm9cDVRIlFlih7Z5gSp44bXOxacw~MbddWl7cwzxCU0oDhSxQ__",
+                            borderRadius: BorderRadius.circular(60),
+                            child: widget.companylogo != null &&
+                                    widget.companylogo.isNotEmpty
+                                ? FadeInImage.assetNetwork(
+                                    placeholder: 'assets/images/logo.png',
+                                    image: widget.companylogo!,
+                                    imageErrorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Icon(
+                                        Icons
+                                            .error, // Show an error icon if the image fails to load
+                                        color: Colors.red,
+                                      );
+                                    },
                                     width: 80,
                                     height: 80,
                                     fit: BoxFit.cover,
+                                  )
+                                : CircleAvatar(
+                                    radius: 30,
+                                    backgroundImage: AssetImage(
+                                        'assets/images/logo.png'), // Default icon when profile_pic is null
                                   ),
                           ),
                           Column(
@@ -612,7 +622,9 @@ class _CompanyProfilePageState extends State<CompanyProfilePage> {
                               Container(
                                 width: size.width * .60,
                                 child: Text(
-                                  "${widget.companyName}" ?? "John Doe",
+                                  widget.companyName.isNotEmpty
+                                      ? "${widget.companyName}"
+                                      : "Update Profile",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: "GothamBold",

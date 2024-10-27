@@ -129,7 +129,7 @@ class PermissionService {
         // Permission.storage,
         Permission.camera,
         Permission.location,
-        Permission.manageExternalStorage, // Android 11+
+        Permission.photos, // Android 11+
         Permission.notification // Android 13+
       ].request();
     }

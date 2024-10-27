@@ -18,7 +18,7 @@ class UserProfileProvider extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       Future.microtask(() => notifyListeners());
-      MyToast("Internet Issue 404 error");
+      // MyToast("Internet Issue 404 error");
       return null;
     }
   }
@@ -133,7 +133,7 @@ class UserProfileProvider extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       Future.microtask(() => notifyListeners());
-      MyToast("Internet Issue 404 error", Type: false);
+      // MyToast("Internet Issue 404 error", Type: false);
       // debugger();
       return null;
     }

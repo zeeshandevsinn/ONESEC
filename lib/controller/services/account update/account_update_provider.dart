@@ -26,7 +26,7 @@ class AccountUpdateProvider extends ChangeNotifier {
       // debugger();
       isLoading = false;
       notifyListeners();
-      MyToast("Internet Issue Try Again", Type: false);
+      // MyToast("Internet Issue Try Again", Type: false);
     }
   }
 }

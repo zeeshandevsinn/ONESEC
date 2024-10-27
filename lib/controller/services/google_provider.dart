@@ -39,7 +39,7 @@ class GoogleProvider extends ChangeNotifier {
                 notifyListeners();
                 isGoogleLogin = true;
                 notifyListeners();
-                Navigator.pop(context);
+                // Navigator.pop(context);
                 Navigator.push(
                   context,
                   CupertinoDialogRoute(
@@ -63,7 +63,7 @@ class GoogleProvider extends ChangeNotifier {
               } else {
                 notifyListeners();
                 MyToast("Your Account did not found in $profileType");
-                Navigator.pop(context);
+                // Navigator.pop(context);
               }
             } else if (result['profile_type'] == 'company') {
               if (result['profile_type'] == profileType) {
@@ -71,7 +71,7 @@ class GoogleProvider extends ChangeNotifier {
                 notifyListeners();
                 isGoogleLogin = true;
                 notifyListeners();
-                Navigator.pop(context);
+                // Navigator.pop(context);
                 Navigator.push(
                   context,
                   CupertinoDialogRoute(
@@ -97,19 +97,19 @@ class GoogleProvider extends ChangeNotifier {
                 notifyListeners();
 
                 MyToast("Your Account did not found in $profileType");
-                Navigator.pop(context);
+                // Navigator.pop(context);
               }
             }
           }
         } else {
-          Navigator.pop(context);
+          // Navigator.pop(context);
           // MyToast("Your Account is not recongnize from $profileType",
           //     Type: false);
           isLoading = false;
           notifyListeners();
         }
       } else {
-        Navigator.pop(context);
+        // Navigator.pop(context);
         isLoading = false;
         notifyListeners();
       }
@@ -147,7 +147,7 @@ class GoogleProvider extends ChangeNotifier {
             // debugger();
             if (result['profile_type'] == 'individual' ||
                 result['profile_type'] == 'employee') {
-              Navigator.pop(context);
+              // Navigator.pop(context);
               Navigator.push(
                 context,
                 CupertinoDialogRoute(
@@ -169,7 +169,7 @@ class GoogleProvider extends ChangeNotifier {
                 ),
               );
             } else if (result['profile_type'] == 'company') {
-              Navigator.pop(context);
+              // Navigator.pop(context);
               Navigator.push(
                 context,
                 CupertinoDialogRoute(
@@ -200,12 +200,12 @@ class GoogleProvider extends ChangeNotifier {
         }
       } else {
         if (profileType == 'company') {
-          Navigator.pop(context);
-          Navigator.pop(context);
+          // Navigator.pop(context);
+          // Navigator.pop(context);
           isLoading = false;
           notifyListeners();
         } else {
-          Navigator.pop(context);
+          // Navigator.pop(context);
           isLoading = false;
           notifyListeners();
         }

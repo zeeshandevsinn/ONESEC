@@ -121,7 +121,7 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
         int version = int.parse(number);
         if (version >= 11) {
           PermissionStatus permissionStoreage =
-              await Permission.manageExternalStorage.request();
+              await Permission.photos.request();
 
           if (permissionStoreage.isGranted) {
             print("Storeage Granted");
@@ -730,6 +730,7 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: TextFormField(
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           //onChanged: OnChange,
           enabled: enabled,
           validator: validator ??
@@ -759,22 +760,20 @@ class _CompanyUserCreateDetailsState extends State<CompanyUserCreateDetails> {
               color: AppColors.textColor15,
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: AppColors.containerColor8,
-              ),
+              borderRadius: BorderRadius.circular(9),
+              borderSide: BorderSide(width: 1, color: AppColors.textColor10),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: AppColors.containerColor8,
-              ),
+              borderRadius: BorderRadius.circular(9),
+              borderSide: BorderSide(width: 1, color: AppColors.textColor10),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide(
-                color: AppColors.primaryColor,
-              ),
+              borderRadius: BorderRadius.circular(9),
+              borderSide: BorderSide(width: 1, color: AppColors.textColor10),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(9),
+              borderSide: BorderSide(width: 1, color: AppColors.textColor10),
             ),
           ),
         ));

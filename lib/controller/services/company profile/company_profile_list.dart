@@ -28,6 +28,7 @@ class CompanyProfileService {
   // Create a new company profile (POST)
   static createCompanyProfile(
       String token, Map<String, dynamic> profileData) async {
+    print(profileData);
     final response = await http.post(
       Uri.parse(baseUrl),
       headers: {
@@ -40,7 +41,7 @@ class CompanyProfileService {
     if (response.statusCode == 201) {
       return jsonDecode(response.body);
     } else if (response.statusCode == 400) {
-      MyToast('Validation errors: ${response.body}', Type: false);
+      MyToast('${response.body}', Type: false);
       return null;
     } else {
       MyToast('Failed to create company profile', Type: false);

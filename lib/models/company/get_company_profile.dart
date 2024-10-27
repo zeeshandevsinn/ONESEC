@@ -37,20 +37,24 @@ class CompanyProfile {
 
   factory CompanyProfile.fromJson(Map<String, dynamic> json) {
     return CompanyProfile(
-      id: json['id'],
-      employees: json['employees'],
-      companyName: json['company_name'],
-      adminName: json['admin_name'],
-      companyLogo: json['company_logo'],
-      email: json['email'],
-      phone: json['phone'],
-      address: json['address'],
-      companyDescription: json['company_description'],
-      website: json['website'],
-      linkedin: json['linkedin'],
-      displayEmail: json['display_email'], // Optional field
-      username: json['username'], // Optional field
-      user: json['user'],
+      id: json['id'] ?? 0, // Default to 0 if id is null
+      employees:
+          json['employees'] ?? [], // Default to empty list if employees is null
+      companyName: json['company_name'] ?? '', // Default to empty string
+      adminName: json['admin_name'] ?? '', // Default to empty string
+      companyLogo: json['company_logo'] ?? '', // Default to empty string
+      email: json['email'] ?? '', // Default to empty string
+      phone: json['phone'] ?? '', // Default to empty string
+      address: json['address'] ?? '', // Default to empty string
+      companyDescription:
+          json['company_description'] ?? '', // Default to empty string
+      website: json['website'] ?? '', // Default to empty string
+      linkedin: json['linkedin'] ?? '', // Default to empty string
+      displayEmail: json['display_email'] ??
+          '', // Default to empty string for optional field
+      username:
+          json['username'] ?? '', // Default to empty string for optional field
+      user: json['user'] ?? 0, // Default to 0 if user is null
     );
   }
 }

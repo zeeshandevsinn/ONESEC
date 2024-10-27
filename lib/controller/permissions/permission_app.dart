@@ -153,6 +153,7 @@ class PermissionService {
         Permission.storage,
         Permission.camera,
         Permission.location,
+        Permission.notification
       ].request();
     }
 

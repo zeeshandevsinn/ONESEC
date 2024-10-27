@@ -340,14 +340,17 @@ class APIsManager {
           'Authorization': 'Token $auth_token',
         },
       );
-
+      // debugger();
       if (response.statusCode == 204) {
         // debugger();
         // Account deleted successfully
         return true;
       } else {
         // Failed to delete account
-        return null;
+        final data = jsonDecode(response.body);
+        final message = data['detail'];
+
+        throw Exception(message);
       }
     } catch (e) {
       MyToast('Error $e');

@@ -37,8 +37,8 @@ class GoogleProvider extends ChangeNotifier {
               if (result['profile_type'] == profileType) {
                 MyToast("Successfully Sign In");
                 notifyListeners();
-                 isGoogleLogin = true;
-                 notifyListeners();
+                isGoogleLogin = true;
+                notifyListeners();
                 Navigator.pop(context);
                 Navigator.push(
                   context,
@@ -69,8 +69,8 @@ class GoogleProvider extends ChangeNotifier {
               if (result['profile_type'] == profileType) {
                 MyToast("Successfully Sign In");
                 notifyListeners();
-                 isGoogleLogin = true;
-                 notifyListeners();   
+                isGoogleLogin = true;
+                notifyListeners();
                 Navigator.pop(context);
                 Navigator.push(
                   context,
@@ -134,8 +134,8 @@ class GoogleProvider extends ChangeNotifier {
 
         if (result != null) {
           MyToast("Successfully Register");
-           isGoogleLogin = true;
-            notifyListeners();
+          isGoogleLogin = true;
+          notifyListeners();
           final token = result['auth_token'];
           if (token != null) {
             // Save the token in local storage
@@ -223,19 +223,24 @@ class GoogleProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      await GoogleSignInHelper.deleteAccount(context, auth_token, userID);
+      final response =
+          await GoogleSignInHelper.deleteAccount(context, auth_token, userID);
 
       isLoading = false;
       notifyListeners();
-      Navigator.pushAndRemoveUntil(
-          context,
-          CupertinoDialogRoute(
-              builder: (_) => WelcomeScreen(), context: context),
-          (route) => false);
+      // debugger();
+      if (response) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            CupertinoDialogRoute(
+                builder: (_) => WelcomeScreen(), context: context),
+            (route) => false);
+      }
     } catch (e) {
+      // debugger();
       isLoading = false;
       notifyListeners();
-      MyToast("Internet Problem Try Again!");
+      // MyToast(e.toString());
     }
   }
 }

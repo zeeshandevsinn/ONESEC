@@ -76,8 +76,8 @@ class _LoginScreenState extends State<LoginScreen> {
           //   Future.microtask(() => _showLoadingDialog(context));
           // }
 
-          return Stack(
-            children:[ SingleChildScrollView(
+          return Stack(children: [
+            SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -101,7 +101,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 24, right: 13.0),
+                            padding:
+                                const EdgeInsets.only(left: 24, right: 13.0),
                             child: Row(
                               children: [
                                 GestureDetector(
@@ -123,7 +124,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ),
                                     ),
                                   ),
-                                ),         ],
+                                ),
+                              ],
                             ),
                           ),
                           SizedBox(height: 30),
@@ -166,7 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   tab
                                       ? GestureDetector(
@@ -267,15 +270,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 20),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 24.0),
                             child: Column(
                               children: [
                                 GestureDetector(
                                   onTap: () async {
-                                    await gro.SignInGoogle(
-                                        context, tab ? "individual" : "company");
-                                        print('gro.isGoogleLogin:${gro.isGoogleLogin}');
-                                  //  gro.isGoogleLogin=true;
+                                    await gro.SignInGoogle(context,
+                                        tab ? "individual" : "company");
+                                    print(
+                                        'gro.isGoogleLogin:${gro.isGoogleLogin}');
+                                    //  gro.isGoogleLogin=true;
                                   },
                                   child: SocialMediaButtons(
                                     image: "assets/images/googleicon.png",
@@ -284,7 +289,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         : "Login with Company",
                                   ),
                                 ),
-                                SizedBox(height: 16),   ],
+                                SizedBox(height: 16),
+                              ],
                             ),
                           ),
                           SizedBox(height: 22),
@@ -299,7 +305,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     color: AppColors.containerColor9,
                                   ),
                                 ),
-            
                               ),
                               Text(
                                 "or",
@@ -325,7 +330,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           SizedBox(height: 24),
                           Padding(
-                            padding: const EdgeInsets.only(left: 24, right: 24.0),
+                            padding:
+                                const EdgeInsets.only(left: 24, right: 24.0),
                             child: Form(
                               key: newKey,
                               child: Column(
@@ -350,7 +356,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   const SizedBox(height: 16),
                                   CustomTextField(
-                                    validator: (val) {  return null;
+                                    validator: (val) {
+                                      return null;
                                     },
                                     obscureCharacter: "*",
                                     isObscureText: true,
@@ -400,7 +407,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         if (newKey.currentState!.validate()) {
                                           // debugger();
                                           print("login to employee screen");
-            
+
                                           print("Doing Login Process");
                                           // debugger();
                                           await pro.LoginUsers(
@@ -411,7 +418,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                         }
                                       },
                                       child: Container(
-                                        width: MediaQuery.of(context).size.width,
+                                        width:
+                                            MediaQuery.of(context).size.width,
                                         height: 42,
                                         decoration: BoxDecoration(
                                           gradient: const LinearGradient(
@@ -420,7 +428,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               AppColors.secondaryColor,
                                             ],
                                           ),
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
                                         ),
                                         child: const Center(
                                           child: Text(
@@ -502,14 +511,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-           if (pro.isLoading || gro.isLoading)
-            Container(
-              color: Colors.black.withOpacity(0.5),
-              child: const Center(
-                child: LoadingCircle(), // Your custom loader
+            if (pro.isLoading || gro.isLoading)
+              Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: LoadingCircle(), // Your custom loader
+                ),
               ),
-            ),
-         ] );
+          ]);
         }),
       ),
     );

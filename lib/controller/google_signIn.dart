@@ -59,18 +59,18 @@ class GoogleSignInHelper {
   }
 
   // Delete Account Function
-  static Future<void> deleteAccount(
-      context, String token, String userID) async {
+  static deleteAccount(context, String token, int userID) async {
     try {
-      await _googleSignIn.signOut();
-      await _googleSignIn.disconnect();
+      await signOut();
       final data = await APIsManager.DeleteUserProfile(token, userID);
       if (data != null) {
         MyToast('Account has been deleted');
+        return true;
       }
     } catch (error) {
       print(error);
       MyToast('Failed to delete account');
+      return false;
     }
   }
 

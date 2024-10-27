@@ -358,7 +358,6 @@ class _CreatAndUpdateProfileScreenState
                       const SizedBox(
                         height: 20,
                       ),
-
                       Container(
                         decoration: BoxDecoration(
                           color: AppColors.containerColor8,
@@ -526,14 +525,13 @@ class _CreatAndUpdateProfileScreenState
                                     return null;
                                   }
                                   return null;
-                                },
-                                    keyboardType: TextInputType.number),
+                                }, keyboardType: TextInputType.number),
                                 SizedBox(height: 20),
                                 GestureDetector(
                                   onTap: widget.create
                                       ? () async {
                                           if (newKey.currentState!.validate()) {
-                                               {
+                                            {
                                               if (_whatsappController
                                                   .text.isEmpty) {
                                                 // if (mounted)
@@ -817,6 +815,7 @@ class _CreatAndUpdateProfileScreenState
   Future<void> _pickAndCropImage() async {
     try {
       // Pick an image from the gallery
+
       final pickedFile =
           await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -899,15 +898,15 @@ class _CreatAndUpdateProfileScreenState
                 onTap: () async {
                   Navigator.of(context).pop();
                   // await getImage(ImageSource.gallery);
-                  await _pickAndCropImage();
+                  await getImage(ImageSource.gallery);
                 },
               ),
               ListTile(
                 leading: Icon(Icons.photo_camera),
                 title: Text('Camera'),
-                onTap: () {
+                onTap: () async {
                   Navigator.of(context).pop();
-                  getImage(ImageSource.camera);
+                  await getImage(ImageSource.camera);
                 },
               ),
             ],

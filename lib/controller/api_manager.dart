@@ -106,7 +106,7 @@ class APIsManager {
         return null;
       }
     } catch (e) {
-      MyToast("Error Catch: Internet is Not Connected $e", Type: false);
+      // MyToast("Error Catch: Internet is Not Connected $e", Type: false);
       return null;
     }
   }
@@ -255,7 +255,7 @@ class APIsManager {
       }
     } catch (e) {
       // debugger();
-      MyToast("Internet Not Connected 404", Type: false);
+      // MyToast("Internet Not Connected 404", Type: false);
       print('Error: $e');
       return null;
     }
